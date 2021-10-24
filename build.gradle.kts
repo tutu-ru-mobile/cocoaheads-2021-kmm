@@ -1,12 +1,14 @@
+plugins {
+    kotlin("plugin.serialization") version KOTLIN_VERSION apply false
+    kotlin("multiplatform") version KOTLIN_VERSION apply false
+    id("org.jetbrains.compose") version COMPOSE_DESKTOP apply false
+}
+
 buildscript {
     repositories {
-        gradlePluginPortal()
-        jcenter()
         google()
-        gradlePluginPortal()
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20")
         classpath("com.android.tools.build:gradle:4.0.2")
     }
 }

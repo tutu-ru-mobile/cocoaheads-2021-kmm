@@ -1,0 +1,7 @@
+val KOTLIN_VERSION = "1.5.31"
+val COMPOSE_DESKTOP = "1.0.0-beta1"
+val SERIALIZATION_VERSION = "1.3.0"
+val COROUTINE_VERSION = "1.5.2-native-mt"
+val KTOR_VERSION = "1.6.4"
+val LOG_MAVEN_ARTIFACT = if (true) "ch.qos.logback:logback-classic:1.2.3" else "org.slf4j:slf4j-simple:1.7.28"
+val ANDROID_GRADLE_PLUGIN = "7.0.3"
