@@ -5,3 +5,6 @@ val COROUTINE_VERSION = "1.5.2-native-mt"
 val KTOR_VERSION = "1.6.4"
 val LOG_MAVEN_ARTIFACT = if (true) "ch.qos.logback:logback-classic:1.2.3" else "org.slf4j:slf4j-simple:1.7.28"
 val ANDROID_GRADLE_PLUGIN = "7.0.3"
+val ANDROID_COMPILE_SDK = 31
+val ANDROID_TARGET_SDK = 31
+val ANDROID_MIN_SDK = 21

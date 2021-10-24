@@ -14,6 +14,7 @@ apple {
 
         dependencies {
             implementation(project(":shared"))
+            implementation(project(":serialized-data"))
         }
     }
 }

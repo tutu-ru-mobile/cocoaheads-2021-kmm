@@ -14,4 +14,4 @@ rootProject.name = "refresh-kmm"
 include(":iosApp")
 include(":androidApp")
 include(":shared")
-
+include(":serialized-data")
