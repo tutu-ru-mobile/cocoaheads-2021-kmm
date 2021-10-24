@@ -9,9 +9,18 @@ func greet() -> String {
 let root = SerializedDataKt.getDefaultNode()
 
 struct ContentView: View {
+
+    let appDiIos = AppDi()
+    @ObservedObject var myViewModel:GlobalViewModel
+
+    init() {
+        self.myViewModel = GlobalViewModel(di: appDiIos)
+    }
+
+
     var body: some View {
         VStack {
-            RenderNode(node: root)
+            RenderNode(node: root, state: appDiIos.getLastState(), di: appDiIos)
             Text(greet())
         }
     }
@@ -25,14 +34,16 @@ struct ContentView_Previews: PreviewProvider {
 
 struct RenderNode: View {
     var node:Node
+    var state:GlobalState
+    var di:AppDi
 
     var body: some View {
         if (node is Node.Container.ContainerV) {
             let v = node as! Node.Container.ContainerV
-            List(v.children, id: \.key, rowContent: { data in RenderNode(node: data) })
+            List(v.children, id: \.key, rowContent: { data in RenderNode(node: data, state: state, di: di) })
         } else if (node is Node.Container.ContainerH) {
             let v = node as! Node.Container.ContainerH
-            List(v.children, id: \.key, rowContent: { data in RenderNode(node: data) })
+            List(v.children, id: \.key, rowContent: { data in RenderNode(node: data, state: state, di: di) })
         } else if (node is Node.Leaf.LeafLabel) {
             let label = node as! Node.Leaf.LeafLabel
             Text(label.text)
@@ -44,6 +55,7 @@ struct RenderNode: View {
         } else if (node is Node.Leaf.LeafButton) {
             let button = node as! Node.Leaf.LeafButton
             Button(action: {
+                di.sendAction(a: GlobalAction.ActionInput(str: "Button pressed"))
                 print("Button pressed")
                 //todo send intent
             }) {
@@ -56,8 +68,8 @@ struct RenderNode: View {
                     .frame(width: CGFloat(img.width), height: CGFloat(img.height))
         } else if (node is Node.Leaf.LeafInput) {
             let input = node as! Node.Leaf.LeafInput
-            InputTextView(label: input.hint, value: "TODO") { inputValueStr in
-                print(inputValueStr)
+            InputTextView(label: input.hint, value: state.str) { inputValueStr in
+                di.sendAction(a: GlobalAction.ActionInput(str: inputValueStr))
                 //todo save storage by key
             }
         }
