@@ -1,10 +1,12 @@
+package ru.tutu
+
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 
 data class GlobalState(val str: String)
 
 sealed class GlobalAction {
-    class ActionInput(val str:String):GlobalAction()
+    class ActionInput(val str:String): GlobalAction()
 }
 
 class AppDi {
@@ -19,7 +21,7 @@ class AppDi {
         }
     }
 
-    fun sendAction(a:GlobalAction) = store.send(a)
+    fun sendAction(a: GlobalAction) = store.send(a)
 
     val globalStateFlow = store.stateFlow
     fun getLastState() = globalStateFlow.value

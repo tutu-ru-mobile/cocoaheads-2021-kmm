@@ -1,3 +1,4 @@
+package ru.tutu
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

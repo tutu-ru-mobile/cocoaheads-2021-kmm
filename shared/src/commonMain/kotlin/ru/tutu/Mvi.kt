@@ -1,4 +1,4 @@
-
+package ru.tutu
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,7 +42,7 @@ fun <S, A> createStore(init: S, reducer: Reducer<S, A>): Store<S, A> {
 
 typealias ReducerSE<S, A, SE> = (S, A) -> ReducerResult<S, SE>
 
-//todo use another ReducerResult
+//todo use another ru.tutu.ReducerResult
 class ReducerResult<S, SE>(val state: S, val sideEffects: List<SE> = emptyList())
 
 /**

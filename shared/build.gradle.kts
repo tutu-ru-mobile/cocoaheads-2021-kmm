@@ -24,32 +24,23 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$COROUTINE_VERSION")
             }
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
-        }
         val androidMain by getting {
             dependencies {
                 implementation("com.google.android.material:material:1.2.1")
             }
         }
-        val androidTest by getting {
-            dependencies {
-                implementation("junit:junit:4.13")
-            }
+        val iosMain by getting {
+
         }
-        val iosMain by getting
-        val iosTest by getting
     }
 }
 
 android {
-    compileSdkVersion(29)
+    compileSdkVersion(ANDROID_COMPILE_SDK)
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdkVersion(24)
-        targetSdkVersion(29)
+        minSdkVersion(ANDROID_MIN_SDK)
+        targetSdkVersion(ANDROID_TARGET_SDK)
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

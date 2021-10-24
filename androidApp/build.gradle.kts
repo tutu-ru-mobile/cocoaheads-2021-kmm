@@ -24,11 +24,11 @@ kotlin {
 }
 
 android {
-    compileSdkVersion(29)
+    compileSdkVersion(ANDROID_COMPILE_SDK)
     defaultConfig {
-        applicationId = "me.user.androidApp"
-        minSdkVersion(24)
-        targetSdkVersion(29)
+        applicationId = "ru.tutu.androidApp"
+        minSdkVersion(ANDROID_MIN_SDK)
+        targetSdkVersion(ANDROID_TARGET_SDK)
         versionCode = 1
         versionName = "1.0"
     }
@@ -38,6 +38,9 @@ android {
     }
     buildTypes {
         getByName("release") {
+            isMinifyEnabled = false
+        }
+        getByName("debug") {
             isMinifyEnabled = false
         }
     }

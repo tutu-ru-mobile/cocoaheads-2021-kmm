@@ -43,11 +43,14 @@ kotlin {
 }
 
 android {
-    compileSdk = ANDROID_COMPILE_SDK//(findProperty("android.compileSdk") as String).toInt()
-
-    defaultConfig {
-        minSdk = ANDROID_MIN_SDK//(findProperty("android.minSdk") as String).toInt()
-        targetSdk = ANDROID_TARGET_SDK//(findProperty("android.targetSdk") as String).toInt()
-    }
+    compileSdkVersion(ANDROID_COMPILE_SDK)
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    defaultConfig {
+        minSdkVersion(ANDROID_MIN_SDK)
+        targetSdkVersion(ANDROID_TARGET_SDK)
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
 }
