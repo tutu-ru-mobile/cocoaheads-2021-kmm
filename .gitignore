@@ -1,0 +1,56 @@
+###### Custom #############################
+size_story.txt
+
+###### Gradle ##############################
+build
+.gradle
+
+###### Idea ###############################
+.idea
+*.ipr
+*.iws
+*.iml
+
+!hand-test-empty-project/*
+
+###### Android #############################
+out/
+local.properties
+
+##### OS Specific ##########################
+.DS_Store
+Thumbs.db
+
+temp_id_rsa
+.exclude
+.idea_system**
+.system**
+
+*.iml
+.gradle
+.idea
+.DS_Store
+build
+*/build
+captures
+.externalNativeBuild
+.cxx
+local.properties
+xcuserdata/
+Pods/
+/androidApp/key
+
+
+###### Custom #############################
+.exclude
+
+
+###### Idea ###############################
+*.ipr
+*.iws
+
+###### Android #############################
+out/
+
+##### OS Specific ##########################
+Thumbs.db
