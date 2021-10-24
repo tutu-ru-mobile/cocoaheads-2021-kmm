@@ -6,7 +6,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlin.jvm.JvmInline
 
-val defaultStr = """{"type":"ru.tutu.Node.Container.V","children":[{"type":"ru.tutu.Node.Leaf.Label","text":"counter 3"},{"type":"ru.tutu.Node.Leaf.Input","hint":"hint","storageKey":"input1"},{"type":"ru.tutu.Node.Leaf.Label","text":"Hello null"},{"type":"ru.tutu.Node.Leaf.Button","id":"button.send","text":"send"},{"type":"ru.tutu.Node.Container.H","children":[{"type":"ru.tutu.Node.Leaf.Rectangle","width":50,"height":50,"color":4278255360},{"type":"ru.tutu.Node.Leaf.Rectangle","width":50,"height":50,"color":4294967040},{"type":"ru.tutu.Node.Leaf.Image","imgUrl":"https://raw.githubusercontent.com/JetBrains/compose-jb/master/artwork/imageviewerrepo/1.jpg","width":100,"height":100}]}]}"""
+val defaultStr = """{"type":"ru.tutu.Node.Container.V","children":[{"type":"ru.tutu.Node.Leaf.Label","text":"counter 3"},{"type":"ru.tutu.Node.Leaf.Input","hint":"hint","storageKey":"input1"},{"type":"ru.tutu.Node.Leaf.Label","text":"Hello from json"},{"type":"ru.tutu.Node.Leaf.Button","id":"button.send","text":"send"},{"type":"ru.tutu.Node.Container.H","children":[{"type":"ru.tutu.Node.Leaf.Rectangle","width":50,"height":50,"color":4278255360},{"type":"ru.tutu.Node.Leaf.Rectangle","width":50,"height":50,"color":4294967040},{"type":"ru.tutu.Node.Leaf.Image","imgUrl":"https://raw.githubusercontent.com/JetBrains/compose-jb/master/artwork/imageviewerrepo/1.jpg","width":100,"height":100}]}]}"""
 fun getDefaultNode():Node = defaultStr.parseToNode()
 
 fun Node.toJson():String =
@@ -38,6 +38,8 @@ fun ReducerResult2.toJson():String =
 
 fun String.parseToReducerResult():ReducerResult2 =
     Json.decodeFromString(this)
+
+val Node.key:String get() = this.toString() //todo SwiftUI List key
 
 @Serializable
 sealed class Node() {
