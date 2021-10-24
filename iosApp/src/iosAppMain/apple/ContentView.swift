@@ -2,11 +2,7 @@ import SwiftUI
 import shared
 import SerializedData
 
-func greet() -> String {
-    return Greeting().greeting()
-}
-
-let root = SerializedDataKt.getDefaultNode()
+let root = SerializedDataKt.getDefaultNode()//todo delete
 
 struct ContentView: View {
 
@@ -17,18 +13,8 @@ struct ContentView: View {
         self.myViewModel = GlobalViewModel(di: appDiIos)
     }
 
-
     var body: some View {
-        VStack {
-            RenderNode(node: root, state: appDiIos.getLastState(), di: appDiIos)
-            Text(greet())
-        }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+        RenderNode(node: root, state: appDiIos.getLastState(), di: appDiIos)
     }
 }
 
