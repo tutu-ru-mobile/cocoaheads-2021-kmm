@@ -13,7 +13,7 @@ suspend fun getFirstState(userId:String, clientStorage: Map<String, ClientValue>
     }.parseToFirstResponse()
 }
 
-suspend fun networkReducer(sessionId: String, clientStorage: Map<String, ClientValue>, intent: Intent): Node =
+suspend fun networkReducer(sessionId: String, clientStorage: Map<String, ClientValue>, intent: Intent): ViewTreeNode =
     ktorClient.post<String>("$SERVER_URL/$SERVER_PATH_NETWORK_REDUCER"){
         body = TextContent(NetworkReducerRequestBody(sessionId, clientStorage, intent).toJson(), ContentType.Application.Json)
     }.parseToReducerResult().state

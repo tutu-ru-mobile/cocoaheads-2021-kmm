@@ -12,42 +12,42 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun RenderNode(clientStorage:Map<String, ClientValue>, node: Node, sendIntent: (ClientIntent) -> Unit) {
+fun RenderNode(clientStorage:Map<String, ClientValue>, node: ViewTreeNode, sendIntent: (ClientIntent) -> Unit) {
     when (node) {
-        is Node.Container.H -> {
+        is ViewTreeNode.Container.H -> {
             Row {
                 for (child in node.children) {
                     RenderNode(clientStorage, child, sendIntent)
                 }
             }
         }
-        is Node.Container.V -> {
+        is ViewTreeNode.Container.V -> {
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                 for (child in node.children) {
                     RenderNode(clientStorage, child, sendIntent)
                 }
             }
         }
-        is Node.Leaf.Rectangle -> {
+        is ViewTreeNode.Leaf.Rectangle -> {
             Box(modifier = Modifier.size(node.width.dp, node.height.dp).background(color = Color(node.color.toInt())))
         }
-        is Node.Leaf.Label -> {
+        is ViewTreeNode.Leaf.Label -> {
             Text(text = node.text)
         }
-        is Node.Leaf.Button -> {
+        is ViewTreeNode.Leaf.Button -> {
             Button(onClick = {
                 sendIntent(ClientIntent.SendToServer(Intent.ButtonPressed(node.id)))
             }) {
                 Text(text = node.text)
             }
         }
-        is Node.Leaf.Input -> {
+        is ViewTreeNode.Leaf.Input -> {
             val text = clientStorage[node.storageKey]?.stringValue ?: ""
             TextField(text, onValueChange = {
                 sendIntent(ClientIntent.UpdateClientStorage(node.storageKey, ClientValue(it)))
             })
         }
-        is Node.Leaf.Image -> {
+        is ViewTreeNode.Leaf.Image -> {
             NetworkImage(node.imgUrl, node.width, node.height)
         }
     }.also { }

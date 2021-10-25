@@ -2,7 +2,7 @@ package ru.tutu.logic
 
 import ru.tutu.ClientValue
 import ru.tutu.Id
-import ru.tutu.Node
+import ru.tutu.ViewTreeNode
 import ru.tutu.verticalContainer
 
 /**
@@ -13,7 +13,7 @@ import ru.tutu.verticalContainer
  * Если возникнут вопросы - пишите в чат поддержки LINK
  * Частые вопросы в связи с коронавирусом (доп. текст)
  */
-fun serverRender(state: ServerState, clientStorage: Map<String, ClientValue>): Node =
+fun serverRender(state: ServerState, clientStorage: Map<String, ClientValue>): ViewTreeNode =
     verticalContainer {
         label("counter ${state.counter}")
         input("hint", KEY_INPUT1)

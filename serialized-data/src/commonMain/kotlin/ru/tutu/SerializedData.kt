@@ -6,14 +6,19 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlin.jvm.JvmInline
 
-val defaultStr = """{"type":"ru.tutu.Node.Container.V","children":[{"type":"ru.tutu.Node.Leaf.Label","text":"counter 3"},{"type":"ru.tutu.Node.Leaf.Input","hint":"hint","storageKey":"input1"},{"type":"ru.tutu.Node.Leaf.Label","text":"Hello from json"},{"type":"ru.tutu.Node.Leaf.Button","id":"button.send","text":"send"},{"type":"ru.tutu.Node.Container.H","children":[{"type":"ru.tutu.Node.Leaf.Rectangle","width":50,"height":50,"color":4278255360},{"type":"ru.tutu.Node.Leaf.Rectangle","width":50,"height":50,"color":4294967040},{"type":"ru.tutu.Node.Leaf.Image","imgUrl":"https://raw.githubusercontent.com/JetBrains/compose-jb/master/artwork/imageviewerrepo/1.jpg","width":100,"height":100}]}]}"""
-fun getDefaultNode():Node = defaultStr.parseToNode()
+fun getDefaultNode():ViewTreeNode = ViewTreeNode.Container.V(
+    children = listOf(
+        ViewTreeNode.Leaf.Label("hello"),
+        ViewTreeNode.Leaf.Input("hint", "input1"),
+        ViewTreeNode.Leaf.Button(Id("btn1"), "push me")
+    )
+)
 
-fun Node.toJson():String =
+fun ViewTreeNode.toJson():String =
     Json.encodeToString(this)
 
-fun String.parseToNode():Node =
-    Json.decodeFromString(Node.serializer(), this)
+fun String.parseToNode():ViewTreeNode =
+    Json.decodeFromString(ViewTreeNode.serializer(), this)
 
 fun FirstResponse.toJson():String =
     Json.encodeToString(this)
@@ -31,47 +36,13 @@ sealed class ClientSideEffect() {
 }
 
 @Serializable
-data class ReducerResult2(val state:Node, val sideEffects:List<ClientSideEffect>)
+data class ReducerResult2(val state:ViewTreeNode, val sideEffects:List<ClientSideEffect>)
 
 fun ReducerResult2.toJson():String =
     Json.encodeToString(this)
 
 fun String.parseToReducerResult():ReducerResult2 =
     Json.decodeFromString(this)
-
-val Node.key:String get() = this.toString() //todo SwiftUI List key
-
-@Serializable
-sealed class Node() {
-    @Serializable
-    sealed class Leaf() : Node() {
-        @Serializable
-        data class Rectangle(val width: Int, val height: Int, val color: UInt) : Leaf()
-
-        @Serializable
-        data class Label(val text: String) : Leaf()
-
-        @Serializable
-        data class Button(val id: Id, val text: String) : Leaf()
-
-        @Serializable
-        data class Input(val hint: String, val storageKey: String) : Leaf()
-
-        @Serializable
-        data class Image(val imgUrl:String, val width: Int, val height: Int):Leaf()
-    }
-
-    @Serializable
-    sealed class Container() : Node() {
-        abstract val children: List<Node>
-
-        @Serializable
-        class H(override val children: List<Node>) : Container()
-
-        @Serializable
-        class V(override val children: List<Node>) : Container()
-    }
-}
 
 @JvmInline
 @Serializable

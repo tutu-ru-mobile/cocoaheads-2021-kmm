@@ -1,41 +1,41 @@
 package ru.tutu
 
-fun verticalContainer(lambda: NodeDsl.() -> Unit): Node = refreshViewDsl {
+fun verticalContainer(lambda: NodeDsl.() -> Unit): ViewTreeNode = refreshViewDsl {
     verticalContainer {
         lambda()
     }
 }.first()
 
 @OptIn(ExperimentalStdlibApi::class)
-private fun refreshViewDsl(lambda: NodeDsl.() -> Unit): List<Node> {
-    return buildList<Node> {
+private fun refreshViewDsl(lambda: NodeDsl.() -> Unit): List<ViewTreeNode> {
+    return buildList<ViewTreeNode> {
         object : NodeDsl {
             override fun verticalContainer(lambda: NodeDsl.() -> Unit) {
-                add(Node.Container.V(refreshViewDsl(lambda)))
+                add(ViewTreeNode.Container.V(refreshViewDsl(lambda)))
             }
 
             override fun horizontalContainer(lambda: NodeDsl.() -> Unit) {
-                add(Node.Container.H(refreshViewDsl(lambda)))
+                add(ViewTreeNode.Container.H(refreshViewDsl(lambda)))
             }
 
             override fun button(id: Id, text: String) {
-                add(Node.Leaf.Button(id, text))
+                add(ViewTreeNode.Leaf.Button(id, text))
             }
 
             override fun input(hint: String, storageKey: String) {
-                add(Node.Leaf.Input(hint, storageKey))
+                add(ViewTreeNode.Leaf.Input(hint, storageKey))
             }
 
             override fun label(text: String) {
-                add(Node.Leaf.Label(text))
+                add(ViewTreeNode.Leaf.Label(text))
             }
 
             override fun rectangle(width: Int, height: Int, color: UInt) {
-                add(Node.Leaf.Rectangle(color = color, width = width, height = height))
+                add(ViewTreeNode.Leaf.Rectangle(color = color, width = width, height = height))
             }
 
             override fun image(imgUrl: String, width: Int, height: Int) {
-                add(Node.Leaf.Image(imgUrl, width, height))
+                add(ViewTreeNode.Leaf.Image(imgUrl, width, height))
             }
         }.lambda()
     }

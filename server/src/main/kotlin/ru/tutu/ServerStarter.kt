@@ -74,7 +74,7 @@ private suspend fun networkReducer(
     intent: Intent
 ): ReducerResult2 {
     val state: ServerState = mapSessionToServerState[sessionId]
-        ?: return ReducerResult2(Node.Leaf.Label("Session not found. Please restart Application"), listOf())
+        ?: return ReducerResult2(ViewTreeNode.Leaf.Label("Session not found. Please restart Application"), listOf())
 
     val reducerResult = serverReducer(state, clientStorage, intent)
     mapSessionToServerState[sessionId] = reducerResult.state

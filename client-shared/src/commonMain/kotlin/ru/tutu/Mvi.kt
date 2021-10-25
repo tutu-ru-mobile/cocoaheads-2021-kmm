@@ -1,4 +1,5 @@
 package ru.tutu
+
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +14,6 @@ interface Store<S, A> {
     val stateFlow: StateFlow<S>
     val state get() = stateFlow.value
 }
-
 /**
  * Самая простая реализация MVI архитектуры для слоя представления.
  */

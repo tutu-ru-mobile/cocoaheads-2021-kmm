@@ -1,6 +1,5 @@
 package ru.tutu
 
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 
 data class GlobalState(val str: String)

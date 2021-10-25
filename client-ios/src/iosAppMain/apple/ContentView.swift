@@ -19,27 +19,27 @@ struct ContentView: View {
 }
 
 struct RenderNode: View {
-    var node:Node
+    var node:ViewTreeNode
     var state:GlobalState
     var di:AppDi
 
     var body: some View {
-        if (node is Node.Container.ContainerV) {
-            let v = node as! Node.Container.ContainerV
+        if (node is ViewTreeNode.Container.ContainerV) {
+            let v = node as! ViewTreeNode.Container.ContainerV
             List(v.children, id: \.key, rowContent: { data in RenderNode(node: data, state: state, di: di) })
-        } else if (node is Node.Container.ContainerH) {
-            let v = node as! Node.Container.ContainerH
+        } else if (node is ViewTreeNode.Container.ContainerH) {
+            let v = node as! ViewTreeNode.Container.ContainerH
             List(v.children, id: \.key, rowContent: { data in RenderNode(node: data, state: state, di: di) })
-        } else if (node is Node.Leaf.LeafLabel) {
-            let label = node as! Node.Leaf.LeafLabel
+        } else if (node is ViewTreeNode.Leaf.LeafLabel) {
+            let label = node as! ViewTreeNode.Leaf.LeafLabel
             Text(label.text)
-        } else if (node is Node.Leaf.LeafRectangle) {
-            let rect = node as! Node.Leaf.LeafRectangle
+        } else if (node is ViewTreeNode.Leaf.LeafRectangle) {
+            let rect = node as! ViewTreeNode.Leaf.LeafRectangle
             Rectangle()
                     .fill(Color.red)
                     .frame(width: CGFloat(rect.width), height: CGFloat(rect.height))
-        } else if (node is Node.Leaf.LeafButton) {
-            let button = node as! Node.Leaf.LeafButton
+        } else if (node is ViewTreeNode.Leaf.LeafButton) {
+            let button = node as! ViewTreeNode.Leaf.LeafButton
             Button(action: {
                 di.sendAction(a: GlobalAction.ActionInput(str: "Button pressed"))
                 print("Button pressed")
@@ -47,13 +47,13 @@ struct RenderNode: View {
             }) {
                 Text(button.text)
             }
-        } else if (node is Node.Leaf.LeafImage) {
-            let img = node as! Node.Leaf.LeafImage
+        } else if (node is ViewTreeNode.Leaf.LeafImage) {
+            let img = node as! ViewTreeNode.Leaf.LeafImage
             Rectangle()
                     .fill(Color.green)
                     .frame(width: CGFloat(img.width), height: CGFloat(img.height))
-        } else if (node is Node.Leaf.LeafInput) {
-            let input = node as! Node.Leaf.LeafInput
+        } else if (node is ViewTreeNode.Leaf.LeafInput) {
+            let input = node as! ViewTreeNode.Leaf.LeafInput
             InputTextView(label: input.hint, value: state.str) { inputValueStr in
                 di.sendAction(a: GlobalAction.ActionInput(str: inputValueStr))
                 //todo save storage by key

@@ -1,5 +1,5 @@
 plugins {
-    id("org.jetbrains.gradle.apple.applePlugin") version "212.4638.14-0.14"
+    id("org.jetbrains.gradle.apple.applePlugin") version JETBRAINS_APPLE_GRADLE_PLUGIN
 }
 
 apple {

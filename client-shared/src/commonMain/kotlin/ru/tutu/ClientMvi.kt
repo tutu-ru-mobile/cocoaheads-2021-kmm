@@ -8,14 +8,14 @@ data class RefreshViewState(
 ) {
     sealed class ServerData {
         object Loading : ServerData()
-        data class Loaded(val sessionId: String, val node: Node) : ServerData()
+        data class Loaded(val sessionId: String, val node: ViewTreeNode) : ServerData()
     }
 }
 
 sealed class ClientIntent() {
     class SendToServer(val intent: Intent):ClientIntent()
     data class UpdateClientStorage(val key: String, val value: ClientValue) : ClientIntent()
-    class FirstServerResponse(val node:Node, val sessionId: String):ClientIntent()
+    class FirstServerResponse(val node:ViewTreeNode, val sessionId: String):ClientIntent()
 }
 
 
@@ -38,7 +38,7 @@ fun createRefreshViewStore(): Store<RefreshViewState, ClientIntent> {
                         //todo изменения отправлять на сервер
                     }
                     is ClientIntent.SendToServer -> {
-                        val reducedNode: Node = networkReducer(serverData.sessionId, s.clientStorage, a.intent)
+                        val reducedNode: ViewTreeNode = networkReducer(serverData.sessionId, s.clientStorage, a.intent)
                         s.copy(
                             serverData = serverData.copy(node = reducedNode)
                         )
