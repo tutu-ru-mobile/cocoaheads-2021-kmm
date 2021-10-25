@@ -11,7 +11,7 @@ pluginManagement {
 rootProject.name = "refresh-kmm"
 
 
-include(":iosApp")
+include(":client-ios")
 include(":androidApp")
 include(":client-shared")
 include(":serialized-data")
