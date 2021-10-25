@@ -65,19 +65,19 @@ private suspend fun firstRequest(userId: String, clientStorage: Map<String, Clie
     val session = Random.nextInt().toString()
     val state = ServerState(userId, 0)
     mapSessionToServerState[session] = state
-    return FirstResponse(session, ReducerResult2(serverRender(state, clientStorage), listOf()))
+    return FirstResponse(session, NetworkReducerResult(serverRender(state, clientStorage), listOf()))
 }
 
 private suspend fun networkReducer(
     sessionId: String,
     clientStorage: Map<String, ClientValue>,
     intent: Intent
-): ReducerResult2 {
+): NetworkReducerResult {
     val state: ServerState = mapSessionToServerState[sessionId]
-        ?: return ReducerResult2(ViewTreeNode.Leaf.Label("Session not found. Please restart Application"), listOf())
+        ?: return NetworkReducerResult(ViewTreeNode.Leaf.Label("Session not found. Please restart Application"), listOf())
 
     val reducerResult = serverReducer(state, clientStorage, intent)
     mapSessionToServerState[sessionId] = reducerResult.state
     val node = serverRender(reducerResult.state, clientStorage)
-    return ReducerResult2(node.toJson().parseToNode(), reducerResult.sideEffects)
+    return NetworkReducerResult(node.toJson().parseToNode(), reducerResult.sideEffects)
 }

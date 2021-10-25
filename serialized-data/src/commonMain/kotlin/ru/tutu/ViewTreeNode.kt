@@ -1,6 +1,11 @@
 package ru.tutu
 
 import kotlinx.serialization.Serializable
+import kotlin.jvm.JvmInline
+
+@JvmInline
+@Serializable
+value class Id(val value: String)
 
 @Serializable
 sealed class ViewTreeNode() {
@@ -27,10 +32,10 @@ sealed class ViewTreeNode() {
         abstract val children: List<ViewTreeNode>
 
         @Serializable
-        class H(override val children: List<ViewTreeNode>) : Container()
+        class Horizontal(override val children: List<ViewTreeNode>) : Container()
 
         @Serializable
-        class V(override val children: List<ViewTreeNode>) : Container()
+        class Vertical(override val children: List<ViewTreeNode>) : Container()
     }
 }
 

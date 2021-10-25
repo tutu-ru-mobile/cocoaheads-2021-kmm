@@ -11,11 +11,11 @@ private fun refreshViewDsl(lambda: NodeDsl.() -> Unit): List<ViewTreeNode> {
     return buildList<ViewTreeNode> {
         object : NodeDsl {
             override fun verticalContainer(lambda: NodeDsl.() -> Unit) {
-                add(ViewTreeNode.Container.V(refreshViewDsl(lambda)))
+                add(ViewTreeNode.Container.Vertical(refreshViewDsl(lambda)))
             }
 
             override fun horizontalContainer(lambda: NodeDsl.() -> Unit) {
-                add(ViewTreeNode.Container.H(refreshViewDsl(lambda)))
+                add(ViewTreeNode.Container.Horizontal(refreshViewDsl(lambda)))
             }
 
             override fun button(id: Id, text: String) {

@@ -14,14 +14,14 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun RenderNode(clientStorage:Map<String, ClientValue>, node: ViewTreeNode, sendIntent: (ClientIntent) -> Unit) {
     when (node) {
-        is ViewTreeNode.Container.H -> {
+        is ViewTreeNode.Container.Horizontal -> {
             Row {
                 for (child in node.children) {
                     RenderNode(clientStorage, child, sendIntent)
                 }
             }
         }
-        is ViewTreeNode.Container.V -> {
+        is ViewTreeNode.Container.Vertical -> {
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                 for (child in node.children) {
                     RenderNode(clientStorage, child, sendIntent)

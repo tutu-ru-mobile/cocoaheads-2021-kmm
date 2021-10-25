@@ -24,11 +24,11 @@ struct RenderNode: View {
     var di:AppDi
 
     var body: some View {
-        if (node is ViewTreeNode.Container.ContainerV) {
-            let v = node as! ViewTreeNode.Container.ContainerV
+        if (node is ViewTreeNode.Container.ContainerVertical) {
+            let v = node as! ViewTreeNode.Container.ContainerVertical
             List(v.children, id: \.key, rowContent: { data in RenderNode(node: data, state: state, di: di) })
-        } else if (node is ViewTreeNode.Container.ContainerH) {
-            let v = node as! ViewTreeNode.Container.ContainerH
+        } else if (node is ViewTreeNode.Container.ContainerHorizontal) {
+            let v = node as! ViewTreeNode.Container.ContainerHorizontal
             List(v.children, id: \.key, rowContent: { data in RenderNode(node: data, state: state, di: di) })
         } else if (node is ViewTreeNode.Leaf.LeafLabel) {
             let label = node as! ViewTreeNode.Leaf.LeafLabel

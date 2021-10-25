@@ -4,9 +4,8 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlin.jvm.JvmInline
 
-fun getDefaultNode():ViewTreeNode = ViewTreeNode.Container.V(
+fun getDefaultNode():ViewTreeNode = ViewTreeNode.Container.Vertical(
     children = listOf(
         ViewTreeNode.Leaf.Label("hello"),
         ViewTreeNode.Leaf.Input("hint", "input1"),
@@ -36,17 +35,13 @@ sealed class ClientSideEffect() {
 }
 
 @Serializable
-data class ReducerResult2(val state:ViewTreeNode, val sideEffects:List<ClientSideEffect>)
+data class NetworkReducerResult(val state:ViewTreeNode, val sideEffects:List<ClientSideEffect>)
 
-fun ReducerResult2.toJson():String =
+fun NetworkReducerResult.toJson():String =
     Json.encodeToString(this)
 
-fun String.parseToReducerResult():ReducerResult2 =
+fun String.parseToNetworkReducerResult():NetworkReducerResult =
     Json.decodeFromString(this)
-
-@JvmInline
-@Serializable
-value class Id(val value: String)
 
 val SERVER_PATH_FIRST_REQUEST = "first_state"
 val SERVER_PATH_NETWORK_REDUCER = "network_reducer"
@@ -74,7 +69,7 @@ fun String.parseToNetworkReducerRequestBody():NetworkReducerRequestBody =
     Json.decodeFromString(this)
 
 @Serializable
-data class FirstResponse(val sessionId: String, val reducerResult: ReducerResult2)
+data class FirstResponse(val sessionId: String, val reducerResult: NetworkReducerResult)
 
 @Serializable
 data class ClientValue(val stringValue: String)
