@@ -70,7 +70,7 @@ fun ClientStorage.toJson():String {
 }
 
 fun String.parseToClientStorage():ClientStorage {
-    return Json.decodeFromString<ClientStorage>(this)
+    return Json.decodeFromString(this)
 }
 
 @Serializable
@@ -79,4 +79,7 @@ sealed class Intent {
     data class ButtonPressed(val buttonId: Id) : Intent()
 }
 
-typealias ClientStorage = Map<String, ClientValue>
+@Serializable
+data class ClientStorage(
+    val map:Map<String, ClientValue>
+)

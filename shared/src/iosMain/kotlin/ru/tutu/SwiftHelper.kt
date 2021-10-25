@@ -26,7 +26,7 @@ class IosStoreHelper {
     }
 
     fun getClientStorageValue(key: String): String {
-        return store.state.clientStorage[key]?.stringValue ?: ""
+        return store.state.clientStorage.map[key]?.stringValue ?: ""
     }
 
     fun getLastState(): RefreshViewState {
@@ -46,4 +46,15 @@ class IosStoreHelper {
 
 fun Color.toUIColor():UIColor {
     return UIColor(red = redDouble, green = greenDouble, blue = blueDouble, alpha = alphaDouble)
+}
+
+fun buttonIntent(buttonId: Id): ClientIntent {
+    return ClientIntent.SendToServer(Intent.ButtonPressed(buttonId))
+}
+
+fun updateClientStorageIntent(key:String, value: String):ClientIntent =
+    ClientIntent.UpdateClientStorage(key, ClientValue(value))
+
+fun ClientStorage.getString(key: String):String {
+    return map[key]?.stringValue ?: ""
 }

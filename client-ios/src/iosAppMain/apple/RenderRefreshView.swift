@@ -16,10 +16,9 @@ public struct RenderRefreshView: View {
                 Text("Loading...")
             } else if (state.serverData is RefreshViewState.ServerDataLoaded) {
                 let serverDataLoaded = state.serverData as! RefreshViewState.ServerDataLoaded
-                RenderNode(
-                        node: serverDataLoaded.node,
-                        iosStoreHelper: iosStoreHelper
-                ).navigationBarTitle("Важная информация", displayMode: .inline)
+                RenderNode(serverDataLoaded.node, state.clientStorage) { (intent: ClientIntent) in
+                    iosStoreHelper.sendAction(a: intent)
+                }.navigationBarTitle("Важная информация", displayMode: .inline)
             }
         }
     }

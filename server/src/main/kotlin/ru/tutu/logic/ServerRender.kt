@@ -16,7 +16,7 @@ fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode
     verticalContainer {
         label("counter ${state.counter}")
         input("hint", KEY_INPUT1)
-        label("Hello ${clientStorage[KEY_INPUT1]?.stringValue}")
+        label("Hello ${clientStorage.map[KEY_INPUT1]?.stringValue}")
         button(id = Id("button.send"), text = "send")
         horizontalContainer {
             rectangle(50, 50, Color(0xff00ff00u))

@@ -2,8 +2,15 @@ import SwiftUI
 import Shared
 
 struct RenderNode: View {
-    var node: NSObject
-    var iosStoreHelper: IosStoreHelper
+    let node: NSObject
+    let clientStorage: ClientStorage
+    let sendIntent: (ClientIntent) -> Void
+
+    init(_ node: NSObject, _ clientStorage: ClientStorage, _ sendIntent: @escaping (ClientIntent) -> Void) {
+        self.node = node
+        self.clientStorage = clientStorage
+        self.sendIntent = sendIntent
+    }
 
     var body: some View {
         if (node is ViewTreeNode.Container.ContainerVertical) {
@@ -11,20 +18,20 @@ struct RenderNode: View {
             if (true) {
                 VStack {
                     ForEach(v.children) { child in
-                        RenderNode(node: child, iosStoreHelper: iosStoreHelper)
+                        RenderNode(child, clientStorage, sendIntent)
                     }
                 }
             } else {
                 // Вертикальный контейнер можно было сделать с помощью List
-                List(v.children) { data in
-                    RenderNode(node: data, iosStoreHelper: iosStoreHelper)
+                List(v.children) { child in
+                    RenderNode(child, clientStorage, sendIntent)
                 }
             }
         } else if (node is ViewTreeNode.Container.ContainerHorizontal) {
             let v = node as! ViewTreeNode.Container.ContainerHorizontal
             HStack {
                 ForEach(v.children) { child in
-                    RenderNode(node: child, iosStoreHelper: iosStoreHelper)
+                    RenderNode(child, clientStorage, sendIntent)
                 }
             }
         } else if (node is ViewTreeNode.Leaf.LeafLabel) {
@@ -35,7 +42,7 @@ struct RenderNode: View {
         } else if (node is ViewTreeNode.Leaf.LeafButton) {
             let button = node as! ViewTreeNode.Leaf.LeafButton
             Button(action: {
-                iosStoreHelper.sendButtonPressedIntent(buttonId: button.id)
+                sendIntent(SwiftHelperKt.buttonIntent(buttonId: button.id))
             }) {
                 Text(button.text)
             }
@@ -45,9 +52,9 @@ struct RenderNode: View {
                     .frame(width: CGFloat(img.width), height: CGFloat(img.height))
         } else if (node is ViewTreeNode.Leaf.LeafInput) {
             let input = node as! ViewTreeNode.Leaf.LeafInput
-            let value = iosStoreHelper.getClientStorageValue(key: input.storageKey)
+            let value = clientStorage.getString(key: input.storageKey)
             RenderInputTextView(label: input.hint, value: value) { inputValueStr in
-                iosStoreHelper.sendUpdateClientStorageIntent(key: input.storageKey, value: inputValueStr)
+                sendIntent(SwiftHelperKt.updateClientStorageIntent(key: input.storageKey, value: inputValueStr))
             }
         } else {
             Text("unknown node type, node: \(node)")

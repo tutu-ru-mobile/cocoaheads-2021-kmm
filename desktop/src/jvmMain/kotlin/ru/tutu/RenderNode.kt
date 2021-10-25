@@ -43,7 +43,7 @@ fun RenderNode(clientStorage:ClientStorage, node: ViewTreeNode, sendIntent: (Cli
             }
         }
         is ViewTreeNode.Leaf.Input -> {
-            val text = clientStorage[node.storageKey]?.stringValue ?: ""
+            val text = clientStorage.map[node.storageKey]?.stringValue ?: ""
             TextField(text, onValueChange = {
                 sendIntent(ClientIntent.UpdateClientStorage(node.storageKey, ClientValue(it)))
             })

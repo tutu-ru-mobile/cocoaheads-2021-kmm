@@ -23,7 +23,7 @@ sealed class ClientIntent() {
 fun createRefreshViewStore(): Store<RefreshViewState, ClientIntent> {
     val result = createStore(
         RefreshViewState(
-            clientStorage = emptyMap()
+            clientStorage = ClientStorage(emptyMap())
         )
     ) {s, a: ClientIntent ->
         val serverData = s.serverData
@@ -32,9 +32,11 @@ fun createRefreshViewStore(): Store<RefreshViewState, ClientIntent> {
                 when (a) {
                     is ClientIntent.UpdateClientStorage -> {
                         s.copy(
-                            clientStorage = s.clientStorage.toMutableMap().also {
-                                it[a.key] = a.value
-                            }
+                            clientStorage = s.clientStorage.copy(
+                                map = s.clientStorage.map.toMutableMap().also {
+                                    it[a.key] = a.value
+                                }
+                            )
                         )
                         //todo изменения отправлять на сервер
                     }
