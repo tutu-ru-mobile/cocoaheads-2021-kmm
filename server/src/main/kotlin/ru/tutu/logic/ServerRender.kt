@@ -21,9 +21,37 @@ fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode
             140, 140, 2.4f
         )
         space(20)
-        label("Пожалуйста внесите информацию:")
-        button(id = BUTTON_VACCINE, text = "У меня есть сертификат вакцинации")
-        button(id = Id("button.send_pcr_test"), text = "У меня есть ПЦР тест")
+        val vaccineCode = state.vaccineCode
+        val pcrTestCode = state.pcrTestCode
+        if (vaccineCode != null) {
+            label("Ваш сертификат вакцинации: $vaccineCode")
+            button(BUTTON_DELETE_COVID_DATA, "Удалить эту информацию обо мне")
+        } else if (pcrTestCode != null) {
+            label("Ваш ПЦР тест № $pcrTestCode")
+            button(BUTTON_DELETE_COVID_DATA, "Удалить эту информацию обо мне")
+        } else {
+            when (state.screen) {
+                is Screen.Info -> {
+                    label("Пожалуйста внесите информацию:")
+                    button(id = BUTTON_VACCINE, text = "У меня есть сертификат вакцинации")
+                    button(id = BUTTON_PCR_TEST, text = "У меня есть ПЦР тест")
+                }
+                is Screen.SetVaccine -> {
+                    label("Введите нормер сертификата вакцинации:")
+                    horizontalContainer {
+                        input("", KEY_VACCINE)
+                        button(BUTTON_SEND_VACCINE, "Сохранить")
+                    }
+                }
+                is Screen.SetPcr -> {
+                    label("Введите нормер ПЦР теста:")
+                    horizontalContainer {
+                        input("", KEY_PCR_TEST)
+                        button(BUTTON_SEND_PCR_TEST, "Сохранить")
+                    }
+                }
+            }
+        }
 
         space(20)
         label("Что делать, если нет нужных данных?")
@@ -33,12 +61,5 @@ fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode
         space(40)
         label("Нужна дополнительная помощь?")
         button(id = Id("button.support"), text = "Связаться со службой поддержки")
-//        label("counter ${state.counter}")
-//        input("hint", KEY_INPUT1)
-//        label("Hello ${clientStorage.map[KEY_INPUT1]?.stringValue}")
-//        button(id = Id("button.send"), text = "send")
-//        horizontalContainer {
-//            rectangle(50, 50, Color(0xff00ff00u))
-//            rectangle(50, 50, Color(0xffffff00u))
-//        }
+
     }

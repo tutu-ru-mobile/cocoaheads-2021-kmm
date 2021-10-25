@@ -9,6 +9,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.coroutines.delay
+import ru.tutu.logic.Screen
 import ru.tutu.logic.ServerState
 import ru.tutu.logic.serverReducer
 import ru.tutu.logic.serverRender
@@ -64,7 +65,7 @@ private val mapSessionToServerState: MutableMap<String, ServerState> = Concurren
 private suspend fun firstRequest(userId: String, clientStorage: ClientStorage): FirstResponse {
     delay(300)
     val session = Random.nextInt().toString()
-    val state = ServerState(userId, 0)
+    val state = ServerState(userId)
     mapSessionToServerState[session] = state
     return FirstResponse(session, NetworkReducerResult(serverRender(state, clientStorage), listOf()))
 }
