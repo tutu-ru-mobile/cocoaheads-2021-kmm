@@ -20,10 +20,10 @@ fun serverRender(state: ServerState, clientStorage: Map<String, ClientValue>): V
         horizontalContainer {
             rectangle(50, 50, 0xff00ff00u)
             rectangle(50, 50, 0xffffff00u)
-            image(
-                "https://raw.githubusercontent.com/JetBrains/compose-jb/master/artwork/imageviewerrepo/1.jpg",
-                100,
-                100
-            )
         }
+        image(
+            "https://raw.githubusercontent.com/JetBrains/compose-jb/master/artwork/imageviewerrepo/1.jpg",
+            100,
+            100
+        )
     }
