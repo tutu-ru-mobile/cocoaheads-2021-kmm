@@ -1,15 +1,15 @@
 import SwiftUI
 import Shared
 
-struct RenderRefreshView: View {
+public struct RenderRefreshView: View {
     let iosStoreHelper = IosStoreHelper()
     @ObservedObject var myViewModel:GlobalViewModel
 
-    init(/*todo side effect lambda*/) {
+    public init(/*todo side effect lambda*/) {
         self.myViewModel = GlobalViewModel(di: iosStoreHelper)
     }
 
-    var body: some View {
+    public var body: some View {
         let state = myViewModel.myState
         if (state.serverData is RefreshViewState.ServerDataLoading) {
             Text("Loading...")

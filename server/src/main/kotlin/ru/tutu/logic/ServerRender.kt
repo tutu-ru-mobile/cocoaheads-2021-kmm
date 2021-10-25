@@ -1,5 +1,6 @@
 package ru.tutu.logic
 
+import ru.tutu.SERVER_URL
 import ru.tutu.serialization.*
 import ru.tutu.verticalContainer
 
@@ -22,8 +23,9 @@ fun serverRender(state: ServerState, clientStorage: Map<String, ClientValue>): V
             rectangle(50, 50, 0xffffff00u)
         }
         image(
-            "https://raw.githubusercontent.com/JetBrains/compose-jb/master/artwork/imageviewerrepo/1.jpg",
-            100,
-            100
+            "$SERVER_URL/static/covid_mask.png",
+            200,
+            200,
+            3.0f
         )
     }

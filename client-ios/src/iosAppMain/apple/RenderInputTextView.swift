@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct RenderInputTextView: View {
+public struct RenderInputTextView: View {
     var label: String
     var onEdit: (String) -> Void
     var value: String

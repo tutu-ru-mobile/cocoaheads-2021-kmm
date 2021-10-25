@@ -29,7 +29,7 @@ struct RenderNode: View {
             }
         } else if (node is ViewTreeNode.Leaf.LeafImage) {
             let img = node as! ViewTreeNode.Leaf.LeafImage
-            AsyncImage(url: URL(string: img.imgUrl), scale: 3.0)
+            AsyncImage(url: URL(string: img.imgUrl), scale: CGFloat(img.scale))
                     .frame(width: CGFloat(img.width), height: CGFloat(img.height))
         } else if (node is ViewTreeNode.Leaf.LeafInput) {
             let input = node as! ViewTreeNode.Leaf.LeafInput

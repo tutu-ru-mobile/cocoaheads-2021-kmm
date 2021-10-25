@@ -24,7 +24,7 @@ sealed class ViewTreeNode() {
         data class Input(val hint: String, val storageKey: String) : Leaf()
 
         @Serializable
-        data class Image(val imgUrl:String, val width: Int, val height: Int):Leaf()
+        data class Image(val imgUrl:String, val width: Int, val height: Int, val scale:Float):Leaf()
     }
 
     @Serializable

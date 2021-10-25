@@ -47,7 +47,7 @@ fun Application.configureRouting() {
         }
         post(SERVER_PATH_NETWORK_REDUCER) {
             val clientData = call.receiveText().parseToNetworkReducerRequestBody()
-            val result = networkReducer(clientData.sessionId, clientData.clientStorage, clientData.intent)
+            val result = serverNetworkReducer(clientData.sessionId, clientData.clientStorage, clientData.intent)
             call.respondText(
                 text = result.toJson(),
                 contentType = ContentType.Application.Json
@@ -69,7 +69,7 @@ private suspend fun firstRequest(userId: String, clientStorage: Map<String, Clie
     return FirstResponse(session, NetworkReducerResult(serverRender(state, clientStorage), listOf()))
 }
 
-private suspend fun networkReducer(
+private suspend fun serverNetworkReducer(
     sessionId: String,
     clientStorage: Map<String, ClientValue>,
     intent: Intent
