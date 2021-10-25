@@ -2,7 +2,7 @@ package example.imageviewer.utils
 
 import android.content.Context
 import android.graphics.*
-import example.imageviewer.model.Picture
+import ru.tutu.Picture
 import java.io.File
 import java.io.BufferedWriter
 import java.io.OutputStreamWriter

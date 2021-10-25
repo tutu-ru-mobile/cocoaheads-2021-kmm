@@ -1,4 +1,4 @@
-package example.imageviewer.utils
+package ru.tutu
 
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp

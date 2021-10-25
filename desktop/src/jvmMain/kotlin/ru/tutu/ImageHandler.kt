@@ -1,4 +1,4 @@
-package example.imageviewer.model
+package ru.tutu
 
 import java.awt.image.BufferedImage
 import java.io.InputStream

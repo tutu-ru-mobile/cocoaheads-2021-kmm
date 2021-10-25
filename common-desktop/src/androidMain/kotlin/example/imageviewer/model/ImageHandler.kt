@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory
 import example.imageviewer.utils.cacheImage
 import example.imageviewer.utils.cacheImagePostfix
 import example.imageviewer.utils.scaleBitmapAspectRatio
-import example.imageviewer.utils.toPx
+import ru.tutu.Picture
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream

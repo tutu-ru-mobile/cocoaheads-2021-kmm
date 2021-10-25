@@ -12,6 +12,7 @@ import example.imageviewer.model.filtration.FiltersManager
 import example.imageviewer.utils.clearCache
 import example.imageviewer.utils.isInternetAvailable
 import example.imageviewer.view.showPopUpMessage
+import ru.tutu.Picture
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
