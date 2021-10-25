@@ -1,17 +1,9 @@
-package ru.tutu
+package ru.tutu.serialization
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-
-fun getDefaultNode():ViewTreeNode = ViewTreeNode.Container.Vertical(
-    children = listOf(
-        ViewTreeNode.Leaf.Label("hello"),
-        ViewTreeNode.Leaf.Input("hint", "input1"),
-        ViewTreeNode.Leaf.Button(Id("btn1"), "push me")
-    )
-)
 
 fun ViewTreeNode.toJson():String =
     Json.encodeToString(this)

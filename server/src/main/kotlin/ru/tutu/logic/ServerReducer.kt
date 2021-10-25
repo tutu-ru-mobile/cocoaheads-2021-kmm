@@ -1,8 +1,6 @@
 package ru.tutu.logic
 
-import ru.tutu.ClientSideEffect
-import ru.tutu.ClientValue
-import ru.tutu.Intent
+import ru.tutu.serialization.*
 
 class ServerReducerResult(val state: ServerState, val sideEffects: List<ClientSideEffect>)
 

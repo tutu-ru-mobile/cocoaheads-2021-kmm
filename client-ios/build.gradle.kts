@@ -9,12 +9,12 @@ apple {
         sceneDelegateClass = "SceneDelegate"
         launchStoryboard = "LaunchScreen"
 
-        //productInfo["NSAppTransportSecurity"] = mapOf("NSAllowsArbitraryLoads" to true)
+        // Нужно для работы http://localhost
+        productInfo["NSAppTransportSecurity"] = mapOf("NSAllowsArbitraryLoads" to true)
         //buildSettings.OTHER_LDFLAGS("")
 
         dependencies {
             implementation(project(":client-shared"))
-            implementation(project(":serialized-data"))
         }
     }
 }

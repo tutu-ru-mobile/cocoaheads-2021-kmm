@@ -1,5 +1,7 @@
 package ru.tutu
 
+import ru.tutu.serialization.*
+
 fun verticalContainer(lambda: NodeDsl.() -> Unit): ViewTreeNode = refreshViewDsl {
     verticalContainer {
         lambda()

@@ -1,6 +1,7 @@
 package ru.tutu
 
 import kotlinx.coroutines.flow.collectLatest
+import ru.tutu.serialization.*
 
 data class GlobalState(val str: String)
 
@@ -9,24 +10,31 @@ sealed class GlobalAction {
 }
 
 class IosStoreHelper {
-    val store = createStore(GlobalState(str = "global state")) { s, a: GlobalAction ->
-        when (a) {
-            is GlobalAction.ActionInput -> {
-                s.copy(str = a.str)
-            } else -> {
-            s
-        }
-        }
+    val store = createRefreshViewStore()
+
+    fun sendAction(a: ClientIntent) {
+        store.send(a)
     }
 
-    fun sendAction(a: GlobalAction) = store.send(a)
+    fun sendButtonPressedIntent(buttonId: Id) {
+        store.send(ClientIntent.SendToServer(Intent.ButtonPressed(buttonId)))
+    }
 
-    val globalStateFlow = store.stateFlow
-    fun getLastState() = globalStateFlow.value
+    fun sendUpdateClientStorageIntent(key: String, value: String) {
+        store.send(ClientIntent.UpdateClientStorage(key, ClientValue(value)))
+    }
 
-    fun addListener(listener: (GlobalState) -> Unit) {
+    fun getStoreValue(key: String): String {
+        return store.state.clientStorage[key]?.stringValue ?: ""
+    }
+
+    fun getLastState(): RefreshViewState {
+        return store.stateFlow.value
+    }
+
+    fun addListener(listener: (RefreshViewState) -> Unit) {
         launchAppScope {
-            globalStateFlow.collectLatest {
+            store.stateFlow.collectLatest {
                 listener(it)
             }
         }

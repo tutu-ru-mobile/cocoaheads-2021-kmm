@@ -2,7 +2,7 @@ import Foundation
 import ClientShared
 
 public class GlobalViewModel: ObservableObject {
-    @Published public var myState: GlobalState
+    @Published public var myState: RefreshViewState
 
     public init(di:IosStoreHelper) {
         myState = di.getLastState()

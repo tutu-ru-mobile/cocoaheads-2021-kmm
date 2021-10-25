@@ -1,7 +1,7 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    id("kotlin-android-extensions")
+    kotlin("plugin.serialization")
 }
 
 repositories {
@@ -22,9 +22,9 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":serialized-data"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$COROUTINE_VERSION")
                 implementation("io.ktor:ktor-client-core:$KTOR_VERSION")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$SERIALIZATION_VERSION")
             }
         }
         val androidMain by getting {

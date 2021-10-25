@@ -1,4 +1,4 @@
-package ru.tutu
+package ru.tutu.serialization
 
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
