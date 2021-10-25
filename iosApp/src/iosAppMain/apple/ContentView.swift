@@ -1,5 +1,5 @@
 import SwiftUI
-import shared
+import ClientShared
 import SerializedData
 
 let root = SerializedDataKt.getDefaultNode()//todo delete

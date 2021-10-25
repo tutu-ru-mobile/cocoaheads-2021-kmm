@@ -1,5 +1,5 @@
 import Foundation
-import shared
+import ClientShared
 
 public class GlobalViewModel: ObservableObject {
     @Published public var myState: GlobalState

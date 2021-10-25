@@ -13,7 +13,7 @@ apple {
         //buildSettings.OTHER_LDFLAGS("")
 
         dependencies {
-            implementation(project(":shared"))
+            implementation(project(":client-shared"))
             implementation(project(":serialized-data"))
         }
     }

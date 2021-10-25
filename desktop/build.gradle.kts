@@ -11,7 +11,7 @@ kotlin {
         named("jvmMain") {
             dependencies {
                 implementation(compose.desktop.currentOs)
-                implementation(project(":shared"))
+                implementation(project(":client-shared"))
                 implementation(project(":serialized-data"))
                 implementation(project(":server"))
             }
