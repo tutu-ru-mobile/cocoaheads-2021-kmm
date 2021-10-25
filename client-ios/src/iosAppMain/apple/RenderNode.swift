@@ -13,50 +13,45 @@ struct RenderNode: View {
     }
 
     var body: some View {
-        if (node is ViewTreeNode.Container.ContainerVertical) {
-            let v = node as! ViewTreeNode.Container.ContainerVertical
+        switch node {
+        case let verticalContainer as ViewTreeNode.Container.ContainerVertical:
             if (true) {
                 VStack {
-                    ForEach(v.children) { child in
+                    ForEach(verticalContainer.children) { child in
                         RenderNode(child, clientStorage, sendIntent)
                     }
                 }
             } else {
                 // Вертикальный контейнер можно было сделать с помощью List
-                List(v.children) { child in
+                List(verticalContainer.children) { child in
                     RenderNode(child, clientStorage, sendIntent)
                 }
             }
-        } else if (node is ViewTreeNode.Container.ContainerHorizontal) {
-            let v = node as! ViewTreeNode.Container.ContainerHorizontal
+        case let horizontalContainer as ViewTreeNode.Container.ContainerHorizontal:
             HStack {
-                ForEach(v.children) { child in
+                ForEach(horizontalContainer.children) { child in
                     RenderNode(child, clientStorage, sendIntent)
                 }
             }
-        } else if (node is ViewTreeNode.Leaf.LeafLabel) {
-            let label = node as! ViewTreeNode.Leaf.LeafLabel
+        case let label as ViewTreeNode.Leaf.LeafLabel:
             Text(label.text)
-        } else if (node is ViewTreeNode.Leaf.LeafRectangle) {
-            LeafRectangle(node as! ViewTreeNode.Leaf.LeafRectangle)
-        } else if (node is ViewTreeNode.Leaf.LeafButton) {
-            let button = node as! ViewTreeNode.Leaf.LeafButton
+        case let rectangle as ViewTreeNode.Leaf.LeafRectangle:
+            LeafRectangle(rectangle)
+        case let button as ViewTreeNode.Leaf.LeafButton:
             Button(action: {
                 sendIntent(SwiftHelperKt.buttonIntent(buttonId: button.id))
             }) {
                 Text(button.text)
             }
-        } else if (node is ViewTreeNode.Leaf.LeafImage) {
-            let img = node as! ViewTreeNode.Leaf.LeafImage
+        case let img as ViewTreeNode.Leaf.LeafImage:
             AsyncImage(url: URL(string: img.imgUrl), scale: CGFloat(img.scale))
                     .frame(width: CGFloat(img.width), height: CGFloat(img.height))
-        } else if (node is ViewTreeNode.Leaf.LeafInput) {
-            let input = node as! ViewTreeNode.Leaf.LeafInput
+        case let input as ViewTreeNode.Leaf.LeafInput:
             let value = clientStorage.getString(key: input.storageKey)
             RenderInputTextView(label: input.hint, value: value) { inputValueStr in
                 sendIntent(SwiftHelperKt.updateClientStorageIntent(key: input.storageKey, value: inputValueStr))
             }
-        } else {
+        default:
             Text("unknown node type, node: \(node)")
         }
     }
@@ -69,4 +64,3 @@ extension ViewTreeNode: Identifiable {
         }
     }
 }
-
