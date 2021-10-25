@@ -4,21 +4,13 @@ import ru.tutu.SERVER_URL
 import ru.tutu.serialization.*
 import ru.tutu.verticalContainer
 
-/**
- * Внимание новые короновирусные ограничения
- * Сохраняйте меры предосторожности. КАРТИНКА
- * Пожалуйста введите номер сертификата вакцины (если имеется)
- * Проверить отменённый рейс можно в списке заказов LINK
- * Если возникнут вопросы - пишите в чат поддержки LINK
- * Частые вопросы в связи с коронавирусом (доп. текст)
- */
 fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode =
     verticalContainer {
         label("Новые требования для путешествий.")
         label("Необходима прививка, или ПЦР тест.")
         image(
             "$SERVER_URL/static/covid_test.png",
-            140, 140, 2.4f
+            200, 200, 2.4f
         )
         space(20)
         val vaccineCode = state.vaccineCode

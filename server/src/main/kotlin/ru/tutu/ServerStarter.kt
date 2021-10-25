@@ -8,13 +8,10 @@ import io.ktor.http.content.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import kotlinx.coroutines.delay
-import ru.tutu.logic.Screen
 import ru.tutu.logic.ServerState
 import ru.tutu.logic.serverReducer
 import ru.tutu.logic.serverRender
 import java.util.concurrent.ConcurrentHashMap
-import kotlin.random.Random
 import ru.tutu.serialization.*
 
 fun main() {
@@ -38,17 +35,9 @@ fun Application.configureRouting() {
         get("/") {
             call.respondText("Hello World 5!")
         }
-        post(SERVER_PATH_FIRST_REQUEST) {
-            val clientData = call.receiveText().parseToFirstRequestBody()
-            val result: FirstResponse = firstRequest(clientData.userId, clientData.clientStorage)
-            call.respondText(
-                text = result.toJson(),
-                contentType = ContentType.Application.Json
-            )
-        }
         post(SERVER_PATH_NETWORK_REDUCER) {
             val clientData = call.receiveText().parseToNetworkReducerRequestBody()
-            val result = serverNetworkReducer(clientData.sessionId, clientData.clientStorage, clientData.intent)
+            val result = serverNetworkReducer(clientData.userId, clientData.clientStorage, clientData.intent)
             call.respondText(
                 text = result.toJson(),
                 contentType = ContentType.Application.Json
@@ -60,26 +49,18 @@ fun Application.configureRouting() {
     }
 }
 
-private val mapSessionToServerState: MutableMap<String, ServerState> = ConcurrentHashMap()
-
-private suspend fun firstRequest(userId: String, clientStorage: ClientStorage): FirstResponse {
-    delay(300)
-    val session = Random.nextInt().toString()
-    val state = ServerState(userId)
-    mapSessionToServerState[session] = state
-    return FirstResponse(session, NetworkReducerResult(serverRender(state, clientStorage), listOf()))
-}
+private val mapUserIdToServerState: MutableMap<String, ServerState> = ConcurrentHashMap()
 
 private suspend fun serverNetworkReducer(
-    sessionId: String,
+    userId: String,
     clientStorage: ClientStorage,
     intent: Intent
 ): NetworkReducerResult {
-    val state: ServerState = mapSessionToServerState[sessionId]
-        ?: return NetworkReducerResult(ViewTreeNode.Leaf.Label("Session not found. Please restart Application"), listOf())
-
+    val state: ServerState = mapUserIdToServerState.getOrPut(userId) {
+        ServerState(userId)
+    }
     val reducerResult = serverReducer(state, clientStorage, intent)
-    mapSessionToServerState[sessionId] = reducerResult.state
+    mapUserIdToServerState[userId] = reducerResult.state
     val node = serverRender(reducerResult.state, clientStorage)
     return NetworkReducerResult(node.toJson().parseToNode(), reducerResult.sideEffects)
 }

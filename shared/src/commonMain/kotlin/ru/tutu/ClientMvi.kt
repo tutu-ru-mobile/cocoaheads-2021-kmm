@@ -9,18 +9,18 @@ data class RefreshViewState(
 ) {
     sealed class ServerData {
         object Loading : ServerData()
-        data class Loaded(val sessionId: String, val node: ViewTreeNode) : ServerData()
+        data class Loaded(val node: ViewTreeNode) : ServerData()
     }
 }
 
 sealed class ClientIntent() {
     class SendToServer(val intent: Intent):ClientIntent()
     data class UpdateClientStorage(val key: String, val value: ClientValue) : ClientIntent()
-    class FirstServerResponse(val node:ViewTreeNode, val sessionId: String):ClientIntent()
+    class FirstServerResponse(val node:ViewTreeNode):ClientIntent()
 }
 
 
-fun createRefreshViewStore(): Store<RefreshViewState, ClientIntent> {
+fun createRefreshViewStore(userId: String): Store<RefreshViewState, ClientIntent> {
     val result = createStore(
         RefreshViewState(
             clientStorage = ClientStorage(emptyMap())
@@ -41,7 +41,7 @@ fun createRefreshViewStore(): Store<RefreshViewState, ClientIntent> {
                         //todo изменения отправлять на сервер
                     }
                     is ClientIntent.SendToServer -> {
-                        val reducedNode: ViewTreeNode = networkReducer(serverData.sessionId, s.clientStorage, a.intent)
+                        val reducedNode: ViewTreeNode = networkReducer(userId, s.clientStorage, a.intent)
                         s.copy(
                             serverData = serverData.copy(node = reducedNode)
                         )
@@ -54,7 +54,6 @@ fun createRefreshViewStore(): Store<RefreshViewState, ClientIntent> {
                     is ClientIntent.FirstServerResponse -> {
                         s.copy(
                             serverData = RefreshViewState.ServerData.Loaded(
-                                sessionId = a.sessionId,
                                 node = a.node
                             )
                         )
@@ -65,8 +64,8 @@ fun createRefreshViewStore(): Store<RefreshViewState, ClientIntent> {
         }
     }
     APP_SCOPE.launch {
-        val firstResponse = getFirstState("my UID", result.state.clientStorage)
-        result.send(ClientIntent.FirstServerResponse(firstResponse.reducerResult.state, firstResponse.sessionId))
+        val firstResponse = networkReducer(userId, result.state.clientStorage, Intent.Init)
+        result.send(ClientIntent.FirstServerResponse(firstResponse))
     }
     return result
 }

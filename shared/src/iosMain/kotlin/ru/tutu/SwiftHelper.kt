@@ -3,6 +3,8 @@ package ru.tutu
 import kotlinx.coroutines.flow.collectLatest
 import platform.UIKit.UIColor
 import ru.tutu.serialization.*
+import kotlin.random.Random
+import kotlin.random.nextUInt
 
 data class GlobalState(val str: String)
 
@@ -11,7 +13,7 @@ sealed class GlobalAction {
 }
 
 class IosStoreHelper {
-    val store = createRefreshViewStore()
+    val store = createRefreshViewStore("User_" + Random.nextUInt())
 
     fun sendAction(a: ClientIntent) {
         store.send(a)

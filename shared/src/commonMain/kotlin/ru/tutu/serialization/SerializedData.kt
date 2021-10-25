@@ -34,21 +34,11 @@ fun NetworkReducerResult.toJson():String =
 fun String.parseToNetworkReducerResult():NetworkReducerResult =
     Json.decodeFromString(this)
 
-val SERVER_PATH_FIRST_REQUEST = "first_state"
 val SERVER_PATH_NETWORK_REDUCER = "network_reducer"
 
 @Serializable
-data class FirstRequestBody(val userId: String, val clientStorage: ClientStorage)
-
-fun FirstRequestBody.toJson():String =
-    Json.encodeToString(this)
-
-fun String.parseToFirstRequestBody():FirstRequestBody =
-    Json.decodeFromString(this)
-
-@Serializable
 data class NetworkReducerRequestBody(
-    val sessionId: String,
+    val userId: String,
     val clientStorage: ClientStorage,
     val intent: Intent
 )
@@ -77,6 +67,9 @@ fun String.parseToClientStorage():ClientStorage {
 sealed class Intent {
     @Serializable
     data class ButtonPressed(val buttonId: Id) : Intent()
+
+    @Serializable
+    object Init : Intent()
 }
 
 @Serializable

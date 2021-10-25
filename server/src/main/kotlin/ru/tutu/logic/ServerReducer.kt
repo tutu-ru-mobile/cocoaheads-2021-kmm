@@ -41,6 +41,9 @@ fun serverReducer(state: ServerState, clientStorage: ClientStorage, intent: Inte
                 }
             }
         }
+        is Intent.Init -> {
+            state
+        }
     }
     return ServerReducerResult(result, listOf())
 }
