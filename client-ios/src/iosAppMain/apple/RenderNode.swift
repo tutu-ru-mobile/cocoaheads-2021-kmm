@@ -8,12 +8,18 @@ struct RenderNode: View {
     var body: some View {
         if (node is ViewTreeNode.Container.ContainerVertical) {
             let v = node as! ViewTreeNode.Container.ContainerVertical
-            VStack {
-                ForEach(v.children) { child in
-                    RenderNode(node: child, iosStoreHelper: iosStoreHelper)
+            if (true) {
+                VStack {
+                    ForEach(v.children) { child in
+                        RenderNode(node: child, iosStoreHelper: iosStoreHelper)
+                    }
+                }
+            } else {
+                // Вертикальный контейнер можно было сделать с помощью List
+                List(v.children) { data in
+                    RenderNode(node: data, iosStoreHelper: iosStoreHelper)
                 }
             }
-//            List(v.children, id: \.key, rowContent: { data in RenderNode(node: data, iosStoreHelper: iosStoreHelper) })
         } else if (node is ViewTreeNode.Container.ContainerHorizontal) {
             let v = node as! ViewTreeNode.Container.ContainerHorizontal
             HStack {
@@ -25,10 +31,10 @@ struct RenderNode: View {
             let label = node as! ViewTreeNode.Leaf.LeafLabel
             Text(label.text)
         } else if (node is ViewTreeNode.Leaf.LeafRectangle) {
-            let rect = node as! ViewTreeNode.Leaf.LeafRectangle
-            Rectangle()
-                    .fill(Color.red)
-                    .frame(width: CGFloat(rect.width), height: CGFloat(rect.height))
+            LeafRectangle(
+                    node as! ViewTreeNode.Leaf.LeafRectangle,
+                    iosStoreHelper
+            )
         } else if (node is ViewTreeNode.Leaf.LeafButton) {
             let button = node as! ViewTreeNode.Leaf.LeafButton
             Button(action: {
@@ -59,3 +65,4 @@ extension ViewTreeNode: Identifiable {
         }
     }
 }
+

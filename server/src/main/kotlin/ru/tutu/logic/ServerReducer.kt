@@ -1,4 +1,4 @@
-    package ru.tutu.logic
+package ru.tutu.logic
 
 import ru.tutu.serialization.*
 

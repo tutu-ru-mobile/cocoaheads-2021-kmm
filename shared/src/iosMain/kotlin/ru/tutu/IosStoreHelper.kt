@@ -32,6 +32,8 @@ class IosStoreHelper {
         return store.stateFlow.value
     }
 
+    fun convertUIntToInt(value: UInt) = value.toInt()
+
     fun addListener(listener: (RefreshViewState) -> Unit) {
         launchAppScope {
             store.stateFlow.collectLatest {
