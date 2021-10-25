@@ -8,15 +8,14 @@ sealed class GlobalAction {
     class ActionInput(val str:String): GlobalAction()
 }
 
-class AppDi {
-
+class IosStoreHelper {
     val store = createStore(GlobalState(str = "global state")) { s, a: GlobalAction ->
         when (a) {
             is GlobalAction.ActionInput -> {
                 s.copy(str = a.str)
             } else -> {
-                s
-            }
+            s
+        }
         }
     }
 

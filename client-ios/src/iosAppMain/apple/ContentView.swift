@@ -6,7 +6,7 @@ let root = SerializedDataKt.getDefaultNode()//todo delete
 
 struct ContentView: View {
 
-    let appDiIos = AppDi()
+    let appDiIos = IosStoreHelper()
     @ObservedObject var myViewModel:GlobalViewModel
 
     init() {
@@ -21,7 +21,7 @@ struct ContentView: View {
 struct RenderNode: View {
     var node:ViewTreeNode
     var state:GlobalState
-    var di:AppDi
+    var di:IosStoreHelper
 
     var body: some View {
         if (node is ViewTreeNode.Container.ContainerVertical) {
