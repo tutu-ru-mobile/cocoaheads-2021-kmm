@@ -1,5 +1,5 @@
 import Foundation
-import ClientShared
+import Shared
 
 public class GlobalViewModel: ObservableObject {
     @Published public var myState: RefreshViewState

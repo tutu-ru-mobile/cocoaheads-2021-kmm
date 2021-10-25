@@ -1,5 +1,5 @@
 import SwiftUI
-import ClientShared
+import Shared
 
 struct RenderNode: View {
     var node:NSObject

@@ -1,5 +1,5 @@
 import SwiftUI
-import ClientShared
+import Shared
 
 struct RenderRefreshView: View {
     let iosStoreHelper = IosStoreHelper()

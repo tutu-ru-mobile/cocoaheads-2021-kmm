@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":client-shared"))
+    implementation(project(":shared"))
     implementation("io.ktor:ktor-server-core:$KTOR_VERSION")
     implementation("io.ktor:ktor-serialization:$KTOR_VERSION")
     implementation("io.ktor:ktor-server-host-common:$KTOR_VERSION")

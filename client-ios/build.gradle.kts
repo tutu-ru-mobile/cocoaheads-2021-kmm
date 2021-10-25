@@ -14,7 +14,7 @@ apple {
         //buildSettings.OTHER_LDFLAGS("")
 
         dependencies {
-            implementation(project(":client-shared"))
+            implementation(project(":shared"))
         }
     }
 }

@@ -14,7 +14,7 @@ kotlin {
     ios {
         binaries {
             framework {
-                baseName = "ClientShared"
+                baseName = "Shared"
             }
         }
     }
