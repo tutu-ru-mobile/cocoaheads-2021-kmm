@@ -3,15 +3,15 @@ import ClientShared
 
 struct RenderNode: View {
     var node:NSObject
-    var di:IosStoreHelper
+    var iosStoreHelper:IosStoreHelper
 
     var body: some View {
         if (node is ViewTreeNode.Container.ContainerVertical) {
             let v = node as! ViewTreeNode.Container.ContainerVertical
-            List(v.children, id: \.key, rowContent: { data in RenderNode(node: data, di: di) })
+            List(v.children, id: \.key, rowContent: { data in RenderNode(node: data, iosStoreHelper: iosStoreHelper) })
         } else if (node is ViewTreeNode.Container.ContainerHorizontal) {
             let v = node as! ViewTreeNode.Container.ContainerHorizontal
-            List(v.children, id: \.key, rowContent: { data in RenderNode(node: data, di: di) })
+            List(v.children, id: \.key, rowContent: { data in RenderNode(node: data, iosStoreHelper: iosStoreHelper) })
         } else if (node is ViewTreeNode.Leaf.LeafLabel) {
             let label = node as! ViewTreeNode.Leaf.LeafLabel
             Text(label.text)
@@ -23,7 +23,7 @@ struct RenderNode: View {
         } else if (node is ViewTreeNode.Leaf.LeafButton) {
             let button = node as! ViewTreeNode.Leaf.LeafButton
             Button(action: {
-                di.sendButtonPressedIntent(buttonId: button.id)
+                iosStoreHelper.sendButtonPressedIntent(buttonId: button.id)
             }) {
                 Text(button.text)
             }
@@ -34,9 +34,9 @@ struct RenderNode: View {
                     .frame(width: CGFloat(img.width), height: CGFloat(img.height))
         } else if (node is ViewTreeNode.Leaf.LeafInput) {
             let input = node as! ViewTreeNode.Leaf.LeafInput
-            let value = di.getStoreValue(key: input.storageKey)
+            let value = iosStoreHelper.getClientStorageValue(key: input.storageKey)
             RenderInputTextView(label: input.hint, value: value) { inputValueStr in
-                di.sendUpdateClientStorageIntent(key: input.storageKey, value: inputValueStr)
+                iosStoreHelper.sendUpdateClientStorageIntent(key: input.storageKey, value: inputValueStr)
             }
         } else {
             Text("unknown node type, node: \(node)")

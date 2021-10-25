@@ -24,7 +24,7 @@ class IosStoreHelper {
         store.send(ClientIntent.UpdateClientStorage(key, ClientValue(value)))
     }
 
-    fun getStoreValue(key: String): String {
+    fun getClientStorageValue(key: String): String {
         return store.state.clientStorage[key]?.stringValue ?: ""
     }
 
