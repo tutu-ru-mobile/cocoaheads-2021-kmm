@@ -1,4 +1,25 @@
 import SwiftUI
+import Shared
+
+public struct LeafInput: View {
+    let input: ViewTreeNode.Leaf.LeafInput
+    let clientStorage: ClientStorage
+    let sendIntent: (ClientIntent) -> Void
+
+    public init(_ input: ViewTreeNode.LeafInput, _ clientStorage: ClientStorage, _ sendIntent: @escaping (ClientIntent) -> ()) {
+        self.input = input
+        self.clientStorage = clientStorage
+        self.sendIntent = sendIntent
+    }
+
+    public var body: some View {
+        let value = clientStorage.getString(key: input.storageKey)
+        RenderInputTextView(label: input.hint, value: value) { inputValueStr in
+            sendIntent(SwiftHelperKt.updateClientStorageIntent(key: input.storageKey, value: inputValueStr))
+        }
+    }
+
+}
 
 public struct RenderInputTextView: View {
     var label: String
@@ -29,3 +50,4 @@ public struct RenderInputTextView: View {
                 .padding()
     }
 }
+
