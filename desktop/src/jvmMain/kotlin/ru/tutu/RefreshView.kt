@@ -6,10 +6,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlin.random.Random
+import kotlin.random.nextUInt
 
 @Composable
 fun RefreshView() {
-    val store = remember { createRefreshViewStore() }
+    val store = remember { createRefreshViewStore("User_" + Random.nextUInt()) }
     val globalState = store.stateFlow.collectAsState()
     val serverData = globalState.value.serverData
     Box(
