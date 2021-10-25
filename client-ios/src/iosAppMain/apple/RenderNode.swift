@@ -29,9 +29,11 @@ struct RenderNode: View {
             }
         } else if (node is ViewTreeNode.Leaf.LeafImage) {
             let img = node as! ViewTreeNode.Leaf.LeafImage
-            Rectangle()
-                    .fill(Color.green)
-                    .frame(width: CGFloat(img.width), height: CGFloat(img.height))
+            AsyncImage(url: URL(string: img.imgUrl))
+                    .frame(width: 200, height: 200)
+//            Rectangle()
+//                    .fill(Color.green)
+//                    .frame(width: CGFloat(img.width), height: CGFloat(img.height))
         } else if (node is ViewTreeNode.Leaf.LeafInput) {
             let input = node as! ViewTreeNode.Leaf.LeafInput
             let value = iosStoreHelper.getClientStorageValue(key: input.storageKey)
