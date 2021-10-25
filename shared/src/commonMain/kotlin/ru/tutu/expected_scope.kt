@@ -1,5 +1,6 @@
 package ru.tutu
 
+import io.ktor.client.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -17,3 +18,4 @@ fun launchAppScope(block: suspend () -> Unit) {
 }
 
 expect internal inline fun getAppScope():CoroutineScope
+expect val ktorClient: HttpClient

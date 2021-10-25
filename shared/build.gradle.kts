@@ -6,7 +6,7 @@ plugins {
 
 repositories {
     google()
-    jcenter()
+    mavenCentral()
 }
 
 kotlin {
@@ -18,19 +18,30 @@ kotlin {
             }
         }
     }
+    jvm("desktop")
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(project(":serialized-data"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$COROUTINE_VERSION")
+                implementation("io.ktor:ktor-client-core:$KTOR_VERSION")
             }
         }
         val androidMain by getting {
             dependencies {
                 implementation("com.google.android.material:material:1.2.1")
+                implementation("io.ktor:ktor-client-okhttp:$KTOR_VERSION")
             }
         }
         val iosMain by getting {
-
+            dependencies {
+                implementation("io.ktor:ktor-client-ios:$KTOR_VERSION")
+            }
+        }
+        val desktopMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-cio:$KTOR_VERSION")
+            }
         }
     }
 }
