@@ -12,7 +12,7 @@ rootProject.name = "refresh-kmm"
 
 
 include(":client-ios")
-include(":androidApp")
+include(":client-android")
 include(":client-shared")
 include(":serialized-data")
 include(":server")
