@@ -1,6 +1,7 @@
 package ru.tutu.logic
 
 import ru.tutu.*
+import ru.tutu.serialization.Id
 
 /**
  * Внутренние представление State-а на сервере
@@ -10,4 +11,5 @@ data class ServerState(
     val counter: Int
 )
 
-val KEY_INPUT1 = "input1"
+val BUTTON_VACCINE = Id("button.send_vaccine")
+

@@ -17,7 +17,7 @@ public struct LeafButton: View {
             sendIntent(SwiftHelperKt.buttonIntent(buttonId: nodeButton.id))
         }) {
             Text(nodeButton.text)
-        }
+        }.padding(3)
     }
 
 }

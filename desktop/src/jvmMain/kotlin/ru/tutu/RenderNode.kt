@@ -51,5 +51,8 @@ fun RenderNode(clientStorage:ClientStorage, node: ViewTreeNode, sendIntent: (Cli
         is ViewTreeNode.Leaf.Image -> {
             NetworkImage(node.imgUrl, node.width, node.height)
         }
+        is ViewTreeNode.Leaf.Space -> {
+            Spacer(Modifier.size(node.size.dp))
+        }
     }.also { }
 }

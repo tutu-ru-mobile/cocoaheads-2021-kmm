@@ -39,6 +39,10 @@ private fun refreshViewDsl(lambda: NodeDsl.() -> Unit): List<ViewTreeNode> {
             override fun image(imgUrl: String, width: Int, height: Int, scale:Float) {
                 add(ViewTreeNode.Leaf.Image(imgUrl, width, height, scale))
             }
+
+            override fun space(size: Int) {
+                add(ViewTreeNode.Leaf.Space(size))
+            }
         }.lambda()
     }
 }
@@ -51,4 +55,5 @@ interface NodeDsl {
     fun label(text: String)
     fun image(imgUrl: String, width: Int, height: Int, scale: Float)
     fun rectangle(width: Int, height: Int, color: Color)
+    fun space(size: Int)
 }

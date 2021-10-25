@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
 @Serializable
-class Id(val value: String)
+data class Id(val value: String)
 
 @Serializable
 class Color(val hexValue: UInt)
@@ -27,6 +27,9 @@ sealed class ViewTreeNode() {
 
         @Serializable
         data class Image(val imgUrl: String, val width: Int, val height: Int, val scale: Float) : Leaf()
+
+        @Serializable
+        data class Space(val size: Int) : ViewTreeNode()
     }
 
     @Serializable

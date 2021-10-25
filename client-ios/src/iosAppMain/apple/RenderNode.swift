@@ -28,6 +28,8 @@ struct RenderNode: View {
             LeafImage(img)
         case let input as ViewTreeNode.Leaf.LeafInput:
             LeafInput(input, clientStorage, sendIntent)
+        case let spacer as ViewTreeNode.Leaf.LeafSpace:
+            Spacer(minLength: CGFloat(spacer.size))
         default:
             Text("unknown node type, node: \(node)")
         }

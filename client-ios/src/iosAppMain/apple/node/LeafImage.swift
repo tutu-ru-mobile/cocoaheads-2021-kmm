@@ -9,8 +9,13 @@ public struct LeafImage: View {
     }
 
     public var body: some View {
-        AsyncImage(url: URL(string: nodeImage.imgUrl), scale: CGFloat(nodeImage.scale))
-                .frame(width: CGFloat(nodeImage.width), height: CGFloat(nodeImage.height))
+        AsyncImage(url: URL(string: nodeImage.imgUrl), content: { image in
+            image.resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: CGFloat(nodeImage.width), maxHeight: CGFloat(nodeImage.width))
+        }, placeholder: {
+            ProgressView()
+        })
     }
 
 }
