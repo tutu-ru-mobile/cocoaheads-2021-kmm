@@ -13,7 +13,6 @@ kotlin {
                 implementation(compose.desktop.currentOs)
                 implementation(project(":shared"))
                 implementation(project(":serialized-data"))
-                implementation(project(":common-desktop"))
                 implementation(project(":server"))
             }
         }
