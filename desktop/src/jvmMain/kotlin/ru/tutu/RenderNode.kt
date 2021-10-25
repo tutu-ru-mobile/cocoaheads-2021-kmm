@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun RenderNode(clientStorage:Map<String, ClientValue>, node: ViewTreeNode, sendIntent: (ClientIntent) -> Unit) {
+fun RenderNode(clientStorage:ClientStorage, node: ViewTreeNode, sendIntent: (ClientIntent) -> Unit) {
     when (node) {
         is ViewTreeNode.Container.Horizontal -> {
             Row {

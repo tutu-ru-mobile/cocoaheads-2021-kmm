@@ -7,13 +7,13 @@ import ru.tutu.serialization.*
 
 val SERVER_URL = "http://localhost:8081"
 
-suspend fun getFirstState(userId:String, clientStorage: Map<String, ClientValue>): FirstResponse {
+suspend fun getFirstState(userId:String, clientStorage: ClientStorage): FirstResponse {
     return ktorClient.post<String>("$SERVER_URL/${SERVER_PATH_FIRST_REQUEST}"){
         body = TextContent(FirstRequestBody(userId, clientStorage).toJson(), ContentType.Application.Json)
     }.parseToFirstResponse()
 }
 
-suspend fun networkReducer(sessionId: String, clientStorage: Map<String, ClientValue>, intent: Intent): ViewTreeNode =
+suspend fun networkReducer(sessionId: String, clientStorage: ClientStorage, intent: Intent): ViewTreeNode =
     ktorClient.post<String>("$SERVER_URL/$SERVER_PATH_NETWORK_REDUCER"){
         body = TextContent(NetworkReducerRequestBody(sessionId, clientStorage, intent).toJson(), ContentType.Application.Json)
     }.parseToNetworkReducerResult().state

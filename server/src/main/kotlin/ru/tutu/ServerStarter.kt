@@ -61,7 +61,7 @@ fun Application.configureRouting() {
 
 private val mapSessionToServerState: MutableMap<String, ServerState> = ConcurrentHashMap()
 
-private suspend fun firstRequest(userId: String, clientStorage: Map<String, ClientValue>): FirstResponse {
+private suspend fun firstRequest(userId: String, clientStorage: ClientStorage): FirstResponse {
     delay(300)
     val session = Random.nextInt().toString()
     val state = ServerState(userId, 0)
@@ -71,7 +71,7 @@ private suspend fun firstRequest(userId: String, clientStorage: Map<String, Clie
 
 private suspend fun serverNetworkReducer(
     sessionId: String,
-    clientStorage: Map<String, ClientValue>,
+    clientStorage: ClientStorage,
     intent: Intent
 ): NetworkReducerResult {
     val state: ServerState = mapSessionToServerState[sessionId]
