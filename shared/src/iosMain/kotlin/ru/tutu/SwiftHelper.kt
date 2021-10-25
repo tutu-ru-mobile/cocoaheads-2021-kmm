@@ -1,6 +1,7 @@
 package ru.tutu
 
 import kotlinx.coroutines.flow.collectLatest
+import platform.UIKit.UIColor
 import ru.tutu.serialization.*
 
 data class GlobalState(val str: String)
@@ -41,4 +42,8 @@ class IosStoreHelper {
             }
         }
     }
+}
+
+fun Color.toUIColor():UIColor {
+    return UIColor(red = redDouble, green = greenDouble, blue = blueDouble, alpha = alphaDouble)
 }

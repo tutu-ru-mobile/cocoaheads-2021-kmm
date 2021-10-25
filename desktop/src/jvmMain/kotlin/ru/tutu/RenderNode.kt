@@ -30,7 +30,7 @@ fun RenderNode(clientStorage:Map<String, ClientValue>, node: ViewTreeNode, sendI
             }
         }
         is ViewTreeNode.Leaf.Rectangle -> {
-            Box(modifier = Modifier.size(node.width.dp, node.height.dp).background(color = Color(node.color.toInt())))
+            Box(modifier = Modifier.size(node.width.dp, node.height.dp).background(color = Color(node.color.hexValue.toInt())))
         }
         is ViewTreeNode.Leaf.Label -> {
             Text(text = node.text)

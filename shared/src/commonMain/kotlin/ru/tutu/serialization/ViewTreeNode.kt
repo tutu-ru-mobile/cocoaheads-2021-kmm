@@ -3,16 +3,18 @@ package ru.tutu.serialization
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
-@JvmInline
 @Serializable
-value class Id(val value: String)
+class Id(val value: String)
+
+@Serializable
+class Color(val hexValue: UInt)
 
 @Serializable
 sealed class ViewTreeNode() {
     @Serializable
     sealed class Leaf() : ViewTreeNode() {
         @Serializable
-        data class Rectangle(val width: Int, val height: Int, val color: UInt) : Leaf()
+        data class Rectangle(val width: Int, val height: Int, val color: Color) : Leaf()
 
         @Serializable
         data class Label(val text: String) : Leaf()
@@ -24,7 +26,7 @@ sealed class ViewTreeNode() {
         data class Input(val hint: String, val storageKey: String) : Leaf()
 
         @Serializable
-        data class Image(val imgUrl:String, val width: Int, val height: Int, val scale:Float):Leaf()
+        data class Image(val imgUrl: String, val width: Int, val height: Int, val scale: Float) : Leaf()
     }
 
     @Serializable
@@ -38,5 +40,3 @@ sealed class ViewTreeNode() {
         class Vertical(override val children: List<ViewTreeNode>) : Container()
     }
 }
-
-val ViewTreeNode.key:String get() = this.toString() //used in SwiftUI List key

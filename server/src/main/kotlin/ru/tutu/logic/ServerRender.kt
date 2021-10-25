@@ -19,8 +19,8 @@ fun serverRender(state: ServerState, clientStorage: Map<String, ClientValue>): V
         label("Hello ${clientStorage[KEY_INPUT1]?.stringValue}")
         button(id = Id("button.send"), text = "send")
         horizontalContainer {
-            rectangle(50, 50, 0xff00ff00u)
-            rectangle(50, 50, 0xffffff00u)
+            rectangle(50, 50, Color(0xff00ff00u))
+            rectangle(50, 50, Color(0xffffff00u))
         }
         image(
             "$SERVER_URL/static/covid_mask.png",

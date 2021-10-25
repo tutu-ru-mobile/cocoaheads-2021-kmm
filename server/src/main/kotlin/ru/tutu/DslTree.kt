@@ -32,7 +32,7 @@ private fun refreshViewDsl(lambda: NodeDsl.() -> Unit): List<ViewTreeNode> {
                 add(ViewTreeNode.Leaf.Label(text))
             }
 
-            override fun rectangle(width: Int, height: Int, color: UInt) {
+            override fun rectangle(width: Int, height: Int, color: Color) {
                 add(ViewTreeNode.Leaf.Rectangle(color = color, width = width, height = height))
             }
 
@@ -50,5 +50,5 @@ interface NodeDsl {
     fun input(hint: String, storageKey: String)
     fun label(text: String)
     fun image(imgUrl: String, width: Int, height: Int, scale: Float)
-    fun rectangle(width: Int, height: Int, color: UInt)
+    fun rectangle(width: Int, height: Int, color: Color)
 }

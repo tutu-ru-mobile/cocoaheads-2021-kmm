@@ -31,10 +31,7 @@ struct RenderNode: View {
             let label = node as! ViewTreeNode.Leaf.LeafLabel
             Text(label.text)
         } else if (node is ViewTreeNode.Leaf.LeafRectangle) {
-            LeafRectangle(
-                    node as! ViewTreeNode.Leaf.LeafRectangle,
-                    iosStoreHelper
-            )
+            LeafRectangle(node as! ViewTreeNode.Leaf.LeafRectangle)
         } else if (node is ViewTreeNode.Leaf.LeafButton) {
             let button = node as! ViewTreeNode.Leaf.LeafButton
             Button(action: {
