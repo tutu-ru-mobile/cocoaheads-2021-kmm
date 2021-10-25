@@ -1,4 +1,4 @@
-package me.user.androidApp
+package ru.tutu.refresh.app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
