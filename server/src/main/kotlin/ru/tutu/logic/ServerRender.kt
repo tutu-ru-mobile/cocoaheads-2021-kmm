@@ -16,10 +16,10 @@ fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode
         val pcrTestCode = state.pcrTestCode
         if (vaccineCode != null) {
             label("Ваш сертификат вакцинации: $vaccineCode")
-            button(BUTTON_DELETE_COVID_DATA, "Удалить эту информацию обо мне")
+            button(BUTTON_DELETE_COVID_DATA, "Удалить сертификат")
         } else if (pcrTestCode != null) {
             label("Ваш ПЦР тест № $pcrTestCode")
-            button(BUTTON_DELETE_COVID_DATA, "Удалить эту информацию обо мне")
+            button(BUTTON_DELETE_COVID_DATA, "Удалить тест")
         } else {
             when (state.screen) {
                 is Screen.Info -> {

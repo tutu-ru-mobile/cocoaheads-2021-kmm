@@ -1,6 +1,5 @@
 # Usage:
- - builder server with file watch `./gradlew -t server:build`
- - in another terminal tab start server `./gradlew server:run`
+ - Start server `./start_server_watch.sh`
 
 # Install Android App.
  - Start emulator, or connect device to USB

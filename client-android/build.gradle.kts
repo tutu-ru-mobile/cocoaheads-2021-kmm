@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":shared"))
     // Material design icons
     implementation("androidx.compose.ui:ui:$COMPOSE_ANDROID")
     // Tooling support (Previews, etc.)
