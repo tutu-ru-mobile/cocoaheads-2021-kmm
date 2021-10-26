@@ -43,7 +43,7 @@ public struct RenderInputTextView: View {
     public var body: some View {
         HStack {
             Text(label)
-            TextField("почта", text: getBoundValue())
+            TextField("", text: getBoundValue())
                     .font(Font.system(size: 15, weight: .medium, design: .serif))
                     .textFieldStyle(RoundedBorderTextFieldStyle())
         }

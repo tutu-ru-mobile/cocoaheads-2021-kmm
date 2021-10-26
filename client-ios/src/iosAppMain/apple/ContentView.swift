@@ -8,23 +8,23 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
+            // Главный экран
             NavigationView {
-                RenderRefreshView(userId: "my_user_id"){ sideEffect in
-                    switch sideEffect {
-                    case let openOrder as ClientSideEffect.OpenOrder:
-                        selectedTab = 1
-                        orderAdditionalInfo = openOrder.additionInfo
-                    case let openSupport as ClientSideEffect.OpenSupportScreen:
-                        selectedTab = 2
-                    case let openBrowser as ClientSideEffect.OpenBrowser:
-                        print("open browser link \(openBrowser.url)")
-                    default:
-                        print("do nothing")
+                VStack {
+                    Text("Главный экран")
+                    Text("Здесь можно купить билет")
+                    Spacer()
+                    Button(action: {
+                        selectedTab = 3
+                    }) {
+                        Text("Посмотрите важную информацию!")
                     }
-                }.navigationBarTitle("Важная информация", displayMode: .inline)
+                    Spacer()
+                }.navigationBarTitle("Главный экран", displayMode: .inline)
             }.tabItem {
                 Label("Главная", systemImage: "house.fill")
             }.tag(0)
+
             // Приобретенные билеты
             NavigationView {
                 VStack {
@@ -43,6 +43,7 @@ struct ContentView: View {
             }.tabItem {
                 Label("Билеты", systemImage: "list.dash")
             }.tag(1)
+
             // Экран помощи контактов
             NavigationView {
                 VStack {
@@ -53,8 +54,26 @@ struct ContentView: View {
             }.tabItem {
                 Label("Помощь", systemImage: "phone.fill")
             }.tag(2)
-        }
 
+            // Важная информация
+            NavigationView {
+                RenderRefreshView(userId: "my_user_id"){ sideEffect in
+                    switch sideEffect {
+                    case let openOrder as ClientSideEffect.OpenOrder:
+                        selectedTab = 1
+                        orderAdditionalInfo = openOrder.additionInfo
+                    case let openSupport as ClientSideEffect.OpenSupportScreen:
+                        selectedTab = 2
+                    case let openBrowser as ClientSideEffect.OpenBrowser:
+                        print("open browser link \(openBrowser.url)")
+                    default:
+                        print("do nothing")
+                    }
+                }.navigationBarTitle("Важная информация", displayMode: .inline)
+            }.tabItem {
+                Label("Важно", systemImage: "star")
+            }.tag(3)
+        }
 
     }
 }
