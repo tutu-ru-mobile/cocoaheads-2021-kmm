@@ -4,8 +4,8 @@ import ru.tutu.SERVER_URL
 import ru.tutu.serialization.*
 import ru.tutu.verticalContainer
 
-fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode =
-    verticalContainer {
+fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode {
+    return verticalContainer {
         label("Новые требования для путешествий.")
         label("Необходима прививка, или ПЦР тест.")
         image(
@@ -47,11 +47,12 @@ fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode
 
         space(20)
         label("Что делать, если нет нужных данных?")
-        button(id = Id("button.cancel_trip"), text = "Отменить поездку")
+        button(id = BUTTON_CANCEL_TRIP, text = "Отменить поездку")
         button(id = Id("button.covid_faq"), text = "Частые вопросы в связи с коронавирусом")
 
         space(40)
         label("Нужна дополнительная помощь?")
-        button(id = Id("button.support"), text = "Связаться со службой поддержки")
+        button(id = BUTTON_SUPPORT, text = "Связаться со службой поддержки")
         space(20)
     }
+}

@@ -8,7 +8,9 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationView {
-                RenderRefreshView().navigationBarTitle("Важная информация", displayMode: .inline)
+                RenderRefreshView(){ sideEffect in
+                    //todo side effect
+                }.navigationBarTitle("Важная информация", displayMode: .inline)
             }.tabItem {
                 Label("Главная", systemImage: "house.fill")
             }

@@ -45,5 +45,19 @@ fun serverReducer(state: ServerState, clientStorage: ClientStorage, intent: Inte
             state
         }
     }
-    return ServerReducerResult(result, listOf())
+    val sideEffects:List<ClientSideEffect> = when(intent) {
+        is Intent.ButtonPressed -> {
+            when(intent.buttonId) {
+                BUTTON_SUPPORT -> {
+                    listOf(ClientSideEffect.OpenSupportScreen())
+                }
+                BUTTON_CANCEL_TRIP ->{
+                    listOf(ClientSideEffect.OpenOrder("Была нажата кнопка отмены заказа"))
+                }
+                else -> emptyList()
+            }
+        }
+        else -> emptyList()
+    }
+    return ServerReducerResult(result, sideEffects)
 }

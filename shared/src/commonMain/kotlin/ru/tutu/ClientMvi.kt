@@ -20,7 +20,7 @@ sealed class ClientIntent() {
 }
 
 
-fun createRefreshViewStore(userId: String): Store<RefreshViewState, ClientIntent> {
+fun createRefreshViewStore(userId: String/*, sideEffectHandler: (ClientSideEffect)->Unit*/): Store<RefreshViewState, ClientIntent> {
     val result = createStore(
         RefreshViewState(
             clientStorage = ClientStorage(emptyMap())
@@ -41,10 +41,13 @@ fun createRefreshViewStore(userId: String): Store<RefreshViewState, ClientIntent
                         //todo изменения отправлять на сервер
                     }
                     is ClientIntent.SendToServer -> {
-                        val reducedNode: ViewTreeNode = networkReducer(userId, s.clientStorage, a.intent)
+                        val networkReducerResult = networkReducer(userId, s.clientStorage, a.intent)
+                        val reducedNode: ViewTreeNode = networkReducerResult.state
                         s.copy(
                             serverData = serverData.copy(node = reducedNode)
                         )
+                        //todo
+//                        return networkReducerResult.sideEffect
                     }
                     else -> throw Error("unpredictable state")
                 }
@@ -65,7 +68,7 @@ fun createRefreshViewStore(userId: String): Store<RefreshViewState, ClientIntent
     }
     APP_SCOPE.launch {
         val firstResponse = networkReducer(userId, result.state.clientStorage, Intent.Init)
-        result.send(ClientIntent.FirstServerResponse(firstResponse))
+        result.send(ClientIntent.FirstServerResponse(firstResponse.state))
     }
     return result
 }

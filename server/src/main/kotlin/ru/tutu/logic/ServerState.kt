@@ -24,5 +24,7 @@ val BUTTON_PCR_TEST = Id("button.screen_pcr_test")
 val BUTTON_SEND_VACCINE = Id("button.send_vaccine")
 val BUTTON_SEND_PCR_TEST = Id("button.send_pcr_test")
 val BUTTON_DELETE_COVID_DATA = Id("button.clear_covid_data")
+val BUTTON_CANCEL_TRIP = Id("button.cancel_trip")
+val BUTTON_SUPPORT = Id("button.support")
 val KEY_VACCINE = "key.vaccine"
 val KEY_PCR_TEST = "key.pcr_test"

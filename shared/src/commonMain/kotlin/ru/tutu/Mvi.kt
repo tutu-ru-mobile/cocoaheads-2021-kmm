@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 
 typealias Reducer<S, A> = suspend (S, A) -> S
 
@@ -42,7 +43,6 @@ fun <S, A> createStore(init: S, reducer: Reducer<S, A>): Store<S, A> {
 
 typealias ReducerSE<S, A, SE> = (S, A) -> ReducerResult<S, SE>
 
-//todo use another ru.tutu.ReducerResult
 class ReducerResult<S, SE>(val state: S, val sideEffects: List<SE> = emptyList())
 
 /**

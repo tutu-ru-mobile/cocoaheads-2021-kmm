@@ -5,7 +5,7 @@ public struct RenderRefreshView: View {
     let iosStoreHelper = IosStoreHelper()
     @ObservedObject var myViewModel:GlobalViewModel
 
-    public init(/*todo side effect lambda*/) {
+    public init(sideEffectHandler: (ClientSideEffect) -> Void) {
         self.myViewModel = GlobalViewModel(di: iosStoreHelper)
     }
 
