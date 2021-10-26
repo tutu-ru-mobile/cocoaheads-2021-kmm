@@ -50,7 +50,7 @@ struct ContentView: View {
                     }
                 }.navigationBarTitle("Мои билеты", displayMode: .inline)
             }.tabItem {
-                Label("Билеты", systemImage: "list.dash")
+                Label("БилетыБилеты", systemImage: "list.dash")
             }.tag(Tab.orders)
 
             //-------------------------------------------------------------

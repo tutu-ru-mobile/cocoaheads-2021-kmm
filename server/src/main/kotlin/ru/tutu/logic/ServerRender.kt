@@ -11,7 +11,7 @@ fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode
             "http://localhost:8081/static/covid_test.png",
             250, 250
         )
-        space(20)
+        space(10)
         val vaccineCode = state.vaccineCode
         val pcrTestCode = state.pcrTestCode
         if (vaccineCode != null) {
@@ -44,14 +44,14 @@ fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode
             }
         }
 
-        space(20)
+        space(10)
         label("Что делать, если нет нужных данных?")
         button(id = BUTTON_CANCEL_TRIP, text = "Отменить поездку")
         button(id = Id("button.covid_faq"), text = "Частые вопросы в связи с коронавирусом")
 
-        space(40)
+        space(20)
         label("Нужна дополнительная помощь?")
         button(id = BUTTON_SUPPORT, text = "Связаться со службой поддержки")
-        space(20)
+        space(10)
     }
 }
