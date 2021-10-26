@@ -11,15 +11,14 @@ public struct RenderRefreshView: View {
 
     public var body: some View {
         let state = myViewModel.myState
-        NavigationView {
-            if (state.serverData is RefreshViewState.ServerDataLoading) {
-                Text("Loading...")
-            } else if (state.serverData is RefreshViewState.ServerDataLoaded) {
-                let serverDataLoaded = state.serverData as! RefreshViewState.ServerDataLoaded
-                RenderNode(serverDataLoaded.node, state.clientStorage) { (intent: ClientIntent) in
-                    iosStoreHelper.sendAction(a: intent)
-                }.navigationBarTitle("Важная информация", displayMode: .inline)
+        if (state.serverData is RefreshViewState.ServerDataLoading) {
+            Text("Loading...")
+        } else if (state.serverData is RefreshViewState.ServerDataLoaded) {
+            let serverDataLoaded = state.serverData as! RefreshViewState.ServerDataLoaded
+            RenderNode(serverDataLoaded.node, state.clientStorage) { (intent: ClientIntent) in
+                iosStoreHelper.sendAction(a: intent)
             }
         }
+
     }
 }

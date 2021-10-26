@@ -53,5 +53,5 @@ fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode
         space(40)
         label("Нужна дополнительная помощь?")
         button(id = Id("button.support"), text = "Связаться со службой поддержки")
-
+        space(20)
     }
