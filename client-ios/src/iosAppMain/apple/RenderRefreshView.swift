@@ -2,18 +2,18 @@ import SwiftUI
 import Shared
 
 public struct RenderRefreshView: View {
-    let swiftStoreHelper: SwiftStoreHelper
+    let mviStore: RefreshViewStoreWrapper
 
     @ObservedObject var myViewModel: RefreshViewModel
 
     public init(userId: String, networkReducerUrl: String, autoUpdate: Bool, sideEffectHandler: @escaping (ClientSideEffect) -> Void) {
-        swiftStoreHelper = SwiftStoreHelper(
+        mviStore = RefreshViewStoreWrapper(
                 userId: userId,
                 networkReducerUrl: networkReducerUrl,
                 autoUpdate: autoUpdate,
                 sideEffectHandler: sideEffectHandler
         )
-        self.myViewModel = RefreshViewModel(swiftStoreHelper)
+        self.myViewModel = RefreshViewModel(mviStore)
     }
 
     public var body: some View {
@@ -22,7 +22,7 @@ public struct RenderRefreshView: View {
             Text("Loading...")
         case let normalScreen as RefreshViewState.RefreshViewScreenNormal:
             RenderNode(normalScreen.node, myViewModel.myState.clientStorage) { (intent: ClientIntent) in
-                swiftStoreHelper.sendAction(a: intent)
+                mviStore.sendIntent(intent: intent)
             }
         case let errorScreen as RefreshViewState.RefreshViewScreenNetworkError:
             VStack {

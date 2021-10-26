@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 typealias Reducer<STATE, INTENT> = suspend (STATE, INTENT) -> STATE
 
 interface Store<STATE, INTENT> {
-    fun send(action: INTENT)
+    fun send(intent: INTENT)
     val stateFlow: StateFlow<STATE>
     val state get() = stateFlow.value
 }
@@ -26,14 +26,14 @@ fun <STATE, INTENT> createStore(init: STATE, reducer: Reducer<STATE, INTENT>): S
             //https://m.habr.com/ru/company/kaspersky/blog/513364/
             //or alternative in jvm use fun CoroutineScope.actor(...)
             APP_SCOPE.launch {
-                channel.consumeAsFlow().collect { action ->
-                    mutableStateFlow.value = reducer(mutableStateFlow.value, action)
+                channel.consumeAsFlow().collect { intent ->
+                    mutableStateFlow.value = reducer(mutableStateFlow.value, intent)
                 }
             }
         }
 
-        override fun send(action: INTENT) {
-            channel.offer(action)//mutableStateFlow.value = reducer(mutableStateFlow.value, action)
+        override fun send(intent: INTENT) {
+            channel.offer(intent)//mutableStateFlow.value = reducer(mutableStateFlow.value, intent)
         }
 
         override val stateFlow: StateFlow<STATE> = mutableStateFlow

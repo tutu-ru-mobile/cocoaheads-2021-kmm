@@ -4,9 +4,9 @@ import Shared
 public class RefreshViewModel: ObservableObject {
     @Published public var myState: RefreshViewState
 
-    public init(_ swiftStoreHelper:SwiftStoreHelper) {
-        myState = swiftStoreHelper.getLastState()
-        swiftStoreHelper.addListener(listener: {state in
+    public init(_ mviStore:RefreshViewStoreWrapper) {
+        myState = mviStore.getLastState()
+        mviStore.addListener(listener: {state in
             self.myState = state
         })
     }

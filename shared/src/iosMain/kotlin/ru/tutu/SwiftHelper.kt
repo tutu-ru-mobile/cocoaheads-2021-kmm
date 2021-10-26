@@ -6,11 +6,11 @@ import ru.tutu.serialization.*
 import kotlin.random.Random
 import kotlin.random.nextUInt
 
-class SwiftStoreHelper(userId: String, networkReducerUrl:String, autoUpdate:Boolean, sideEffectHandler: (ClientSideEffect) -> Unit) {
+class RefreshViewStoreWrapper(userId: String, networkReducerUrl:String, autoUpdate:Boolean, sideEffectHandler: (ClientSideEffect) -> Unit) {
     val store = createRefreshViewStore(userId, networkReducerUrl, autoUpdate = autoUpdate, sideEffectHandler)
 
-    fun sendAction(a: ClientIntent) {
-        store.send(a)
+    fun sendIntent(intent: ClientIntent) {
+        store.send(intent)
     }
 
     fun getLastState(): RefreshViewState {
