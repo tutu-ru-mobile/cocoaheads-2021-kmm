@@ -7,17 +7,23 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import ru.tutu.serialization.ClientSideEffect
 import kotlin.random.Random
 import kotlin.random.nextUInt
 
 @Composable
-fun RefreshView(userId:String, networkReducerUrl:String, autoUpdate:Boolean) {
+fun RefreshView(
+    userId: String,
+    networkReducerUrl: String,
+    autoUpdate: Boolean,
+    sideEffectHandler: (ClientSideEffect) -> Unit
+) {
     val store = remember { createRefreshViewStore(
         userId,
         networkReducerUrl = networkReducerUrl,
         autoUpdate = autoUpdate
     ) {
-        //todo handle side effects
+        sideEffectHandler(it)
     } }
     val globalState = store.stateFlow.collectAsState()
     val screen = globalState.value.screen

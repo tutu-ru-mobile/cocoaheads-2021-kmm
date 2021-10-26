@@ -3,77 +3,130 @@ package ru.tutu.refresh.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ru.tutu.RefreshView
-import ru.tutu.refresh.app.theme.RefreshViewAndroidTheme
+import ru.tutu.refresh.app.theme.AppAndroidTheme
+import ru.tutu.serialization.ClientSideEffect
+
+enum class Screen(val tab: String, val title: String, val icon: ImageVector) {
+    MAIN("Главная", "Главный экран", Icons.Default.Home),
+    ORDERS("Заказы", "Мои билеты", Icons.Default.List),
+    SUPPORT("Помощь", "Справка и помощь", Icons.Default.Phone),
+    IMPORTANT("Важное", "Важная информация", Icons.Default.Star)
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            RefreshViewAndroidTheme {
-                Scaffold(bottomBar = {
-                    BottomBar()
-                }) {
-                    RefreshView(
-                        "my_user_id_android",
-                        "http://10.0.2.2:8081/important_reducer",
-                        true
-                    )
-                }
+            AppAndroidTheme {
+                MainContainer()
             }
         }
     }
 }
 
 @Composable
-fun BottomBar() {
-    val selectedIndex = remember { mutableStateOf(0) }
-    BottomNavigation(elevation = 10.dp) {
-
-        BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Home,"")
+fun MainContainer() {
+    val ordersAdditionalInfo = remember { mutableStateOf<String?>(null) }
+    val selectedTab = remember { mutableStateOf(Screen.MAIN) }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        Text(
+                            text = selectedTab.value.title,
+                            fontSize = 22.sp,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                },
+            )
         },
-            label = { Text(text = "Главная") },
-            selected = (selectedIndex.value == 0),
-            onClick = {
-                selectedIndex.value = 0
-            })
+        bottomBar = {
+            BottomNavigation(elevation = 10.dp) {
+                Screen.values().forEach {
+                    BottomNavigationItem(icon = {
+                        Icon(imageVector = it.icon, "")
+                    },
+                        label = { Text(text = it.tab) },
+                        selected = (selectedTab.value == it),
+                        onClick = {
+                            selectedTab.value = it
+                        })
+                }
+            }
+        }) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            when (selectedTab.value) {
+                Screen.MAIN -> {
+                    Text("Главный экран")
+                    Text("Здесь можно купить билет")
+                    Divider()
+                    Button(onClick = {
+                        selectedTab.value = Screen.IMPORTANT
+                    }) {
+                        Text("Посмотрите важную информацию!")
+                    }
+                }
+                Screen.ORDERS -> {
+                    Text("Билет №1")
+                    Text("Билет №2")
+                    Text("Билет №3")
+                    ordersAdditionalInfo.value?.let {
+                        Divider()
+                        Text(it)
+                    }
 
-        BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.List,"")
-        },
-            label = { Text(text = "Билеты") },
-            selected = (selectedIndex.value == 1),
-            onClick = {
-                selectedIndex.value = 1
-            })
+                }
+                Screen.SUPPORT -> {
+                    Text("Напишите в чат,")
+                    Text("или позвоните +5(555)555-55-55")
+                    Box(
+                        Modifier
+                            .padding(5.dp)
+                            .border(border = BorderStroke(1.dp, color = Color.Black))
+                            .padding(5.dp)
+                    ) {
+                        RefreshView(
+                            userId = "my_user_id",
+                            networkReducerUrl = "http://10.0.2.2:8081/playground_reducer",
+                            autoUpdate = true
+                        ) {}
+                    }
 
-        BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Phone,"")
-        },
-            label = { Text(text = "Помощь") },
-            selected = (selectedIndex.value == 2),
-            onClick = {
-                selectedIndex.value = 2
-            })
-
-        BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Star,"")
-        },
-            label = { Text(text = "Важно") },
-            selected = (selectedIndex.value == 3),
-            onClick = {
-                selectedIndex.value = 3
-            })
+                }
+                Screen.IMPORTANT -> RefreshView(
+                    "my_user_id_android",
+                    "http://10.0.2.2:8081/important_reducer",
+                    true
+                ) {
+                    when (it) {
+                        is ClientSideEffect.OpenOrder -> {
+                            ordersAdditionalInfo.value = it.additionInfo
+                            selectedTab.value = Screen.ORDERS
+                        }
+                        is ClientSideEffect.OpenSupportScreen -> {
+                            selectedTab.value = Screen.SUPPORT
+                        }
+                    }
+                }
+            }
+        }
     }
 }

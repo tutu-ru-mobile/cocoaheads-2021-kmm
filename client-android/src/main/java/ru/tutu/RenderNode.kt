@@ -30,7 +30,11 @@ fun RenderNode(clientStorage:ClientStorage, node: ViewTreeNode, sendIntent: (Cli
             }
         }
         is ViewTreeNode.Leaf.Rectangle -> {
-            Box(modifier = Modifier.size(node.width.dp, node.height.dp).background(color = Color(node.color.hexValue.toInt())))
+            Box(modifier = Modifier
+                .padding(2.dp)
+                .size(node.width.dp, node.height.dp)
+                .background(color = Color(node.color.hexValue.toInt()))
+            )
         }
         is ViewTreeNode.Leaf.Label -> {
             Text(text = node.text)
@@ -49,7 +53,7 @@ fun RenderNode(clientStorage:ClientStorage, node: ViewTreeNode, sendIntent: (Cli
             })
         }
         is ViewTreeNode.Leaf.Image -> {
-            NetworkImage(node.imgUrl, node.width, node.height)
+            NetworkImage(node.imgUrl, node.width * 8 / 10, node.height * 8 / 10)
         }
         is ViewTreeNode.Leaf.Space -> {
             Spacer(Modifier.size(node.size.dp))

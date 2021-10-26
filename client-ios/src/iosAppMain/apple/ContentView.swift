@@ -50,7 +50,7 @@ struct ContentView: View {
                     }
                 }.navigationBarTitle("Мои билеты", displayMode: .inline)
             }.tabItem {
-                Label("БилетыБилеты", systemImage: "list.dash")
+                Label("Билеты", systemImage: "list.dash")
             }.tag(Tab.orders)
 
             //-------------------------------------------------------------
@@ -79,7 +79,7 @@ struct ContentView: View {
                 RenderRefreshView(
                         userId: "my_user_id",
                         networkReducerUrl: "http://localhost:8081/important_reducer",
-                        autoUpdate: false
+                        autoUpdate: true
                 ) { sideEffect in
                     switch sideEffect {
                     case let openOrder as ClientSideEffect.OpenOrder:
