@@ -20,22 +20,13 @@ class MainActivity : ComponentActivity() {
             RefreshViewAndroidTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-                    RefreshView()
+                    RefreshView(
+                        "my_user_id_android",
+                        "http://10.0.2.2:8081/important_reducer",
+                        true
+                    )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!...")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    RefreshViewAndroidTheme {
-        Greeting("Android")
     }
 }
