@@ -28,34 +28,28 @@ android {
         jvmTarget = "1.8"
         freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
     }
+    buildFeatures {
+        compose = true
+    }
     composeOptions {
         kotlinCompilerExtensionVersion = COMPOSE_ANDROID
     }
 }
 
 dependencies {
-    implementation(project(":shared"))
-    implementation("com.google.android.material:material:1.2.1")
-    implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.2")
-
+    // Material design icons
     implementation("androidx.compose.ui:ui:$COMPOSE_ANDROID")
+    // Tooling support (Previews, etc.)
     implementation("androidx.compose.ui:ui-tooling:$COMPOSE_ANDROID")
+    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
     implementation("androidx.compose.foundation:foundation:$COMPOSE_ANDROID")
+    // Material Design
     implementation("androidx.compose.material:material:$COMPOSE_ANDROID")
-    implementation("androidx.activity:activity-compose:$COMPOSE_ANDROID")
-    //Compose Utils
-    implementation("io.coil-kt:coil-compose:1.4.0")
-    implementation("com.google.accompanist:accompanist-insets:0.20.0")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.20.0")
+    implementation("androidx.appcompat:appcompat:1.3.1")
+    implementation("androidx.activity:activity-ktx:1.3.1")
+    implementation("androidx.activity:activity-compose:1.3.1")
     //Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$COROUTINE_VERSION")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$COROUTINE_VERSION")
-    //DI
-    implementation("io.insert-koin:koin-core:3.1.2")
-    implementation("io.insert-koin:koin-android:3.1.2")
-    //Navigation
-    implementation("cafe.adriel.voyager:voyager-navigator:1.0.0-beta13")
-    //WorkManager
-    implementation("androidx.work:work-runtime-ktx:2.7.0")
+
 }
