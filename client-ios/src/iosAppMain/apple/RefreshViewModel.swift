@@ -1,7 +1,7 @@
 import Foundation
 import Shared
 
-public class GlobalViewModel: ObservableObject {
+public class RefreshViewModel: ObservableObject {
     @Published public var myState: RefreshViewState
 
     public init(_ swiftStoreHelper:SwiftStoreHelper) {

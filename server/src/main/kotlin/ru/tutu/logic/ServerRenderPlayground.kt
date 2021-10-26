@@ -9,6 +9,9 @@ fun serverRenderPlayground(clientStorage: ClientStorage): ViewTreeNode {
             rectangle(50, 50, Color(0xffff0000u))
             rectangle(50, 50, Color(0xffff0000u))
             rectangle(50, 50, Color(0xffff0000u))
+            rectangle(50, 50, Color(0xffff00ffu))
+            rectangle(50, 50, Color(0xffff00ffu))
+//            rectangle(50, 50, Color(0xffff00ffu))
         }
 
     }

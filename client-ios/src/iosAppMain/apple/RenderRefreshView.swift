@@ -2,30 +2,35 @@ import SwiftUI
 import Shared
 
 public struct RenderRefreshView: View {
-    let swiftStoreHelper:SwiftStoreHelper
+    let swiftStoreHelper: SwiftStoreHelper
 
-    @ObservedObject var myViewModel:GlobalViewModel
+    @ObservedObject var myViewModel: RefreshViewModel
 
-    public init(userId:String, networkReducerUrl:String, autoUpdate:Bool, sideEffectHandler: @escaping (ClientSideEffect) -> Void) {
+    public init(userId: String, networkReducerUrl: String, autoUpdate: Bool, sideEffectHandler: @escaping (ClientSideEffect) -> Void) {
         swiftStoreHelper = SwiftStoreHelper(
                 userId: userId,
                 networkReducerUrl: networkReducerUrl,
                 autoUpdate: autoUpdate,
                 sideEffectHandler: sideEffectHandler
         )
-        self.myViewModel = GlobalViewModel(swiftStoreHelper)
+        self.myViewModel = RefreshViewModel(swiftStoreHelper)
     }
 
     public var body: some View {
-        let state = myViewModel.myState
-        if (state.serverData is RefreshViewState.ServerDataLoading) {
+        switch myViewModel.myState.screen {
+        case let loadingScreen as RefreshViewState.RefreshViewScreenLoading:
             Text("Loading...")
-        } else if (state.serverData is RefreshViewState.ServerDataLoaded) {
-            let serverDataLoaded = state.serverData as! RefreshViewState.ServerDataLoaded
-            RenderNode(serverDataLoaded.node, state.clientStorage) { (intent: ClientIntent) in
+        case let normalScreen as RefreshViewState.RefreshViewScreenNormal:
+            RenderNode(normalScreen.node, myViewModel.myState.clientStorage) { (intent: ClientIntent) in
                 swiftStoreHelper.sendAction(a: intent)
             }
+        case let errorScreen as RefreshViewState.RefreshViewScreenNetworkError:
+            VStack {
+                Text("Сетевая ошибка")
+                Text(errorScreen.exception)
+            }
+        default:
+            Text("wrong RefreshViewState myViewModel.myState.screen: \(myViewModel.myState.screen)")
         }
-
     }
 }

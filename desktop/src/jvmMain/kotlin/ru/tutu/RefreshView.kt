@@ -25,10 +25,10 @@ fun RefreshView() {
         contentAlignment = Alignment.TopCenter,
     ) {
         when(serverData) {
-            is RefreshViewState.ServerData.Loading -> {
+            is RefreshViewState.RefreshViewScreen.Loading -> {
                 CircularProgressIndicator(strokeWidth = 8.dp)
             }
-            is RefreshViewState.ServerData.Loaded -> {
+            is RefreshViewState.RefreshViewScreen.Normal -> {
                 val clientStorage = globalState.value.clientStorage
                 RenderNode(clientStorage, serverData.node) {
                     store.send(it)

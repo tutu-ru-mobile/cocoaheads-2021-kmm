@@ -6,21 +6,20 @@ import ru.tutu.serialization.*
 
 data class RefreshViewState(
     val clientStorage: ClientStorage,
-    val serverData: ServerData = ServerData.Loading
+    val screen: RefreshViewScreen = RefreshViewScreen.Loading
 ) {
-    sealed class ServerData {
-        data class NetworkError(val exception:String) : ServerData()
-        object Loading : ServerData()
-        data class Loaded(val node: ViewTreeNode) : ServerData()
+    sealed class RefreshViewScreen {
+        data class NetworkError(val exception:String) : RefreshViewScreen()
+        object Loading : RefreshViewScreen()
+        data class Normal(val node: ViewTreeNode) : RefreshViewScreen()
     }
 }
 
 sealed class ClientIntent() {
-    class SendToServer(val intent: Intent) : ClientIntent()
+    class SendToServer(val serverIntent: Intent) : ClientIntent()
     data class UpdateClientStorage(val key: String, val value: ClientValue) : ClientIntent()
-    class UpdateState(val node: ViewTreeNode) : ClientIntent()
+    internal class UpdateScreenState(val screen: RefreshViewState.RefreshViewScreen) : ClientIntent()
 }
-
 
 fun createRefreshViewStore(
     userId: String,
@@ -35,67 +34,61 @@ fun createRefreshViewStore(
         effectHandler = { store, sideEffect ->
             sideEffectHandler(sideEffect)
         }
-    ) { s, a: ClientIntent ->
-        val serverData = s.serverData
-        when (serverData) {
-            is RefreshViewState.ServerData.Loaded -> {
-                when (a) {
+    ) { oldViewState: RefreshViewState, intent: ClientIntent ->
+        val screenState = oldViewState.screen
+        when (screenState) {
+            is RefreshViewState.RefreshViewScreen.Normal -> {
+                when (intent) {
                     is ClientIntent.UpdateClientStorage -> {
-                        s.copy(
-                            clientStorage = s.clientStorage.copy(
-                                map = s.clientStorage.map.toMutableMap().also {
-                                    it[a.key] = a.value
+                        oldViewState.copy(
+                            clientStorage = oldViewState.clientStorage.copy(
+                                map = oldViewState.clientStorage.map.toMutableMap().also {
+                                    it[intent.key] = intent.value
                                 }
                             )
                         ).withoutSideEffects()
                     }
                     is ClientIntent.SendToServer -> {
-                        val result = networkReducer(userId, networkReducerUrl, s.clientStorage, a.intent)
+                        val result = networkReducer(userId, networkReducerUrl, oldViewState.clientStorage, intent.serverIntent)
                         val data = result.getOrNull()
                         if (data != null) {
                             val reducedNode: ViewTreeNode = data.state
-                            s.copy(
-                                serverData = serverData.copy(node = reducedNode)
+                            oldViewState.copy(
+                                screen = screenState.copy(node = reducedNode)
                             ).withSideEffects(data.sideEffects)
                         } else {
-                            s.copy(
-                                serverData = RefreshViewState.ServerData.NetworkError(
+                            oldViewState.copy(
+                                screen = RefreshViewState.RefreshViewScreen.NetworkError(
                                     result.exceptionOrNull()?.stackTraceToString() ?: ""
                                 )
                             ).withoutSideEffects()
                         }
                     }
-                    is ClientIntent.UpdateState -> {
-                        s.copy(
-                            serverData = RefreshViewState.ServerData.Loaded(
-                                node = a.node
-                            )
+                    is ClientIntent.UpdateScreenState -> {
+                        oldViewState.copy(
+                            screen = intent.screen
                         ).withoutSideEffects()
                     }
                 }
             }
-            is RefreshViewState.ServerData.Loading -> {
-                when (a) {
-                    is ClientIntent.UpdateState -> {
-                        s.copy(
-                            serverData = RefreshViewState.ServerData.Loaded(
-                                node = a.node
-                            )
+            is RefreshViewState.RefreshViewScreen.Loading -> {
+                when (intent) {
+                    is ClientIntent.UpdateScreenState -> {
+                        oldViewState.copy(
+                            screen = intent.screen
                         ).withoutSideEffects()
                     }
                     else -> throw Error("unpredictable state")
                 }
             }
-            is RefreshViewState.ServerData.NetworkError -> {
-                when (a) {
-                    is ClientIntent.UpdateState -> {
-                        s.copy(
-                            serverData = RefreshViewState.ServerData.Loaded(
-                                a.node
-                            )
+            is RefreshViewState.RefreshViewScreen.NetworkError -> {
+                when (intent) {
+                    is ClientIntent.UpdateScreenState -> {
+                        oldViewState.copy(
+                            screen = intent.screen
                         ).withoutSideEffects()
                     }
-                    else -> s.withoutSideEffects()
+                    else -> oldViewState.withoutSideEffects()
                 }
             }
 
@@ -107,8 +100,16 @@ fun createRefreshViewStore(
             val data = result.getOrNull()
             if (data != null) {
                 resultStore.send(
-                    ClientIntent.UpdateState(
-                        data.state
+                    ClientIntent.UpdateScreenState(
+                        RefreshViewState.RefreshViewScreen.Normal(data.state)
+                    )
+                )
+            } else {
+                resultStore.send(
+                    ClientIntent.UpdateScreenState(
+                        RefreshViewState.RefreshViewScreen.NetworkError(
+                            result.exceptionOrNull()?.stackTraceToString() ?: ""
+                        )
                     )
                 )
             }

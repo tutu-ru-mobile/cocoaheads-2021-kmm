@@ -6,12 +6,6 @@ import ru.tutu.serialization.*
 import kotlin.random.Random
 import kotlin.random.nextUInt
 
-data class GlobalState(val str: String)
-
-sealed class GlobalAction {
-    class ActionInput(val str:String): GlobalAction()
-}
-
 class SwiftStoreHelper(userId: String, networkReducerUrl:String, autoUpdate:Boolean, sideEffectHandler: (ClientSideEffect) -> Unit) {
     val store = createRefreshViewStore(userId, networkReducerUrl, autoUpdate = autoUpdate, sideEffectHandler)
 
@@ -22,8 +16,6 @@ class SwiftStoreHelper(userId: String, networkReducerUrl:String, autoUpdate:Bool
     fun getLastState(): RefreshViewState {
         return store.stateFlow.value
     }
-
-    fun convertUIntToInt(value: UInt) = value.toInt()
 
     fun addListener(listener: (RefreshViewState) -> Unit) {
         launchAppScope {
