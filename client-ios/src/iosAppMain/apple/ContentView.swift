@@ -3,7 +3,14 @@ import Shared
 
 struct ContentView: View {
 
-    @State private var selectedTab = 0
+    enum Tab {
+        case main
+        case orders
+        case support
+        case important
+    }
+
+    @State private var selectedTab = Tab.main
     @State private var orderAdditionalInfo: String? = nil
 
     var body: some View {
@@ -16,7 +23,7 @@ struct ContentView: View {
                     Text("Здесь можно купить билет")
                     Spacer()
                     Button(action: {
-                        selectedTab = 3
+                        selectedTab = Tab.important
                     }) {
                         Text("Посмотрите важную информацию!")
                     }
@@ -24,7 +31,7 @@ struct ContentView: View {
                 }.navigationBarTitle("Главный экран", displayMode: .inline)
             }.tabItem {
                 Label("Главная", systemImage: "house.fill")
-            }.tag(0)
+            }.tag(Tab.main)
 
             //-------------------------------------------------------------
             // Приобретенные билеты
@@ -44,7 +51,7 @@ struct ContentView: View {
                 }.navigationBarTitle("Мои билеты", displayMode: .inline)
             }.tabItem {
                 Label("Билеты", systemImage: "list.dash")
-            }.tag(1)
+            }.tag(Tab.orders)
 
             //-------------------------------------------------------------
             // Экран помощи и контактов
@@ -59,12 +66,12 @@ struct ContentView: View {
                             autoUpdate: true
                     ) { sideEffect in
                     }.padding()
-                    .border(Color.black)
+                            .border(Color.black)
 
                 }.navigationBarTitle("Справка и помощь", displayMode: .inline)
             }.tabItem {
                 Label("Помощь", systemImage: "phone.fill")
-            }.tag(2)
+            }.tag(Tab.support)
 
             //-------------------------------------------------------------
             // Важная информация
@@ -73,13 +80,13 @@ struct ContentView: View {
                         userId: "my_user_id",
                         networkReducerUrl: "http://localhost:8081/important_reducer",
                         autoUpdate: false
-                ){ sideEffect in
+                ) { sideEffect in
                     switch sideEffect {
                     case let openOrder as ClientSideEffect.OpenOrder:
-                        selectedTab = 1
+                        selectedTab = Tab.orders
                         orderAdditionalInfo = openOrder.additionInfo
                     case let openSupport as ClientSideEffect.OpenSupportScreen:
-                        selectedTab = 2
+                        selectedTab = Tab.support
                     case let openBrowser as ClientSideEffect.OpenBrowser:
                         print("open browser link \(openBrowser.url)")
                     default:
@@ -88,7 +95,7 @@ struct ContentView: View {
                 }.navigationBarTitle("Важная информация", displayMode: .inline)
             }.tabItem {
                 Label("Важно", systemImage: "star")
-            }.tag(3)
+            }.tag(Tab.important)
             //-------------------------------------------------------------
         }
 
