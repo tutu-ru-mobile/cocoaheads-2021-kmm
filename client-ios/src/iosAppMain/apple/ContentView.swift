@@ -4,51 +4,55 @@ import Shared
 struct ContentView: View {
 
     @State private var selectedTab = 0
+    @State private var orderAdditionalInfo: String? = nil
 
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationView {
-                RenderRefreshView(){ sideEffect in
-                    //todo side effect
+                RenderRefreshView(userId: "my_user_id"){ sideEffect in
+                    switch sideEffect {
+                    case let openOrder as ClientSideEffect.OpenOrder:
+                        selectedTab = 1
+                        orderAdditionalInfo = openOrder.additionInfo
+                    case let openSupport as ClientSideEffect.OpenSupportScreen:
+                        selectedTab = 2
+                    case let openBrowser as ClientSideEffect.OpenBrowser:
+                        print("open browser link \(openBrowser.url)")
+                    default:
+                        print("do nothing")
+                    }
                 }.navigationBarTitle("Важная информация", displayMode: .inline)
             }.tabItem {
                 Label("Главная", systemImage: "house.fill")
-            }
+            }.tag(0)
             // Приобретенные билеты
             NavigationView {
-                List {
-                    HStack {
+                VStack {
+                    List {
                         Text("Билет №1")
-                        Button(action: {}) {
-                            Text("отменить поездку")
-                        }
-                    }
-                    HStack {
                         Text("Билет №2")
-                        Button(action: {}) {
-                            Text("отменить поездку")
-                        }
-                    }
-                    HStack {
                         Text("Билет №3")
-                        Button(action: {}) {
-                            Text("отменить поездку")
+                        orderAdditionalInfo.flatMap { _ in
+                            Spacer(minLength: 20)
+                        }
+                        orderAdditionalInfo.flatMap {
+                            Text($0)
                         }
                     }
                 }.navigationBarTitle("Мои билеты", displayMode: .inline)
             }.tabItem {
                 Label("Билеты", systemImage: "list.dash")
-            }
+            }.tag(1)
             // Экран помощи контактов
             NavigationView {
                 VStack {
-                    Text("Вы можете связать с нами в чате,")
-                    Text("или по телефону +5(555)555-55-55")
+                    Text("Напишите в чат,")
+                    Text("или позвоните +5(555)555-55-55")
 
                 }.navigationBarTitle("Справка и помощь", displayMode: .inline)
             }.tabItem {
                 Label("Помощь", systemImage: "phone.fill")
-            }
+            }.tag(2)
         }
 
 

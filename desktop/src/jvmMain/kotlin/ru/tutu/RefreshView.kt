@@ -11,7 +11,9 @@ import kotlin.random.nextUInt
 
 @Composable
 fun RefreshView() {
-    val store = remember { createRefreshViewStore("User_" + Random.nextUInt()) }
+    val store = remember { createRefreshViewStore("User_" + Random.nextUInt()) {
+        //todo handle side effects
+    } }
     val globalState = store.stateFlow.collectAsState()
     val serverData = globalState.value.serverData
     Box(

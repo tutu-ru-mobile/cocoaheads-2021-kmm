@@ -2,11 +2,13 @@ import SwiftUI
 import Shared
 
 public struct RenderRefreshView: View {
-    let iosStoreHelper = IosStoreHelper()
+    let swiftStoreHelper:SwiftStoreHelper
+
     @ObservedObject var myViewModel:GlobalViewModel
 
-    public init(sideEffectHandler: (ClientSideEffect) -> Void) {
-        self.myViewModel = GlobalViewModel(di: iosStoreHelper)
+    public init(userId:String, sideEffectHandler: @escaping (ClientSideEffect) -> Void) {
+        swiftStoreHelper = SwiftStoreHelper(userId: userId, sideEffectHandler: sideEffectHandler)
+        self.myViewModel = GlobalViewModel(swiftStoreHelper)
     }
 
     public var body: some View {
@@ -16,7 +18,7 @@ public struct RenderRefreshView: View {
         } else if (state.serverData is RefreshViewState.ServerDataLoaded) {
             let serverDataLoaded = state.serverData as! RefreshViewState.ServerDataLoaded
             RenderNode(serverDataLoaded.node, state.clientStorage) { (intent: ClientIntent) in
-                iosStoreHelper.sendAction(a: intent)
+                swiftStoreHelper.sendAction(a: intent)
             }
         }
 

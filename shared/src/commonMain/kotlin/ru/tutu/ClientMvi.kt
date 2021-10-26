@@ -20,11 +20,14 @@ sealed class ClientIntent() {
 }
 
 
-fun createRefreshViewStore(userId: String/*, sideEffectHandler: (ClientSideEffect)->Unit*/): Store<RefreshViewState, ClientIntent> {
-    val result = createStore(
+fun createRefreshViewStore(userId: String, sideEffectHandler: (ClientSideEffect)->Unit): Store<RefreshViewState, ClientIntent> {
+    val result = createStoreWithSideEffect<RefreshViewState, ClientIntent, ClientSideEffect>(
         RefreshViewState(
             clientStorage = ClientStorage(emptyMap())
-        )
+        ),
+        effectHandler = { store, sideEffect ->
+            sideEffectHandler(sideEffect)
+        }
     ) {s, a: ClientIntent ->
         val serverData = s.serverData
         when (serverData) {
@@ -37,17 +40,14 @@ fun createRefreshViewStore(userId: String/*, sideEffectHandler: (ClientSideEffec
                                     it[a.key] = a.value
                                 }
                             )
-                        )
-                        //todo изменения отправлять на сервер
+                        ).withoutSideEffects()
                     }
                     is ClientIntent.SendToServer -> {
                         val networkReducerResult = networkReducer(userId, s.clientStorage, a.intent)
                         val reducedNode: ViewTreeNode = networkReducerResult.state
                         s.copy(
                             serverData = serverData.copy(node = reducedNode)
-                        )
-                        //todo
-//                        return networkReducerResult.sideEffect
+                        ).withSideEffects(networkReducerResult.sideEffects)
                     }
                     else -> throw Error("unpredictable state")
                 }
@@ -59,7 +59,7 @@ fun createRefreshViewStore(userId: String/*, sideEffectHandler: (ClientSideEffec
                             serverData = RefreshViewState.ServerData.Loaded(
                                 node = a.node
                             )
-                        )
+                        ).withoutSideEffects()
                     }
                     else -> throw Error("unpredictable state")
                 }

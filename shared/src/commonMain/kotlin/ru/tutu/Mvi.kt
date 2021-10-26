@@ -41,7 +41,7 @@ fun <S, A> createStore(init: S, reducer: Reducer<S, A>): Store<S, A> {
     }
 }
 
-typealias ReducerSE<S, A, SE> = (S, A) -> ReducerResult<S, SE>
+typealias ReducerSE<S, A, SE> = suspend (S, A) -> ReducerResult<S, SE>
 
 class ReducerResult<S, SE>(val state: S, val sideEffects: List<SE> = emptyList())
 
@@ -65,3 +65,6 @@ fun <S, A, SE> createStoreWithSideEffect(
     }
     return store
 }
+
+fun <S:Any, SE> S.withoutSideEffects() = ReducerResult(this, emptyList<SE>())
+fun <S:Any, SE> S.withSideEffects(sideEffects: List<SE>) = ReducerResult(this, sideEffects)

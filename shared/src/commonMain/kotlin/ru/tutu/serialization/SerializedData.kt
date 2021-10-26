@@ -18,7 +18,7 @@ sealed class ClientSideEffect() {
     data class OpenBrowser(val url: String) : ClientSideEffect()
 
     @Serializable
-    data class OpenOrder(val additionInfo: String) : ClientSideEffect()
+    data class OpenOrder(val additionInfo: String?) : ClientSideEffect()
 
     @Serializable
     class OpenSupportScreen : ClientSideEffect()
