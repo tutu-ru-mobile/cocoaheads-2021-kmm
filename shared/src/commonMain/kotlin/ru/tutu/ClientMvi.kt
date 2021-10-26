@@ -35,63 +35,37 @@ fun createRefreshViewStore(
             sideEffectHandler(sideEffect)
         }
     ) { oldViewState: RefreshViewState, intent: ClientIntent ->
-        val screenState = oldViewState.screen
-        when (screenState) {
-            is RefreshViewState.RefreshViewScreen.Normal -> {
-                when (intent) {
-                    is ClientIntent.UpdateClientStorage -> {
-                        oldViewState.copy(
-                            clientStorage = oldViewState.clientStorage.copy(
-                                map = oldViewState.clientStorage.map.toMutableMap().also {
-                                    it[intent.key] = intent.value
-                                }
-                            )
-                        ).withoutSideEffects()
-                    }
-                    is ClientIntent.SendToServer -> {
-                        val result = networkReducer(userId, networkReducerUrl, oldViewState.clientStorage, intent.serverIntent)
-                        val data = result.getOrNull()
-                        if (data != null) {
-                            val reducedNode: ViewTreeNode = data.state
-                            oldViewState.copy(
-                                screen = screenState.copy(node = reducedNode)
-                            ).withSideEffects(data.sideEffects)
-                        } else {
-                            oldViewState.copy(
-                                screen = RefreshViewState.RefreshViewScreen.NetworkError(
-                                    result.exceptionOrNull()?.stackTraceToString() ?: ""
-                                )
-                            ).withoutSideEffects()
+        when (intent) {
+            is ClientIntent.UpdateScreenState -> {
+                oldViewState.copy(
+                    screen = intent.screen
+                ).withoutSideEffects()
+            }
+            is ClientIntent.UpdateClientStorage -> {
+                oldViewState.copy(
+                    clientStorage = oldViewState.clientStorage.copy(
+                        map = oldViewState.clientStorage.map.toMutableMap().also {
+                            it[intent.key] = intent.value
                         }
-                    }
-                    is ClientIntent.UpdateScreenState -> {
-                        oldViewState.copy(
-                            screen = intent.screen
-                        ).withoutSideEffects()
-                    }
+                    )
+                ).withoutSideEffects()
+            }
+            is ClientIntent.SendToServer -> {
+                val result = networkReducer(userId, networkReducerUrl, oldViewState.clientStorage, intent.serverIntent)
+                val data = result.getOrNull()
+                if (data != null) {
+                    val reducedNode: ViewTreeNode = data.state
+                    oldViewState.copy(
+                        screen = RefreshViewState.RefreshViewScreen.Normal(reducedNode)
+                    ).withSideEffects(data.sideEffects)
+                } else {
+                    oldViewState.copy(
+                        screen = RefreshViewState.RefreshViewScreen.NetworkError(
+                            result.exceptionOrNull()?.stackTraceToString() ?: ""
+                        )
+                    ).withoutSideEffects()
                 }
             }
-            is RefreshViewState.RefreshViewScreen.Loading -> {
-                when (intent) {
-                    is ClientIntent.UpdateScreenState -> {
-                        oldViewState.copy(
-                            screen = intent.screen
-                        ).withoutSideEffects()
-                    }
-                    else -> throw Error("unpredictable state")
-                }
-            }
-            is RefreshViewState.RefreshViewScreen.NetworkError -> {
-                when (intent) {
-                    is ClientIntent.UpdateScreenState -> {
-                        oldViewState.copy(
-                            screen = intent.screen
-                        ).withoutSideEffects()
-                    }
-                    else -> oldViewState.withoutSideEffects()
-                }
-            }
-
         }
     }
     APP_SCOPE.launch {

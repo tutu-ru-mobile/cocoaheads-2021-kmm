@@ -9,7 +9,7 @@ fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode
         label("Необходима прививка, или ПЦР тест.")
         image(
             "http://localhost:8081/static/covid_test.png",
-            200, 200
+            250, 250
         )
         space(20)
         val vaccineCode = state.vaccineCode
