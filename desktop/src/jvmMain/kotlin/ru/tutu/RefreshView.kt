@@ -11,7 +11,11 @@ import kotlin.random.nextUInt
 
 @Composable
 fun RefreshView() {
-    val store = remember { createRefreshViewStore("User_" + Random.nextUInt()) {
+    val store = remember { createRefreshViewStore(
+        "User_" + Random.nextUInt(),
+        networkReducerUrl = "http://localhost:8081/important_reducer",
+        autoUpdate = true
+    ) {
         //todo handle side effects
     } }
     val globalState = store.stateFlow.collectAsState()

@@ -6,8 +6,13 @@ public struct RenderRefreshView: View {
 
     @ObservedObject var myViewModel:GlobalViewModel
 
-    public init(userId:String, networkReducerUrl:String, sideEffectHandler: @escaping (ClientSideEffect) -> Void) {
-        swiftStoreHelper = SwiftStoreHelper(userId: userId, networkReducerUrl: networkReducerUrl, sideEffectHandler: sideEffectHandler)
+    public init(userId:String, networkReducerUrl:String, autoUpdate:Bool, sideEffectHandler: @escaping (ClientSideEffect) -> Void) {
+        swiftStoreHelper = SwiftStoreHelper(
+                userId: userId,
+                networkReducerUrl: networkReducerUrl,
+                autoUpdate: autoUpdate,
+                sideEffectHandler: sideEffectHandler
+        )
         self.myViewModel = GlobalViewModel(swiftStoreHelper)
     }
 

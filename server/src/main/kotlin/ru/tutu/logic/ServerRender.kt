@@ -5,7 +5,7 @@ import ru.tutu.verticalContainer
 
 fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode {
     return verticalContainer {
-        label("Новые требования для путешествий.")
+        label("Новые требования для путешествий!")
         label("Необходима прививка, или ПЦР тест.")
         image(
             "http://localhost:8081/static/covid_test.png",

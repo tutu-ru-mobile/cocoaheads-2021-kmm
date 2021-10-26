@@ -1,5 +1,6 @@
 package ru.tutu
 
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.tutu.serialization.*
 
@@ -8,27 +9,33 @@ data class RefreshViewState(
     val serverData: ServerData = ServerData.Loading
 ) {
     sealed class ServerData {
+        data class NetworkError(val exception:String) : ServerData()
         object Loading : ServerData()
         data class Loaded(val node: ViewTreeNode) : ServerData()
     }
 }
 
 sealed class ClientIntent() {
-    class SendToServer(val intent: Intent):ClientIntent()
+    class SendToServer(val intent: Intent) : ClientIntent()
     data class UpdateClientStorage(val key: String, val value: ClientValue) : ClientIntent()
-    class FirstServerResponse(val node:ViewTreeNode):ClientIntent()
+    class UpdateState(val node: ViewTreeNode) : ClientIntent()
 }
 
 
-fun createRefreshViewStore(userId: String, networkReducerUrl:String, sideEffectHandler: (ClientSideEffect)->Unit): Store<RefreshViewState, ClientIntent> {
-    val result = createStoreWithSideEffect<RefreshViewState, ClientIntent, ClientSideEffect>(
+fun createRefreshViewStore(
+    userId: String,
+    networkReducerUrl: String,
+    autoUpdate: Boolean,
+    sideEffectHandler: (ClientSideEffect) -> Unit
+): Store<RefreshViewState, ClientIntent> {
+    val resultStore = createStoreWithSideEffect<RefreshViewState, ClientIntent, ClientSideEffect>(
         RefreshViewState(
             clientStorage = ClientStorage(emptyMap())
         ),
         effectHandler = { store, sideEffect ->
             sideEffectHandler(sideEffect)
         }
-    ) {s, a: ClientIntent ->
+    ) { s, a: ClientIntent ->
         val serverData = s.serverData
         when (serverData) {
             is RefreshViewState.ServerData.Loaded -> {
@@ -43,18 +50,33 @@ fun createRefreshViewStore(userId: String, networkReducerUrl:String, sideEffectH
                         ).withoutSideEffects()
                     }
                     is ClientIntent.SendToServer -> {
-                        val networkReducerResult = networkReducer(userId, networkReducerUrl, s.clientStorage, a.intent)
-                        val reducedNode: ViewTreeNode = networkReducerResult.state
-                        s.copy(
-                            serverData = serverData.copy(node = reducedNode)
-                        ).withSideEffects(networkReducerResult.sideEffects)
+                        val result = networkReducer(userId, networkReducerUrl, s.clientStorage, a.intent)
+                        val data = result.getOrNull()
+                        if (data != null) {
+                            val reducedNode: ViewTreeNode = data.state
+                            s.copy(
+                                serverData = serverData.copy(node = reducedNode)
+                            ).withSideEffects(data.sideEffects)
+                        } else {
+                            s.copy(
+                                serverData = RefreshViewState.ServerData.NetworkError(
+                                    result.exceptionOrNull()?.stackTraceToString() ?: ""
+                                )
+                            ).withoutSideEffects()
+                        }
                     }
-                    else -> throw Error("unpredictable state")
+                    is ClientIntent.UpdateState -> {
+                        s.copy(
+                            serverData = RefreshViewState.ServerData.Loaded(
+                                node = a.node
+                            )
+                        ).withoutSideEffects()
+                    }
                 }
             }
             is RefreshViewState.ServerData.Loading -> {
                 when (a) {
-                    is ClientIntent.FirstServerResponse -> {
+                    is ClientIntent.UpdateState -> {
                         s.copy(
                             serverData = RefreshViewState.ServerData.Loaded(
                                 node = a.node
@@ -64,11 +86,34 @@ fun createRefreshViewStore(userId: String, networkReducerUrl:String, sideEffectH
                     else -> throw Error("unpredictable state")
                 }
             }
+            is RefreshViewState.ServerData.NetworkError -> {
+                when (a) {
+                    is ClientIntent.UpdateState -> {
+                        s.copy(
+                            serverData = RefreshViewState.ServerData.Loaded(
+                                a.node
+                            )
+                        ).withoutSideEffects()
+                    }
+                    else -> s.withoutSideEffects()
+                }
+            }
+
         }
     }
     APP_SCOPE.launch {
-        val firstResponse = networkReducer(userId, networkReducerUrl, result.state.clientStorage, Intent.UpdateView)
-        result.send(ClientIntent.FirstServerResponse(firstResponse.state))
+        repeat(if (autoUpdate) Int.MAX_VALUE else 1) {
+            val result = networkReducer(userId, networkReducerUrl, resultStore.state.clientStorage, Intent.UpdateView)
+            val data = result.getOrNull()
+            if (data != null) {
+                resultStore.send(
+                    ClientIntent.UpdateState(
+                        data.state
+                    )
+                )
+            }
+            delay(500)
+        }
     }
-    return result
+    return resultStore
 }

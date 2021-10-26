@@ -12,8 +12,8 @@ sealed class GlobalAction {
     class ActionInput(val str:String): GlobalAction()
 }
 
-class SwiftStoreHelper(userId: String, networkReducerUrl:String, sideEffectHandler: (ClientSideEffect) -> Unit) {
-    val store = createRefreshViewStore(userId, networkReducerUrl, sideEffectHandler)
+class SwiftStoreHelper(userId: String, networkReducerUrl:String, autoUpdate:Boolean, sideEffectHandler: (ClientSideEffect) -> Unit) {
+    val store = createRefreshViewStore(userId, networkReducerUrl, autoUpdate = autoUpdate, sideEffectHandler)
 
     fun sendAction(a: ClientIntent) {
         store.send(a)

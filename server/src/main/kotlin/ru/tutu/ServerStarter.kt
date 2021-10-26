@@ -11,6 +11,7 @@ import io.ktor.routing.*
 import ru.tutu.logic.ServerState
 import ru.tutu.logic.serverReducer
 import ru.tutu.logic.serverRender
+import ru.tutu.logic.serverRenderPlayground
 import java.util.concurrent.ConcurrentHashMap
 import ru.tutu.serialization.*
 
@@ -45,7 +46,7 @@ fun Application.configureRouting() {
         }
         post("/playground_reducer") {
             val clientData = call.receiveText().parseToNetworkReducerRequestBody()
-            val result = serverNetworkReducer(clientData.userId, clientData.clientStorage, clientData.intent)
+            val result = serverPlaygroundNetworkReducer(clientData.userId, clientData.clientStorage, clientData.intent)
             call.respondText(
                 text = result.toJson(),
                 contentType = ContentType.Application.Json
@@ -71,4 +72,13 @@ private suspend fun serverNetworkReducer(
     mapUserIdToServerState[userId] = reducerResult.state
     val node = serverRender(reducerResult.state, clientStorage)
     return NetworkReducerResult(node.toJson().parseToNode(), reducerResult.sideEffects)
+}
+
+private suspend fun serverPlaygroundNetworkReducer(
+    userId: String,
+    clientStorage: ClientStorage,
+    intent: Intent
+): NetworkReducerResult {
+    val node = serverRenderPlayground(clientStorage)
+    return NetworkReducerResult(node.toJson().parseToNode(), emptyList())
 }

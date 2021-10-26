@@ -55,7 +55,8 @@ struct ContentView: View {
 
                     RenderRefreshView(
                             userId: "my_user_id",
-                            networkReducerUrl: "http://localhost:8081/playground_reducer"
+                            networkReducerUrl: "http://localhost:8081/playground_reducer",
+                            autoUpdate: true
                     ) { sideEffect in
                     }.padding()
                     .border(Color.black)
@@ -70,7 +71,8 @@ struct ContentView: View {
             NavigationView {
                 RenderRefreshView(
                         userId: "my_user_id",
-                        networkReducerUrl: "http://localhost:8081/important_reducer"
+                        networkReducerUrl: "http://localhost:8081/important_reducer",
+                        autoUpdate: false
                 ){ sideEffect in
                     switch sideEffect {
                     case let openOrder as ClientSideEffect.OpenOrder:
