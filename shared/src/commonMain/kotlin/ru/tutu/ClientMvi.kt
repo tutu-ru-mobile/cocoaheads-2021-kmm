@@ -27,68 +27,63 @@ fun createRefreshViewStore(
     autoUpdate: Boolean,
     sideEffectHandler: (ClientSideEffect) -> Unit
 ): Store<RefreshViewState, ClientIntent> {
-    val resultStore = createStoreWithSideEffect<RefreshViewState, ClientIntent, ClientSideEffect>(
-        RefreshViewState(
-            clientStorage = ClientStorage(emptyMap())
-        ),
-        effectHandler = { store, sideEffect ->
-            sideEffectHandler(sideEffect)
-        }
-    ) { oldViewState: RefreshViewState, intent: ClientIntent ->
+    val mviStore = createStoreWithSideEffect<RefreshViewState, ClientIntent, ClientSideEffect>(
+        RefreshViewState(clientStorage = ClientStorage(emptyMap())),
+        effectHandler = { _, sideEffect -> sideEffectHandler(sideEffect) }
+    ) { viewState: RefreshViewState, intent: ClientIntent ->
         when (intent) {
             is ClientIntent.UpdateScreenState -> {
-                oldViewState.copy(
+                viewState.copy(
                     screen = intent.screen
-                ).withoutSideEffects()
+                ).noSideEffects()
             }
             is ClientIntent.UpdateClientStorage -> {
-                oldViewState.copy(
-                    clientStorage = oldViewState.clientStorage.copy(
-                        map = oldViewState.clientStorage.map.toMutableMap().also {
+                viewState.copy(
+                    clientStorage = viewState.clientStorage.copy(
+                        map = viewState.clientStorage.map.toMutableMap().also {
                             it[intent.key] = intent.value
                         }
                     )
-                ).withoutSideEffects()
+                ).noSideEffects()
             }
             is ClientIntent.SendToServer -> {
-                val result = networkReducer(userId, networkReducerUrl, oldViewState.clientStorage, intent.serverIntent)
+                val result = networkReducer(userId, networkReducerUrl, viewState.clientStorage, intent.serverIntent)
                 val data = result.getOrNull()
                 if (data != null) {
-                    val reducedNode: ViewTreeNode = data.state
-                    oldViewState.copy(
-                        screen = RefreshViewState.RefreshViewScreen.Normal(reducedNode)
-                    ).withSideEffects(data.sideEffects)
+                    viewState.copy(
+                        screen = RefreshViewState.RefreshViewScreen.Normal(data.state)
+                    ).addSideEffects(data.sideEffects)
                 } else {
-                    oldViewState.copy(
-                        screen = RefreshViewState.RefreshViewScreen.NetworkError(
-                            result.exceptionOrNull()?.stackTraceToString() ?: ""
-                        )
-                    ).withoutSideEffects()
+                    viewState.copy(
+                        screen = result.createErrorScreen()
+                    ).noSideEffects()
                 }
             }
         }
     }
     APP_SCOPE.launch {
-        repeat(if (autoUpdate) Int.MAX_VALUE else 1) {
-            val result = networkReducer(userId, networkReducerUrl, resultStore.state.clientStorage, Intent.UpdateView)
+        do {
+            val result = networkReducer(userId, networkReducerUrl, mviStore.state.clientStorage, Intent.UpdateView)
             val data = result.getOrNull()
             if (data != null) {
-                resultStore.send(
+                mviStore.send(
                     ClientIntent.UpdateScreenState(
                         RefreshViewState.RefreshViewScreen.Normal(data.state)
                     )
                 )
             } else {
-                resultStore.send(
-                    ClientIntent.UpdateScreenState(
-                        RefreshViewState.RefreshViewScreen.NetworkError(
-                            result.exceptionOrNull()?.stackTraceToString() ?: ""
-                        )
-                    )
+                mviStore.send(
+                    ClientIntent.UpdateScreenState(result.createErrorScreen())
                 )
             }
             delay(500)
-        }
+        } while (autoUpdate)
     }
-    return resultStore
+
+    return mviStore
 }
+
+fun Result<*>.createErrorScreen() =
+    RefreshViewState.RefreshViewScreen.NetworkError(
+        this.exceptionOrNull()?.stackTraceToString() ?: ""
+    )

@@ -2,6 +2,7 @@ package ru.tutu
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,20 +20,24 @@ fun RefreshView() {
         //todo handle side effects
     } }
     val globalState = store.stateFlow.collectAsState()
-    val serverData = globalState.value.serverData
+    val screen = globalState.value.screen
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.TopCenter,
     ) {
-        when(serverData) {
+        when(screen) {
             is RefreshViewState.RefreshViewScreen.Loading -> {
                 CircularProgressIndicator(strokeWidth = 8.dp)
             }
             is RefreshViewState.RefreshViewScreen.Normal -> {
                 val clientStorage = globalState.value.clientStorage
-                RenderNode(clientStorage, serverData.node) {
+                RenderNode(clientStorage, screen.node) {
                     store.send(it)
                 }
+            }
+            is RefreshViewState.RefreshViewScreen.NetworkError -> {
+                Text("Сетевая ошибка:")
+                Text(screen.exception)
             }
         }
     }

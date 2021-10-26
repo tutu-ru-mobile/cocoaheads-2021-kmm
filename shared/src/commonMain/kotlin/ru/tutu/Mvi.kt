@@ -6,23 +6,22 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 
-typealias Reducer<S, A> = suspend (S, A) -> S
+typealias Reducer<STATE, INTENT> = suspend (STATE, INTENT) -> STATE
 
-interface Store<S, A> {
-    fun send(action: A)
-    val stateFlow: StateFlow<S>
+interface Store<STATE, INTENT> {
+    fun send(action: INTENT)
+    val stateFlow: StateFlow<STATE>
     val state get() = stateFlow.value
 }
 /**
  * Самая простая реализация MVI архитектуры для слоя представления.
  */
-fun <S, A> createStore(init: S, reducer: Reducer<S, A>): Store<S, A> {
+fun <STATE, INTENT> createStore(init: STATE, reducer: Reducer<STATE, INTENT>): Store<STATE, INTENT> {
     val mutableStateFlow = MutableStateFlow(init)
-    val channel: Channel<A> = Channel(Channel.UNLIMITED)
+    val channel: Channel<INTENT> = Channel(Channel.UNLIMITED)
 
-    return object : Store<S, A> {
+    return object : Store<STATE, INTENT> {
         init {
             //https://m.habr.com/ru/company/kaspersky/blog/513364/
             //or alternative in jvm use fun CoroutineScope.actor(...)
@@ -33,29 +32,29 @@ fun <S, A> createStore(init: S, reducer: Reducer<S, A>): Store<S, A> {
             }
         }
 
-        override fun send(action: A) {
+        override fun send(action: INTENT) {
             channel.offer(action)//mutableStateFlow.value = reducer(mutableStateFlow.value, action)
         }
 
-        override val stateFlow: StateFlow<S> = mutableStateFlow
+        override val stateFlow: StateFlow<STATE> = mutableStateFlow
     }
 }
 
-typealias ReducerSE<S, A, SE> = suspend (S, A) -> ReducerResult<S, SE>
+typealias ReducerSE<STATE, INTENT, EFFECT> = suspend (STATE, INTENT) -> ReducerResult<STATE, EFFECT>
 
-class ReducerResult<S, SE>(val state: S, val sideEffects: List<SE> = emptyList())
+class ReducerResult<STATE, EFFECT>(val state: STATE, val sideEffects: List<EFFECT> = emptyList())
 
 /**
  * MVI по типу ELM с обработкой SideEffect-ов
  */
-fun <S, A, SE> createStoreWithSideEffect(
-    init: S,
-    effectHandler: (store: Store<S, A>, sideEffect: SE) -> Unit,
-    reducer: ReducerSE<S, A, SE>
-): Store<S, A> {
-    lateinit var store: Store<S, A>
-    store = createStore(init) { state, action ->
-        val result = reducer(state, action)
+fun <STATE, INTENT, EFFECT> createStoreWithSideEffect(
+    init: STATE,
+    effectHandler: (store: Store<STATE, INTENT>, sideEffect: EFFECT) -> Unit,
+    reducer: ReducerSE<STATE, INTENT, EFFECT>
+): Store<STATE, INTENT> {
+    lateinit var store: Store<STATE, INTENT>
+    store = createStore(init) { state, intent ->
+        val result = reducer(state, intent)
 
         result.sideEffects.forEach {
             effectHandler(store, it)
@@ -66,5 +65,5 @@ fun <S, A, SE> createStoreWithSideEffect(
     return store
 }
 
-fun <S:Any, SE> S.withoutSideEffects() = ReducerResult(this, emptyList<SE>())
-fun <S:Any, SE> S.withSideEffects(sideEffects: List<SE>) = ReducerResult(this, sideEffects)
+fun <STATE:Any, EFFECT> STATE.noSideEffects() = ReducerResult(this, emptyList<EFFECT>())
+fun <STATE:Any, EFFECT> STATE.addSideEffects(sideEffects: List<EFFECT>) = ReducerResult(this, sideEffects)
