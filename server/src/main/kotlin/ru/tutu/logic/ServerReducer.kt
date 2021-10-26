@@ -41,7 +41,7 @@ fun serverReducer(state: ServerState, clientStorage: ClientStorage, intent: Inte
                 }
             }
         }
-        is Intent.Init -> {
+        is Intent.UpdateView -> {
             state
         }
     }

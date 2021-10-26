@@ -35,7 +35,15 @@ fun Application.configureRouting() {
         get("/") {
             call.respondText("Hello World 5!")
         }
-        post(SERVER_PATH_NETWORK_REDUCER) {
+        post("/important_reducer") {
+            val clientData = call.receiveText().parseToNetworkReducerRequestBody()
+            val result = serverNetworkReducer(clientData.userId, clientData.clientStorage, clientData.intent)
+            call.respondText(
+                text = result.toJson(),
+                contentType = ContentType.Application.Json
+            )
+        }
+        post("/playground_reducer") {
             val clientData = call.receiveText().parseToNetworkReducerRequestBody()
             val result = serverNetworkReducer(clientData.userId, clientData.clientStorage, clientData.intent)
             call.respondText(

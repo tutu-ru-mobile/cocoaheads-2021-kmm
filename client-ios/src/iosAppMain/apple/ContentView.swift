@@ -8,6 +8,7 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
+            //-------------------------------------------------------------
             // Главный экран
             NavigationView {
                 VStack {
@@ -25,6 +26,7 @@ struct ContentView: View {
                 Label("Главная", systemImage: "house.fill")
             }.tag(0)
 
+            //-------------------------------------------------------------
             // Приобретенные билеты
             NavigationView {
                 VStack {
@@ -44,20 +46,32 @@ struct ContentView: View {
                 Label("Билеты", systemImage: "list.dash")
             }.tag(1)
 
-            // Экран помощи контактов
+            //-------------------------------------------------------------
+            // Экран помощи и контактов
             NavigationView {
                 VStack {
                     Text("Напишите в чат,")
                     Text("или позвоните +5(555)555-55-55")
+
+                    RenderRefreshView(
+                            userId: "my_user_id",
+                            networkReducerUrl: "http://localhost:8081/playground_reducer"
+                    ) { sideEffect in
+                    }.padding()
+                    .border(Color.black)
 
                 }.navigationBarTitle("Справка и помощь", displayMode: .inline)
             }.tabItem {
                 Label("Помощь", systemImage: "phone.fill")
             }.tag(2)
 
+            //-------------------------------------------------------------
             // Важная информация
             NavigationView {
-                RenderRefreshView(userId: "my_user_id"){ sideEffect in
+                RenderRefreshView(
+                        userId: "my_user_id",
+                        networkReducerUrl: "http://localhost:8081/important_reducer"
+                ){ sideEffect in
                     switch sideEffect {
                     case let openOrder as ClientSideEffect.OpenOrder:
                         selectedTab = 1
@@ -73,6 +87,7 @@ struct ContentView: View {
             }.tabItem {
                 Label("Важно", systemImage: "star")
             }.tag(3)
+            //-------------------------------------------------------------
         }
 
     }

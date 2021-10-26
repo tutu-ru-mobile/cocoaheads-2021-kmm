@@ -36,8 +36,6 @@ fun String.parseToNetworkReducerResult(): NetworkReducerResult =
         NetworkReducerResult(state, sideEffects)
     }
 
-val SERVER_PATH_NETWORK_REDUCER = "network_reducer"
-
 @Serializable
 data class NetworkReducerRequestBody(
     val userId: String,
@@ -60,7 +58,7 @@ sealed class Intent {
     data class ButtonPressed(val buttonId: Id) : Intent()
 
     @Serializable
-    object Init : Intent()
+    object UpdateView : Intent()
 }
 
 @Serializable

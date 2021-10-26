@@ -1,6 +1,5 @@
 package ru.tutu.logic
 
-import ru.tutu.SERVER_URL
 import ru.tutu.serialization.*
 import ru.tutu.verticalContainer
 
@@ -9,7 +8,7 @@ fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode
         label("Новые требования для путешествий.")
         label("Необходима прививка, или ПЦР тест.")
         image(
-            "$SERVER_URL/static/covid_test.png",
+            "http://localhost:8081/static/covid_test.png",
             200, 200
         )
         space(20)

@@ -5,9 +5,8 @@ import io.ktor.http.*
 import io.ktor.http.content.*
 import ru.tutu.serialization.*
 
-val SERVER_URL = "http://localhost:8081"
 
-suspend fun networkReducer(userId: String, clientStorage: ClientStorage, intent: Intent): NetworkReducerResult =
-    ktorClient.post<String>("$SERVER_URL/$SERVER_PATH_NETWORK_REDUCER"){
+suspend fun networkReducer(userId: String, networkReducerUrl:String, clientStorage: ClientStorage, intent: Intent): NetworkReducerResult =
+    ktorClient.post<String>(networkReducerUrl){
         body = TextContent(NetworkReducerRequestBody(userId, clientStorage, intent).toJson(), ContentType.Application.Json)
     }.parseToNetworkReducerResult()
