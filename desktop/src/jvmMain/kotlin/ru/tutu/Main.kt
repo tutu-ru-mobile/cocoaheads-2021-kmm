@@ -22,7 +22,7 @@ suspend fun main() {
             ),
         ) {
             MaterialTheme {
-                RefreshView()
+                ServerDrivenView()
             }
         }
     }

@@ -12,13 +12,13 @@ import kotlin.random.Random
 import kotlin.random.nextUInt
 
 @Composable
-fun RefreshView(
+fun ServerDrivenView(
     userId: String,
     networkReducerUrl: String,
     autoUpdate: Boolean,
     sideEffectHandler: (ClientSideEffect) -> Unit
 ) {
-    val store = remember { createRefreshViewStore(
+    val store = remember { createServerDrivenViewStore(
         userId,
         networkReducerUrl = networkReducerUrl,
         autoUpdate = autoUpdate
@@ -32,16 +32,16 @@ fun RefreshView(
         contentAlignment = Alignment.TopCenter,
     ) {
         when(screen) {
-            is RefreshViewState.RefreshViewScreen.Loading -> {
+            is ServerDrivenViewState.ServerDrivenViewScreen.Loading -> {
                 CircularProgressIndicator(strokeWidth = 8.dp)
             }
-            is RefreshViewState.RefreshViewScreen.Normal -> {
+            is ServerDrivenViewState.ServerDrivenViewScreen.Normal -> {
                 val clientStorage = globalState.value.clientStorage
                 RenderNode(clientStorage, screen.node) {
                     store.send(it)
                 }
             }
-            is RefreshViewState.RefreshViewScreen.NetworkError -> {
+            is ServerDrivenViewState.ServerDrivenViewScreen.NetworkError -> {
                 Text("Сетевая ошибка:")
                 Text(screen.exception)
             }

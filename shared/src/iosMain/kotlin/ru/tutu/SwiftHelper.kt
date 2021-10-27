@@ -6,18 +6,18 @@ import ru.tutu.serialization.*
 import kotlin.random.Random
 import kotlin.random.nextUInt
 
-class RefreshViewStoreWrapper(userId: String, networkReducerUrl:String, autoUpdate:Boolean, sideEffectHandler: (ClientSideEffect) -> Unit) {
-    val store = createRefreshViewStore(userId, networkReducerUrl, autoUpdate = autoUpdate, sideEffectHandler)
+class ServerDrivenViewStoreWrapper(userId: String, networkReducerUrl:String, autoUpdate:Boolean, sideEffectHandler: (ClientSideEffect) -> Unit) {
+    val store = createServerDrivenViewStore(userId, networkReducerUrl, autoUpdate = autoUpdate, sideEffectHandler)
 
     fun sendIntent(intent: ClientIntent) {
         store.send(intent)
     }
 
-    fun getLastState(): RefreshViewState {
+    fun getLastState(): ServerDrivenViewState {
         return store.stateFlow.value
     }
 
-    fun addListener(listener: (RefreshViewState) -> Unit) {
+    fun addListener(listener: (ServerDrivenViewState) -> Unit) {
         launchAppScope {
             store.stateFlow.collectLatest {
                 listener(it)

@@ -109,7 +109,7 @@ fun MainContainer() {
                             .border(border = BorderStroke(1.dp, color = Color.Black))
                             .padding(5.dp)
                     ) {
-                        RefreshView(
+                        ServerDrivenView(
                             userId = "my_user_id",
                             networkReducerUrl = "http://10.0.2.2:8081/playground_reducer",
                             autoUpdate = true
@@ -117,7 +117,7 @@ fun MainContainer() {
                     }
 
                 }
-                Screen.IMPORTANT -> RefreshView(
+                Screen.IMPORTANT -> ServerDrivenView(
                     "my_user_id_android",
                     "http://10.0.2.2:8081/important_reducer",
                     true

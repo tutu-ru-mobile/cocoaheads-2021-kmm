@@ -4,33 +4,33 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.tutu.serialization.*
 
-data class RefreshViewState(
+data class ServerDrivenViewState(
     val clientStorage: ClientStorage,
-    val screen: RefreshViewScreen = RefreshViewScreen.Loading
+    val screen: ServerDrivenViewScreen = ServerDrivenViewScreen.Loading
 ) {
-    sealed class RefreshViewScreen {
-        data class NetworkError(val exception:String) : RefreshViewScreen()
-        object Loading : RefreshViewScreen()
-        data class Normal(val node: ViewTreeNode) : RefreshViewScreen()
+    sealed class ServerDrivenViewScreen {
+        data class NetworkError(val exception:String) : ServerDrivenViewScreen()
+        object Loading : ServerDrivenViewScreen()
+        data class Normal(val node: ViewTreeNode) : ServerDrivenViewScreen()
     }
 }
 
 sealed class ClientIntent() {
     class SendToServer(val serverIntent: Intent) : ClientIntent()
     data class UpdateClientStorage(val key: String, val value: ClientValue) : ClientIntent()
-    internal class UpdateScreenState(val screen: RefreshViewState.RefreshViewScreen) : ClientIntent()
+    internal class UpdateScreenState(val screen: ServerDrivenViewState.ServerDrivenViewScreen) : ClientIntent()
 }
 
-fun createRefreshViewStore(
+fun createServerDrivenViewStore(
     userId: String,
     networkReducerUrl: String,
     autoUpdate: Boolean,
     sideEffectHandler: (ClientSideEffect) -> Unit
-): Store<RefreshViewState, ClientIntent> {
-    val mviStore = createStoreWithSideEffect<RefreshViewState, ClientIntent, ClientSideEffect>(
-        RefreshViewState(clientStorage = ClientStorage(emptyMap())),
+): Store<ServerDrivenViewState, ClientIntent> {
+    val mviStore = createStoreWithSideEffect<ServerDrivenViewState, ClientIntent, ClientSideEffect>(
+        ServerDrivenViewState(clientStorage = ClientStorage(emptyMap())),
         effectHandler = { _, sideEffect -> sideEffectHandler(sideEffect) }
-    ) { viewState: RefreshViewState, intent: ClientIntent ->
+    ) { viewState: ServerDrivenViewState, intent: ClientIntent ->
         when (intent) {
             is ClientIntent.UpdateScreenState -> {
                 val newState = viewState.copy(
@@ -58,7 +58,7 @@ fun createRefreshViewStore(
                 val data = result.getOrNull()
                 if (data != null) {
                     viewState.copy(
-                        screen = RefreshViewState.RefreshViewScreen.Normal(data.state)
+                        screen = ServerDrivenViewState.ServerDrivenViewScreen.Normal(data.state)
                     ).addSideEffects(data.sideEffects)
                 } else {
                     viewState.copy(
@@ -75,7 +75,7 @@ fun createRefreshViewStore(
             if (data != null) {
                 mviStore.send(
                     ClientIntent.UpdateScreenState(
-                        RefreshViewState.RefreshViewScreen.Normal(data.state)
+                        ServerDrivenViewState.ServerDrivenViewScreen.Normal(data.state)
                     )
                 )
             } else {
@@ -91,6 +91,6 @@ fun createRefreshViewStore(
 }
 
 fun Result<*>.createErrorScreen() =
-    RefreshViewState.RefreshViewScreen.NetworkError(
+    ServerDrivenViewState.ServerDrivenViewScreen.NetworkError(
         this.exceptionOrNull()?.stackTraceToString() ?: ""
     )

@@ -8,7 +8,7 @@ pluginManagement {
     }
     
 }
-rootProject.name = "refresh-kmm"
+rootProject.name = "server-driven-view-kmm"
 
 
 include(":client-ios")

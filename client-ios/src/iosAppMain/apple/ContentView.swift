@@ -67,7 +67,7 @@ struct ContentView: View {
                     Text("Напишите в чат,")
                     Text("или позвоните +5(555)555-55-55")
 
-                    RenderRefreshView(
+                    ServerDrivenView(
                             userId: "my_user_id",
                             networkReducerUrl: "http://localhost:8081/playground_reducer",
                             autoUpdate: true
@@ -82,7 +82,7 @@ struct ContentView: View {
             //-------------------------------------------------------------
             // Важная информация
             NavigationView {
-                RenderRefreshView(
+                ServerDrivenView(
                         userId: "my_user_id",
                         networkReducerUrl: "http://localhost:8081/important_reducer",
                         autoUpdate: true

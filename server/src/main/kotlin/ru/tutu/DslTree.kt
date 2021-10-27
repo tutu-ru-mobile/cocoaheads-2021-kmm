@@ -2,22 +2,22 @@ package ru.tutu
 
 import ru.tutu.serialization.*
 
-fun verticalContainer(backgroundColor:Color = Color(0x00_00_00_00u), lambda: NodeDsl.() -> Unit): ViewTreeNode = refreshViewDsl {
+fun verticalContainer(backgroundColor:Color = Color(0x00_00_00_00u), lambda: NodeDsl.() -> Unit): ViewTreeNode = serverDrivenViewDsl {
     verticalContainer(backgroundColor = backgroundColor) {
         lambda()
     }
 }.first()
 
 @OptIn(ExperimentalStdlibApi::class)
-private fun refreshViewDsl(lambda: NodeDsl.() -> Unit): List<ViewTreeNode> {
+private fun serverDrivenViewDsl(lambda: NodeDsl.() -> Unit): List<ViewTreeNode> {
     return buildList<ViewTreeNode> {
         object : NodeDsl {
             override fun verticalContainer(backgroundColor:Color, lambda: NodeDsl.() -> Unit) {
-                add(ViewTreeNode.Container.Vertical(refreshViewDsl(lambda), backgroundColor = backgroundColor))
+                add(ViewTreeNode.Container.Vertical(serverDrivenViewDsl(lambda), backgroundColor = backgroundColor))
             }
 
             override fun horizontalContainer(backgroundColor:Color, lambda: NodeDsl.() -> Unit) {
-                add(ViewTreeNode.Container.Horizontal(refreshViewDsl(lambda), backgroundColor = backgroundColor))
+                add(ViewTreeNode.Container.Horizontal(serverDrivenViewDsl(lambda), backgroundColor = backgroundColor))
             }
 
             override fun button(id: Id, text: String) {
