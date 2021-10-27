@@ -79,7 +79,6 @@ fun MainContainer() {
         Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             when (selectedTab.value) {
                 Screen.MAIN -> {
-                    Text("Главный экран")
                     Text("Здесь можно купить билет")
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Text(

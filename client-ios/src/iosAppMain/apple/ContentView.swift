@@ -19,7 +19,6 @@ struct ContentView: View {
             // Главный экран
             NavigationView {
                 VStack {
-                    Text("Главный экран")
                     Text("Здесь можно купить билет")
                     Spacer()
                     Button(action: {
