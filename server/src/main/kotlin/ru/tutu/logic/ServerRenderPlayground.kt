@@ -5,6 +5,10 @@ import ru.tutu.serialization.*
 import ru.tutu.verticalContainer
 import kotlin.random.Random
 
+val catUrl = "http://localhost:8081/static/cat.png"
+val dogUrl = "http://localhost:8081/static/dog.png"
+val racoonUrl = "http://localhost:8081/static/racoon.png"
+
 data class Pet(
     val name:String,
     val img:String,
@@ -15,18 +19,19 @@ data class Pet(
     )
 )
 
+
 val pets = listOf(
     Pet(
         "Cat",
-        "http://localhost:8081/static/cat.png"
+        catUrl
     ),
     Pet(
         "Dog",
-        "http://localhost:8081/static/dog.png"
+        dogUrl
     ),
     Pet(
         "Racoon",
-        "http://localhost:8081/static/racoon.png"
+        racoonUrl
     )
 )
 
