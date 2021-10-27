@@ -19,6 +19,14 @@ struct ContentView: View {
             // Главный экран
             NavigationView {
                 VStack {
+                    AsyncImage(url: URL(string: "http://localhost:8081/static/logo.png"), content: { image in
+                        image.resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(maxWidth: 200, maxHeight: 200)
+                    }, placeholder: {
+                        ProgressView()
+                    })
+
                     Text("Здесь можно купить билет")
                     Spacer()
                     Button(action: {

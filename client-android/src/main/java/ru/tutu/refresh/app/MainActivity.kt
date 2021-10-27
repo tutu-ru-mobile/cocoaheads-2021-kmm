@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.tutu.RefreshView
+import ru.tutu.*
 import ru.tutu.refresh.app.theme.AppAndroidTheme
 import ru.tutu.serialization.ClientSideEffect
 
@@ -79,6 +79,7 @@ fun MainContainer() {
         Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             when (selectedTab.value) {
                 Screen.MAIN -> {
+                    NetworkImage("http://localhost:8081/static/logo.png", 250, 120)
                     Text("Здесь можно купить билет")
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Text(
