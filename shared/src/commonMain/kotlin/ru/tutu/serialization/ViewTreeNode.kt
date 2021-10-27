@@ -37,9 +37,9 @@ sealed class ViewTreeNode() {
         abstract val children: List<ViewTreeNode>
 
         @Serializable
-        class Horizontal(override val children: List<ViewTreeNode>) : Container()
+        class Horizontal(override val children: List<ViewTreeNode>, val backgroundColor: Color) : Container()
 
         @Serializable
-        class Vertical(override val children: List<ViewTreeNode>) : Container()
+        class Vertical(override val children: List<ViewTreeNode>, val backgroundColor: Color) : Container()
     }
 }
