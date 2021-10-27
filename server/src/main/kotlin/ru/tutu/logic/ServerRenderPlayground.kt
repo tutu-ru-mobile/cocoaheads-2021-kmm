@@ -9,6 +9,11 @@ val catUrl = "http://localhost:8081/static/cat.png"
 val dogUrl = "http://localhost:8081/static/dog.png"
 val racoonUrl = "http://localhost:8081/static/racoon.png"
 
+val lightRed = Color(0x44_ff_00_u)
+val lightGreen = Color(0x44_00_ff_00_u)
+val lightBlue = Color(0x33_00_00_ff_u)
+val lightPink = Color(0x44_ff_00_ffu)
+
 data class Pet(
     val name:String,
     val img:String,
@@ -21,18 +26,9 @@ data class Pet(
 
 
 val pets = listOf(
-    Pet(
-        "Cat",
-        catUrl
-    ),
-    Pet(
-        "Dog",
-        dogUrl
-    ),
-    Pet(
-        "Racoon",
-        racoonUrl
-    )
+    Pet("Cat", catUrl),
+    Pet("Dog", dogUrl),
+    Pet("Racoon", racoonUrl)
 )
 
 fun serverRenderPlayground(clientStorage: ClientStorage): ViewTreeNode {
@@ -44,7 +40,7 @@ fun serverRenderPlayground(clientStorage: ClientStorage): ViewTreeNode {
 }
 
 private fun NodeDsl.petCard(pet:Pet) {
-    horizontalContainer(Color(0x220000ffu)) {
+    horizontalContainer(lightBlue) {
         verticalContainer() {
             label("I am ${pet.name}")
             image(
