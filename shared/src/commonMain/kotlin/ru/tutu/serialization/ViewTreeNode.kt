@@ -43,3 +43,5 @@ sealed class ViewTreeNode() {
         data class Vertical(override val children: List<ViewTreeNode>, val backgroundColor: Color) : Container()
     }
 }
+
+fun Color(red:Int, green:Int, blue:Int, alpha:Int = 0xff) = Color( ((alpha shl 24) + (red shl 16) + (green shl 8) + blue).toUInt())

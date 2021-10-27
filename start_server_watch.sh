@@ -1,4 +1,4 @@
 #!/bin/bash
-./gradlew -t server:build &
-./gradlew server:run
+./gradlew -t server:assemble -q --offline &
+./gradlew server:run -q --offline
 kill %1

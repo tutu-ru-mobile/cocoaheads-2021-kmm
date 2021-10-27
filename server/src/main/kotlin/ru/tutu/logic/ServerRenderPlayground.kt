@@ -17,15 +17,15 @@ data class Pet(
 
 val pets = listOf(
     Pet(
-        "Я Кот",
+        "Cat",
         "http://localhost:8081/static/cat.png"
     ),
     Pet(
-        "Я Собака",
+        "Dog",
         "http://localhost:8081/static/dog.png"
     ),
     Pet(
-        "Я Енот",
+        "Racoon",
         "http://localhost:8081/static/racoon.png"
     )
 )
@@ -41,7 +41,7 @@ fun serverRenderPlayground(clientStorage: ClientStorage): ViewTreeNode {
 private fun NodeDsl.petCard(pet:Pet) {
     horizontalContainer(Color(0x220000ffu)) {
         verticalContainer() {
-            label(pet.name)
+            label("I am ${pet.name}")
             image(
                 imgUrl = pet.img,
                 width = 150,
@@ -63,10 +63,8 @@ private fun NodeDsl.petCard(pet:Pet) {
                 repeat(4) {
                 }
             }
-            label("Детальная информация")
+            label("Additional info")
         }
     }
 
 }
-
-fun Color(red:Int, green:Int, blue:Int) = Color(0xFF000000u + ((red shl 16) + (green shl 8) + blue).toUInt())
