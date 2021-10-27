@@ -2,6 +2,7 @@ package ru.tutu
 
 import ru.tutu.serialization.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -13,7 +14,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun RenderNode(clientStorage:ClientStorage, node: ViewTreeNode, sendIntent: (ClientIntent) -> Unit) {
+fun RenderNode(
+    clientStorage: ClientStorage,
+    node: ViewTreeNode,
+    sendIntent: (ClientIntent) -> Unit
+) {
     when (node) {
         is ViewTreeNode.Container.Horizontal -> {
             Row {
@@ -23,28 +28,34 @@ fun RenderNode(clientStorage:ClientStorage, node: ViewTreeNode, sendIntent: (Cli
             }
         }
         is ViewTreeNode.Container.Vertical -> {
-            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 for (child in node.children) {
                     RenderNode(clientStorage, child, sendIntent)
                 }
             }
         }
         is ViewTreeNode.Leaf.Rectangle -> {
-            Box(modifier = Modifier
-                .padding(2.dp)
-                .size(node.width.dp, node.height.dp)
-                .background(color = Color(node.color.hexValue.toInt()))
+            Box(
+                modifier = Modifier
+                    .padding(2.dp)
+                    .size(node.width.dp, node.height.dp)
+                    .background(color = Color(node.color.hexValue.toInt()))
             )
         }
         is ViewTreeNode.Leaf.Label -> {
             Text(text = node.text)
         }
         is ViewTreeNode.Leaf.Button -> {
-            Button(onClick = {
-                sendIntent(ClientIntent.SendToServer(Intent.ButtonPressed(node.id)))
-            }) {
-                Text(text = node.text)
-            }
+            Text(
+                text = node.text,
+                modifier = Modifier.clickable {
+                    sendIntent(ClientIntent.SendToServer(Intent.ButtonPressed(node.id)))
+                },
+                color = Color.Blue
+            )
         }
         is ViewTreeNode.Leaf.Input -> {
             val text = clientStorage.map[node.storageKey]?.stringValue ?: ""

@@ -5,10 +5,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -72,16 +76,19 @@ fun MainContainer() {
                 }
             }
         }) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             when (selectedTab.value) {
                 Screen.MAIN -> {
                     Text("Главный экран")
                     Text("Здесь можно купить билет")
-                    Divider()
-                    Button(onClick = {
-                        selectedTab.value = Screen.IMPORTANT
-                    }) {
-                        Text("Посмотрите важную информацию!")
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text(
+                            text = "Посмотрите важную информацию!",
+                            modifier = Modifier.clickable {
+                                selectedTab.value = Screen.IMPORTANT
+                            },
+                            color = Color.Blue
+                        )
                     }
                 }
                 Screen.ORDERS -> {
@@ -89,7 +96,6 @@ fun MainContainer() {
                     Text("Билет №2")
                     Text("Билет №3")
                     ordersAdditionalInfo.value?.let {
-                        Divider()
                         Text(it)
                     }
 
