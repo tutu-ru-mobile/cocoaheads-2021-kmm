@@ -22,7 +22,8 @@ fun RenderNode(
     when (node) {
         is ViewTreeNode.Container.Horizontal -> {
             Row(
-                modifier = Modifier.background(color = Color(node.backgroundColor.hexValue.toInt())),
+                modifier = Modifier.padding(3.dp)
+                    .background(color = Color(node.backgroundColor.hexValue.toInt())),
                 horizontalArrangement = Arrangement.Center
             ) {
                 for (child in node.children) {

@@ -18,12 +18,14 @@ public struct ContainerVertical:View {
                 ForEach(containerVertical.children) { child in
                     RenderNode(child, clientStorage, sendIntent)
                 }
-            }
+            }.background(Color(containerVertical.backgroundColor.toUIColor()))
+                    .padding(2)
         } else {
             // Вертикальный контейнер можно было сделать с помощью List
             List(containerVertical.children) { child in
                 RenderNode(child, clientStorage, sendIntent)
-            }
+            }.background(Color(containerVertical.backgroundColor.toUIColor()))
+                    .padding(1)
         }
     }
 

@@ -17,7 +17,8 @@ public struct ContainerHorizontal:View {
             ForEach(containerHorizontal.children) { child in
                 RenderNode(child, clientStorage, sendIntent)
             }
-        }
+        }.background(Color(containerHorizontal.backgroundColor.toUIColor()))
+        .padding(2)
     }
 
 }

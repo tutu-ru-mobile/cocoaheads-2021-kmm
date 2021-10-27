@@ -33,9 +33,16 @@ fun createRefreshViewStore(
     ) { viewState: RefreshViewState, intent: ClientIntent ->
         when (intent) {
             is ClientIntent.UpdateScreenState -> {
-                viewState.copy(
+                val newState = viewState.copy(
                     screen = intent.screen
-                ).noSideEffects()
+                )
+                if(viewState != newState) {
+                    println("viewState != newState")
+                }
+                if(viewState.screen != newState.screen) {
+                    println("viewState.screen != newState.screen")
+                }
+                newState.noSideEffects()
             }
             is ClientIntent.UpdateClientStorage -> {
                 viewState.copy(

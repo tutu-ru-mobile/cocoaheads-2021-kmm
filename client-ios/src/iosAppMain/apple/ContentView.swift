@@ -65,8 +65,7 @@ struct ContentView: View {
                             networkReducerUrl: "http://localhost:8081/playground_reducer",
                             autoUpdate: true
                     ) { sideEffect in
-                    }.padding()
-                            .border(Color.black)
+                    }.border(Color.black)
 
                 }.navigationBarTitle("Справка и помощь", displayMode: .inline)
             }.tabItem {

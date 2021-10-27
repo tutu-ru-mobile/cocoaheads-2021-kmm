@@ -7,7 +7,7 @@ import kotlin.jvm.JvmInline
 data class Id(val value: String)
 
 @Serializable
-class Color(val hexValue: UInt)
+data class Color(val hexValue: UInt)
 
 @Serializable
 sealed class ViewTreeNode() {
@@ -37,9 +37,9 @@ sealed class ViewTreeNode() {
         abstract val children: List<ViewTreeNode>
 
         @Serializable
-        class Horizontal(override val children: List<ViewTreeNode>, val backgroundColor: Color) : Container()
+        data class Horizontal(override val children: List<ViewTreeNode>, val backgroundColor: Color) : Container()
 
         @Serializable
-        class Vertical(override val children: List<ViewTreeNode>, val backgroundColor: Color) : Container()
+        data class Vertical(override val children: List<ViewTreeNode>, val backgroundColor: Color) : Container()
     }
 }

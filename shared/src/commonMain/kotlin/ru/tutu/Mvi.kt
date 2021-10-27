@@ -42,7 +42,7 @@ fun <STATE, INTENT> createStore(init: STATE, reducer: Reducer<STATE, INTENT>): S
 
 typealias ReducerSE<STATE, INTENT, EFFECT> = suspend (STATE, INTENT) -> ReducerResult<STATE, EFFECT>
 
-class ReducerResult<STATE, EFFECT>(val state: STATE, val sideEffects: List<EFFECT> = emptyList())
+data class ReducerResult<STATE, EFFECT>(val state: STATE, val sideEffects: List<EFFECT> = emptyList())
 
 /**
  * MVI по типу ELM с обработкой SideEffect-ов
