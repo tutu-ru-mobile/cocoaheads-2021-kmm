@@ -22,7 +22,7 @@ fun RenderNode(
     when (node) {
         is ViewTreeNode.Container.Horizontal -> {
             Row(
-                modifier = Modifier.fillMaxWidth().background(color = Color(node.backgroundColor.hexValue.toInt())),
+                modifier = Modifier.background(color = Color(node.backgroundColor.hexValue.toInt())),
                 horizontalArrangement = Arrangement.Center
             ) {
                 for (child in node.children) {
@@ -32,7 +32,7 @@ fun RenderNode(
         }
         is ViewTreeNode.Container.Vertical -> {
             Column(
-                modifier = Modifier.fillMaxSize().background(color = Color(node.backgroundColor.hexValue.toInt())),
+                modifier = Modifier.background(color = Color(node.backgroundColor.hexValue.toInt())),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 for (child in node.children) {
