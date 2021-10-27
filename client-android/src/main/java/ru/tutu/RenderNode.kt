@@ -24,6 +24,7 @@ fun RenderNode(
             Row(
                 modifier = Modifier.padding(3.dp)
                     .background(color = Color(node.backgroundColor.hexValue.toInt())),
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
                 for (child in node.children) {
@@ -34,7 +35,8 @@ fun RenderNode(
         is ViewTreeNode.Container.Vertical -> {
             Column(
                 modifier = Modifier.background(color = Color(node.backgroundColor.hexValue.toInt())),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
                 for (child in node.children) {
                     RenderNode(clientStorage, child, sendIntent)
@@ -50,7 +52,7 @@ fun RenderNode(
             )
         }
         is ViewTreeNode.Leaf.Label -> {
-            Text(text = node.text)
+            Text(text = node.text, modifier = Modifier.padding(4.dp))
         }
         is ViewTreeNode.Leaf.Button -> {
             Text(
