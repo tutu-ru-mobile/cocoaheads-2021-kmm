@@ -3,7 +3,36 @@ package ru.tutu.logic
 import ru.tutu.serialization.*
 import ru.tutu.verticalContainer
 
-fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode {
+fun serverRender(state: ServerState, clientStorage: ClientStorage) =
+    verticalContainer {
+        rectangle(100, 100, Color(0x3300ff00u))
+        label("Это ServerDrivenView")
+    }
+
+fun serverRenderCovid(state: ServerState, clientStorage: ClientStorage): ViewTreeNode {
+    return verticalContainer {
+        label("Новые требования для путешествий!")
+        label("Необходима прививка, или ПЦР тест.")
+
+        image(
+            "http://localhost:8081/static/covid_test.png",
+            250, 250
+        )
+
+        space(10)
+        label("Пожалуйста внесите информацию:")
+        button(id = BUTTON_VACCINE, text = "У меня есть сертификат вакцинации")
+        button(id = BUTTON_PCR_TEST, text = "У меня есть ПЦР тест")
+
+        space(20)
+        label("Что делать, если нет нужных данных?")
+        button(id = BUTTON_CANCEL_TRIP, text = "Отменить поездку")
+        button(id = BUTTON_SUPPORT, text = "Связаться со службой поддержки")
+        space(20)
+    }
+}
+
+fun serverRenderWithButtons(state: ServerState, clientStorage: ClientStorage): ViewTreeNode {
     return verticalContainer {
         label("Новые требования для путешествий!")
         label("Необходима прививка, или ПЦР тест.")
@@ -44,37 +73,10 @@ fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode
             }
         }
 
-        space(10)
+        space(20)
         label("Что делать, если нет нужных данных?")
         button(id = BUTTON_CANCEL_TRIP, text = "Отменить поездку")
-        button(id = Id("button.covid_faq"), text = "Частые вопросы в связи с коронавирусом")
-
-        space(20)
-        label("Нужна дополнительная помощь?")
         button(id = BUTTON_SUPPORT, text = "Связаться со службой поддержки")
-        space(10)
-    }
-}
-
-fun serverRenderJson(): ViewTreeNode {
-    return verticalContainer {
-        label("Новые требования для путешествий!")
-        label("Необходима прививка, или ПЦР тест.")
-
-        image(
-            "http://localhost:8081/static/covid_test.png",
-            250, 250
-        )
-
-        label("Пожалуйста внесите информацию:")
-        button(id = BUTTON_VACCINE, text = "У меня есть сертификат вакцинации")
-        button(id = BUTTON_PCR_TEST, text = "У меня есть ПЦР тест")
-
-        label("Что делать, если нет нужных данных?")
-        button(id = Id(""), text = "Отменить поездку")
-        button(id = Id(""), text = "Частые вопросы в связи с коронавирусом")
-
-        label("Нужна дополнительная помощь?")
-        button(id = Id(""), text = "Связаться со службой поддержки")
+        space(20)
     }
 }
