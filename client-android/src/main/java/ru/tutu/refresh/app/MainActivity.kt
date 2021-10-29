@@ -101,34 +101,47 @@ fun MainContainer() {
 
                 }
                 Screen.SUPPORT -> {
-                    Text("Напишите в чат,")
-                    Text("или позвоните +5(555)555-55-55")
                     Box(
-                        Modifier
-                            .padding(5.dp)
-                            .border(border = BorderStroke(1.dp, color = Color.Black))
-                            .padding(5.dp)
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("Напишите в чат,")
+                            Text("или позвоните +5(555)555-55-55")
+                            Box(
+                                Modifier
+                                    .padding(5.dp)
+                                    .border(border = BorderStroke(1.dp, color = Color.Black))
+                                    .padding(5.dp)
+                            ) {
+                                ServerDrivenView(
+                                    userId = "my_user_id",
+                                    networkReducerUrl = "http://10.0.2.2:8081/playground_reducer",
+                                    autoUpdate = true
+                                ) {}
+                            }
+                        }
+                    }
+                }
+                Screen.IMPORTANT -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center,
                     ) {
                         ServerDrivenView(
                             userId = "my_user_id",
-                            networkReducerUrl = "http://10.0.2.2:8081/playground_reducer",
+                            networkReducerUrl = "http://10.0.2.2:8081/important_reducer",
                             autoUpdate = true
-                        ) {}
-                    }
-
-                }
-                Screen.IMPORTANT -> ServerDrivenView(
-                    "my_user_id_android",
-                    "http://10.0.2.2:8081/important_reducer",
-                    true
-                ) {
-                    when (it) {
-                        is ClientSideEffect.OpenOrder -> {
-                            ordersAdditionalInfo.value = it.additionInfo
-                            selectedTab.value = Screen.ORDERS
-                        }
-                        is ClientSideEffect.OpenSupportScreen -> {
-                            selectedTab.value = Screen.SUPPORT
+                        ) {
+                            when (it) {
+                                is ClientSideEffect.OpenOrder -> {
+                                    ordersAdditionalInfo.value = it.additionInfo
+                                    selectedTab.value = Screen.ORDERS
+                                }
+                                is ClientSideEffect.OpenSupportScreen -> {
+                                    selectedTab.value = Screen.SUPPORT
+                                }
+                            }
                         }
                     }
                 }

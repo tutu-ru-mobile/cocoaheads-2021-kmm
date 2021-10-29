@@ -27,24 +27,19 @@ fun ServerDrivenView(
     } }
     val globalState = store.stateFlow.collectAsState()
     val screen = globalState.value.screen
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.TopCenter,
-    ) {
-        when(screen) {
-            is ServerDrivenViewState.ServerDrivenViewScreen.Loading -> {
-                CircularProgressIndicator(strokeWidth = 8.dp)
+    when (screen) {
+        is ServerDrivenViewState.ServerDrivenViewScreen.Loading -> {
+            CircularProgressIndicator(strokeWidth = 8.dp)
+        }
+        is ServerDrivenViewState.ServerDrivenViewScreen.Normal -> {
+            val clientStorage = globalState.value.clientStorage
+            RenderNode(clientStorage, screen.node) {
+                store.send(it)
             }
-            is ServerDrivenViewState.ServerDrivenViewScreen.Normal -> {
-                val clientStorage = globalState.value.clientStorage
-                RenderNode(clientStorage, screen.node) {
-                    store.send(it)
-                }
-            }
-            is ServerDrivenViewState.ServerDrivenViewScreen.NetworkError -> {
-                Text("Сетевая ошибка:")
-                Text(screen.exception)
-            }
+        }
+        is ServerDrivenViewState.ServerDrivenViewScreen.NetworkError -> {
+            Text("Сетевая ошибка:")
+            Text(screen.exception)
         }
     }
 }
