@@ -36,12 +36,6 @@ fun createServerDrivenViewStore(
                 val newState = viewState.copy(
                     screen = intent.screen
                 )
-                if(viewState != newState) {
-                    println("viewState != newState")
-                }
-                if(viewState.screen != newState.screen) {
-                    println("viewState.screen != newState.screen")
-                }
                 newState.noSideEffects()
             }
             is ClientIntent.UpdateClientStorage -> {

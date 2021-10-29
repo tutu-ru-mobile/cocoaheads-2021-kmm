@@ -18,8 +18,8 @@ struct RenderNode: View {
             ContainerVertical(containerVertical, clientStorage, sendIntent)
         case let containerHorizontal as ViewTreeNode.Container.ContainerHorizontal:
             ContainerHorizontal(containerHorizontal, clientStorage, sendIntent)
-        case let label as ViewTreeNode.Leaf.LeafLabel:
-            LeafLabel(label)
+        case let text as ViewTreeNode.Leaf.LeafText:
+            LeafText(text)
         case let rectangle as ViewTreeNode.Leaf.LeafRectangle:
             LeafRectangle(rectangle)
         case let button as ViewTreeNode.Leaf.LeafButton:

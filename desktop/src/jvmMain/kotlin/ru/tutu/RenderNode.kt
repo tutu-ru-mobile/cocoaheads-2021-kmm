@@ -32,7 +32,7 @@ fun RenderNode(clientStorage:ClientStorage, node: ViewTreeNode, sendIntent: (Cli
         is ViewTreeNode.Leaf.Rectangle -> {
             Box(modifier = Modifier.size(node.width.dp, node.height.dp).background(color = Color(node.color.hexValue.toInt())))
         }
-        is ViewTreeNode.Leaf.Label -> {
+        is ViewTreeNode.Leaf.Text -> {
             Text(text = node.text)
         }
         is ViewTreeNode.Leaf.Button -> {

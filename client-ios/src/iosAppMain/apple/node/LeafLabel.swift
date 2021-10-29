@@ -1,15 +1,15 @@
 import SwiftUI
 import Shared
 
-public struct LeafLabel: View {
-    let label: ViewTreeNode.Leaf.LeafLabel
+public struct LeafText: View {
+    let text: ViewTreeNode.Leaf.LeafText
 
-    public init(_ label: ViewTreeNode.Leaf.LeafLabel) {
-        self.label = label
+    public init(_ text: ViewTreeNode.Leaf.LeafText) {
+        self.text = text
     }
 
     public var body: some View {
-        Text(label.text)
+        Text(text.text)
     }
 
 }

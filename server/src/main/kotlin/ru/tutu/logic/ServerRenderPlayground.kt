@@ -61,14 +61,14 @@ data class Pet(
 private fun NodeDsl.renderPet(pet: Pet) {
     horizontalContainer(backgroundColor = lightGreen) {
         verticalContainer {
-            label("I am ${pet.name}")
+            text("I am ${pet.name}")
             image(pet.imgUrl, 100, 100)
         }
         verticalContainer {
             horizontalContainer(backgroundColor = lightBlue) {
                 pet.skills.forEach {
                     verticalContainer {
-                        label(it.key)
+                        text(it.key)
                         val skillInt = (it.value * 255).toInt()
                         val red = 255 - skillInt
                         val green = skillInt
@@ -76,7 +76,7 @@ private fun NodeDsl.renderPet(pet: Pet) {
                     }
                 }
             }
-            label("Additional info of Pet")
+            text("Additional info of Pet")
         }
     }
 }

@@ -51,7 +51,7 @@ fun RenderNode(
                     .background(color = Color(node.color.hexValue.toInt()))
             )
         }
-        is ViewTreeNode.Leaf.Label -> {
+        is ViewTreeNode.Leaf.Text -> {
             Text(text = node.text, modifier = Modifier.padding(4.dp))
         }
         is ViewTreeNode.Leaf.Button -> {

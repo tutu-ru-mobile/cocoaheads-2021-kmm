@@ -17,7 +17,7 @@ sealed class ViewTreeNode() {
         data class Rectangle(val width: Int, val height: Int, val color: Color) : Leaf()
 
         @Serializable
-        data class Label(val text: String) : Leaf()
+        data class Text(val text: String) : Leaf()
 
         @Serializable
         data class Button(val id: Id, val text: String) : Leaf()

@@ -14,7 +14,7 @@ public struct LeafInput: View {
 
     public var body: some View {
         let value = clientStorage.getString(key: input.storageKey)
-        RenderInputTextView(label: input.hint, value: value) { inputValueStr in
+        RenderInputTextView(text: input.hint, value: value) { inputValueStr in
             sendIntent(SwiftHelperKt.updateClientStorageIntent(key: input.storageKey, value: inputValueStr))
         }
     }
@@ -22,12 +22,12 @@ public struct LeafInput: View {
 }
 
 public struct RenderInputTextView: View {
-    var label: String
+    var text: String
     var onEdit: (String) -> Void
     var value: String
 
-    public init(label: String, value: String, onEdit: @escaping (String) -> ()) {
-        self.label = label
+    public init(text: String, value: String, onEdit: @escaping (String) -> ()) {
+        self.text = text
         self.onEdit = onEdit
         self.value = value
     }
@@ -42,7 +42,7 @@ public struct RenderInputTextView: View {
 
     public var body: some View {
         HStack {
-            Text(label)
+            Text(text)
             TextField("", text: getBoundValue())
                     .font(Font.system(size: 15, weight: .medium, design: .serif))
                     .textFieldStyle(RoundedBorderTextFieldStyle())

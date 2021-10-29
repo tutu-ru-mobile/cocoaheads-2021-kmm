@@ -28,8 +28,8 @@ private fun serverDrivenViewDsl(lambda: NodeDsl.() -> Unit): List<ViewTreeNode> 
                 add(ViewTreeNode.Leaf.Input(hint, storageKey))
             }
 
-            override fun label(text: String) {
-                add(ViewTreeNode.Leaf.Label(text))
+            override fun text(text: String) {
+                add(ViewTreeNode.Leaf.Text(text))
             }
 
             override fun rectangle(width: Int, height: Int, color: Color) {
@@ -52,7 +52,7 @@ interface NodeDsl {
     fun horizontalContainer(backgroundColor:Color = Color(0x00_00_00_00u), lambda: NodeDsl.() -> Unit)
     fun button(id: Id, text: String)
     fun input(hint: String, storageKey: String)
-    fun label(text: String)
+    fun text(text: String)
     fun image(imgUrl: String, width: Int, height: Int)
     fun rectangle(width: Int, height: Int, color: Color)
     fun space(size: Int)
