@@ -51,8 +51,12 @@ fun serverReducer(state: ServerState, clientStorage: ClientStorage, intent: Inte
                 BUTTON_SUPPORT -> {
                     listOf(ClientSideEffect.OpenSupportScreen())
                 }
-                BUTTON_CANCEL_TRIP ->{
-                    listOf(ClientSideEffect.OpenOrder("Сервер послал SideEffect отмены заказа"))
+                BUTTON_CANCEL_TRIP -> {
+                    listOf(
+                        ClientSideEffect.OpenOrder(
+                            "Сервер послал SideEffect отмены заказа"
+                        )
+                    )
                 }
                 else -> emptyList()
             }

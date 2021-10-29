@@ -86,7 +86,7 @@ struct ContentView: View {
                         userId: "my_user_id",
                         networkReducerUrl: "http://localhost:8081/important_reducer",
                         autoUpdate: true
-                ) { sideEffect in
+                ) { (sideEffect: ClientSideEffect) in
                     switch sideEffect {
                     case let openOrder as ClientSideEffect.OpenOrder:
                         selectedTab = Tab.orders

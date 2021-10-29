@@ -55,3 +55,26 @@ fun serverRender(state: ServerState, clientStorage: ClientStorage): ViewTreeNode
         space(10)
     }
 }
+
+fun serverRenderJson(): ViewTreeNode {
+    return verticalContainer {
+        label("Новые требования для путешествий!")
+        label("Необходима прививка, или ПЦР тест.")
+
+        image(
+            "http://localhost:8081/static/covid_test.png",
+            250, 250
+        )
+
+        label("Пожалуйста внесите информацию:")
+        button(id = BUTTON_VACCINE, text = "У меня есть сертификат вакцинации")
+        button(id = BUTTON_PCR_TEST, text = "У меня есть ПЦР тест")
+
+        label("Что делать, если нет нужных данных?")
+        button(id = Id(""), text = "Отменить поездку")
+        button(id = Id(""), text = "Частые вопросы в связи с коронавирусом")
+
+        label("Нужна дополнительная помощь?")
+        button(id = Id(""), text = "Связаться со службой поддержки")
+    }
+}
