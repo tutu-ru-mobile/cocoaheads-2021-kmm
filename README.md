@@ -1,5 +1,5 @@
-### Вопросы и обратная связь
-https://github.com/tutu-ru-mobile/cocoaheads-2021-kmm/discussions/1
+### Вопросы и обратная связь в GitHub discussions:
+### https://github.com/tutu-ru-mobile/cocoaheads-2021-kmm/discussions/1
 
 # Usage:
  - Start server `./start_server_watch.sh`
