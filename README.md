@@ -1,4 +1,4 @@
-# CocoaHeads-2021 Server driven view + Kotlin
+## Server driven view + Kotlin (CocoaHeads-2021)
 
 ### Вопросы и обратная связь в GitHub discussions:
 ### https://github.com/tutu-ru-mobile/cocoaheads-2021-kmm/discussions/1
