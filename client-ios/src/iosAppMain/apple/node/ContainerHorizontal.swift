@@ -1,8 +1,8 @@
 import SwiftUI
 import Shared
 
-public struct ContainerHorizontal:View {
-    let containerHorizontal:ViewTreeNode.Container.ContainerHorizontal
+public struct ContainerHorizontal: View {
+    let containerHorizontal: ViewTreeNode.Container.ContainerHorizontal
     let clientStorage: ClientStorage
     let sendIntent: (ClientIntent) -> Void
 
@@ -17,7 +17,8 @@ public struct ContainerHorizontal:View {
             ForEach(containerHorizontal.children) { child in
                 RenderNode(child, clientStorage, sendIntent)
             }
-        }.background(Color(containerHorizontal.backgroundColor.toUIColor()))
+        }.frame(maxWidth: .infinity)
+        .background(Color(containerHorizontal.backgroundColor.toUIColor()))
         .padding(2)
     }
 

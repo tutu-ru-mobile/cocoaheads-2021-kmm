@@ -71,9 +71,9 @@ struct ContentView: View {
                             userId: "my_user_id",
                             networkReducerUrl: "http://localhost:8081/playground_reducer",
                             autoUpdate: true
-                    ) { sideEffect in
-                    }.border(Color.black)
-
+                    ) { sideEffect in}
+                    .border(Color.black)
+                    .padding(5)
                 }.navigationBarTitle("Справка и помощь", displayMode: .inline)
             }.tabItem {
                 Label("Помощь", systemImage: "phone.fill")
