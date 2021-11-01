@@ -1,4 +1,4 @@
-# Вопросы и обратная связь
+### Вопросы и обратная связь
 https://github.com/tutu-ru-mobile/cocoaheads-2021-kmm/discussions/1
 
 # Usage:
