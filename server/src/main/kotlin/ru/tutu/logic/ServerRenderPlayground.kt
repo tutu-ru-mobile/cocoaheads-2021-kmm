@@ -46,9 +46,10 @@ val pets = listOf(
 
 fun serverRenderPlayground(clientStorage: ClientStorage): ViewTreeNode {
     return verticalContainer() {
-        pets.forEach {
-            renderPet(it)
-        }
+//        pets.forEach {
+//            renderPet(it)
+//        }
+        rectangle(100, 100, lightRed)
     }
 }
 
