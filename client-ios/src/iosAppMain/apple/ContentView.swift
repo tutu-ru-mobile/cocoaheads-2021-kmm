@@ -27,12 +27,12 @@ struct ContentView: View {
                         ProgressView()
                     })
 
-                    Text("Здесь можно купить билет")
+                    Text("Здесь можно купить билет").font(.system(size: 24))
                     Spacer()
                     Button(action: {
                         selectedTab = Tab.important
                     }) {
-                        Text("Посмотрите важную информацию!")
+                        Text("Посмотрите важную информацию!").font(.system(size: 20))
                     }
                     Spacer()
                 }.navigationBarTitle("Главный экран", displayMode: .inline)
@@ -45,9 +45,9 @@ struct ContentView: View {
             NavigationView {
                 VStack {
                     List {
-                        Text("Билет №1")
-                        Text("Билет №2")
-                        Text("Билет №3")
+                        Text("Билет №1").font(.system(size: 20))
+                        Text("Билет №2").font(.system(size: 20))
+                        Text("Билет №3").font(.system(size: 20))
                         orderAdditionalInfo.flatMap { _ in
                             Spacer(minLength: 20)
                         }
@@ -64,8 +64,8 @@ struct ContentView: View {
             // Экран помощи и контактов
             NavigationView {
                 VStack {
-                    Text("Напишите в чат,")
-                    Text("или позвоните +5(555)555-55-55")
+                    Text("Напишите в чат,").font(.system(size: 20))
+                    Text("или позвоните +5(555)555-55-55").font(.system(size: 20))
 
                     ServerDrivenView(
                             userId: "my_user_id",

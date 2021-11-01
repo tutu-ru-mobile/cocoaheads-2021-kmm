@@ -44,7 +44,7 @@ public struct RenderInputTextView: View {
         HStack {
             Text(text)
             TextField("", text: getBoundValue())
-                    .font(Font.system(size: 15, weight: .medium, design: .serif))
+                    .font(Font.system(size: 20, weight: .medium, design: .serif))
                     .textFieldStyle(RoundedBorderTextFieldStyle())
         }
                 .padding()

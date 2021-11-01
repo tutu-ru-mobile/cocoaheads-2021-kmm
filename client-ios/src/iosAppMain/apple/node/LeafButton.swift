@@ -17,6 +17,7 @@ public struct LeafButton: View {
             sendIntent(SwiftHelperKt.buttonIntent(buttonId: nodeButton.id))
         }) {
             Text(nodeButton.text)
+                    .font(.system(size: CGFloat(nodeButton.fontSize)))
         }.padding(3)
     }
 

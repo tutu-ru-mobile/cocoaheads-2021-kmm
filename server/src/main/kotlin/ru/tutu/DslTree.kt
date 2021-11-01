@@ -20,16 +20,16 @@ private fun serverDrivenViewDsl(lambda: NodeDsl.() -> Unit): List<ViewTreeNode> 
                 add(ViewTreeNode.Container.Horizontal(serverDrivenViewDsl(lambda), backgroundColor = backgroundColor))
             }
 
-            override fun button(id: Id, text: String) {
-                add(ViewTreeNode.Leaf.Button(id, text))
+            override fun button(id: Id, text: String, fontSize:Int) {
+                add(ViewTreeNode.Leaf.Button(id, text, fontSize))
             }
 
             override fun input(hint: String, storageKey: String) {
                 add(ViewTreeNode.Leaf.Input(hint, storageKey))
             }
 
-            override fun text(text: String) {
-                add(ViewTreeNode.Leaf.Text(text))
+            override fun text(text: String, fontSize:Int) {
+                add(ViewTreeNode.Leaf.Text(text, fontSize))
             }
 
             override fun rectangle(width: Int, height: Int, color: Color) {
@@ -50,9 +50,9 @@ private fun serverDrivenViewDsl(lambda: NodeDsl.() -> Unit): List<ViewTreeNode> 
 interface NodeDsl {
     fun verticalContainer(backgroundColor:Color = Color(0x00_00_00_00u), lambda: NodeDsl.() -> Unit)
     fun horizontalContainer(backgroundColor:Color = Color(0x00_00_00_00u), lambda: NodeDsl.() -> Unit)
-    fun button(id: Id, text: String)
+    fun button(id: Id, text: String, fontSize:Int = 20)
     fun input(hint: String, storageKey: String)
-    fun text(text: String)
+    fun text(text: String, fontSize:Int = 20)
     fun image(imgUrl: String, width: Int, height: Int)
     fun rectangle(width: Int, height: Int, color: Color)
     fun space(size: Int)

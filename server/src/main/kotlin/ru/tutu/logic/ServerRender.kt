@@ -5,7 +5,10 @@ import ru.tutu.verticalContainer
 
 fun serverRender(state: ServerState, clientStorage: ClientStorage) =
     verticalContainer {
-        rectangle(150, 150, Color(0x3300ff00u))
+        image(
+            "http://localhost:8081/static/hay_stack.png",
+            350, 300
+        )
         text("Это ServerDrivenView")
     }
 
@@ -24,7 +27,8 @@ val resultStr = """
         },
         {
           "type": "ru.tutu.serialization.ViewTreeNode.Leaf.Text",
-          "text": "Это ServerDrivenView"
+          "text": "Это ServerDrivenView",
+          "fontSize": 20
         }
       ],
       "backgroundColor": {
