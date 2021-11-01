@@ -13,29 +13,25 @@ fun serverRender(state: ServerState, clientStorage: ClientStorage) =
     }
 
 //language=Json
-val resultStr = """
+val resultJson = """{
+  "type": "ru.tutu.serialization.ViewTreeNode.Container.Vertical",
+  "children": [
     {
-      "type": "ru.tutu.serialization.ViewTreeNode.Container.Vertical",
-      "children": [
-        {
-          "type": "ru.tutu.serialization.ViewTreeNode.Leaf.Rectangle",
-          "width": 150,
-          "height": 150,
-          "color": {
-            "hexValue": 855703296
-          }
-        },
-        {
-          "type": "ru.tutu.serialization.ViewTreeNode.Leaf.Text",
-          "text": "Это ServerDrivenView",
-          "fontSize": 20
-        }
-      ],
-      "backgroundColor": {
-        "hexValue": 0
-      }
+      "type": "ru.tutu.serialization.ViewTreeNode.Leaf.Image",
+      "imgUrl": "http://localhost:8081/static/hay_stack.png",
+      "width": 350,
+      "height": 300
+    },
+    {
+      "type": "ru.tutu.serialization.ViewTreeNode.Leaf.Text",
+      "text": "Это ServerDrivenView",
+      "fontSize": 20
     }
-"""
+  ],
+  "backgroundColor": {
+    "hexValue": 0
+  }
+}"""
 
 fun serverRenderCovid(state: ServerState, clientStorage: ClientStorage): ViewTreeNode {
     return verticalContainer {
