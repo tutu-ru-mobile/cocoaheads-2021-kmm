@@ -94,8 +94,6 @@ struct ContentView: View {
                         orderAdditionalInfo = openOrder.additionInfo
                     case let openSupport as ClientSideEffect.OpenSupportScreen:
                         selectedTab = Tab.support
-                    case let openBrowser as ClientSideEffect.OpenBrowser:
-                        print("open browser link \(openBrowser.url)")
                     default:
                         print("do nothing")
                     }
