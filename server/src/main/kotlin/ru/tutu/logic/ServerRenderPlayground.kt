@@ -14,70 +14,46 @@ val lightGreen = Color(0x44_00_ff_00_u)
 val lightBlue = Color(0x33_00_00_ff_u)
 val lightPink = Color(0x44_ff_00_ffu)
 
+data class Pet(
+    val name:String,
+    val img:String,
+    val skills:Map<String, Double> =  mapOf(
+        "iOS" to Random.nextDouble(),
+        "Android" to Random.nextDouble(),
+        "Server" to Random.nextDouble(),
+    )
+)
+
 val pets = listOf(
-    Pet(
-        "Cat",
-        catUrl,
-        mapOf(
-            "iOS" to Random.nextDouble(),
-            "Android" to Random.nextDouble(),
-            "Server" to Random.nextDouble()
-        )
-    ),
-    Pet(
-        "Dog",
-        dogUrl,
-        mapOf(
-            "iOS" to Random.nextDouble(),
-            "Android" to Random.nextDouble(),
-            "Server" to Random.nextDouble()
-        )
-    ),
-    Pet(
-        "Racoon",
-        racoonUrl,
-        mapOf(
-            "iOS" to Random.nextDouble(),
-            "Android" to Random.nextDouble(),
-            "Server" to Random.nextDouble()
-        )
-    ),
+    Pet("Cat", catUrl),
+    Pet("Dog", dogUrl),
+    Pet("Racoon", racoonUrl),
 )
 
 fun serverRenderPlayground(clientStorage: ClientStorage): ViewTreeNode {
     return verticalContainer() {
-//        pets.forEach {
-//            renderPet(it)
-//        }
-        rectangle(100, 100, lightRed)
+        pets.forEach {
+            petCard(it)
+        }
     }
 }
 
-data class Pet(
-    val name: String,
-    val imgUrl: String,
-    val skills: Map<String, Double>
-)
-
-private fun NodeDsl.renderPet(pet: Pet) {
-    horizontalContainer(backgroundColor = lightGreen) {
+fun NodeDsl.petCard(pet:Pet) {
+    horizontalContainer(backgroundColor = lightBlue) {
         verticalContainer {
             text("I am ${pet.name}")
-            image(pet.imgUrl, 100, 100)
+            image(pet.img, 100, 100)
         }
-        verticalContainer {
-            horizontalContainer(backgroundColor = lightBlue) {
-                pet.skills.forEach {
-                    verticalContainer {
-                        text(it.key)
-                        val skillInt = (it.value * 255).toInt()
-                        val red = 255 - skillInt
-                        val green = skillInt
-                        rectangle(50, 50, Color(red, green, 0))
-                    }
+        horizontalContainer {
+            pet.skills.forEach {
+                val skillInt = (255 * it.value).toInt()
+                val greenComponent = skillInt
+                val redComponent = 255 - skillInt
+                verticalContainer {
+                    text(it.key)
+                    rectangle(80, 80, Color(redComponent, greenComponent, 0))
                 }
             }
-            text("Additional info of Pet")
         }
     }
 }
