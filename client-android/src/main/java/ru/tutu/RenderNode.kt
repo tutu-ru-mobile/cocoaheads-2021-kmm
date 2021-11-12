@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -24,7 +25,7 @@ fun RenderNode(
             Row(
                 modifier = Modifier.padding(3.dp)
                     .background(color = Color(node.backgroundColor.hexValue.toInt())),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = node.verticalAlignment.toAndroid(),
                 horizontalArrangement = Arrangement.Center
             ) {
                 for (child in node.children) {
@@ -35,7 +36,7 @@ fun RenderNode(
         is ViewTreeNode.Container.Vertical -> {
             Column(
                 modifier = Modifier.background(color = Color(node.backgroundColor.hexValue.toInt())),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = node.horizontalAlignment.toAndroid(),
                 verticalArrangement = Arrangement.Center
             ) {
                 for (child in node.children) {
@@ -52,11 +53,12 @@ fun RenderNode(
             )
         }
         is ViewTreeNode.Leaf.Text -> {
-            Text(text = node.text, modifier = Modifier.padding(4.dp))
+            Text(text = node.text, textAlign = TextAlign.Center, modifier = Modifier.padding(4.dp))
         }
         is ViewTreeNode.Leaf.Button -> {
             Text(
                 text = node.text,
+                textAlign = TextAlign.Center,
                 modifier = Modifier.clickable {
                     sendIntent(ClientIntent.SendToServer(Intent.ButtonPressed(node.id)))
                 },
@@ -77,3 +79,17 @@ fun RenderNode(
         }
     }.also { }
 }
+
+fun VAlign.toAndroid(): Alignment.Vertical =
+    when(this) {
+        is VAlign.Top -> Alignment.Top
+        is VAlign.Center -> Alignment.CenterVertically
+        is VAlign.Bottom -> Alignment.Bottom
+    }
+
+fun HAlign.toAndroid(): Alignment.Horizontal =
+    when(this) {
+        is HAlign.Left -> Alignment.Start
+        is HAlign.Center -> Alignment.CenterHorizontally
+        is HAlign.Right -> Alignment.End
+    }

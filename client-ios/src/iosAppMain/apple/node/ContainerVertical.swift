@@ -14,7 +14,7 @@ public struct ContainerVertical:View {
 
     public var body: some View {
         if (true) {
-            VStack {
+            VStack(alignment: containerVertical.horizontalAlignment.toSwiftAlignment()) {
                 ForEach(containerVertical.children) { child in
                     RenderNode(child, clientStorage, sendIntent)
                 }
@@ -29,4 +29,19 @@ public struct ContainerVertical:View {
         }
     }
 
+}
+
+extension HAlign {
+    func toSwiftAlignment() -> HorizontalAlignment {
+        switch self {
+        case is HAlign.Left:
+            return HorizontalAlignment.leading
+        case is HAlign.Center:
+            return HorizontalAlignment.center
+        case is HAlign.Right:
+            return HorizontalAlignment.trailing
+        default:
+            fatalError("HAlign.toSwiftAlignment() not exhaustive")
+        }
+    }
 }

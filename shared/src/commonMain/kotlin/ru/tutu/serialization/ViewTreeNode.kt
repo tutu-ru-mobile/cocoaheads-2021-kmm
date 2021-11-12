@@ -10,6 +10,26 @@ data class Id(val value: String)
 data class Color(val hexValue: UInt)
 
 @Serializable
+sealed class VAlign {
+    @Serializable
+    object Top : VAlign()
+    @Serializable
+    object Center : VAlign()
+    @Serializable
+    object Bottom : VAlign()
+}
+
+@Serializable
+sealed class HAlign {
+    @Serializable
+    object Left : HAlign()
+    @Serializable
+    object Center : HAlign()
+    @Serializable
+    object Right : HAlign()
+}
+
+@Serializable
 sealed class ViewTreeNode() {
     @Serializable
     sealed class Leaf() : ViewTreeNode() {
@@ -37,10 +57,18 @@ sealed class ViewTreeNode() {
         abstract val children: List<ViewTreeNode>
 
         @Serializable
-        data class Horizontal(override val children: List<ViewTreeNode>, val backgroundColor: Color) : Container()
+        data class Horizontal(
+            override val children: List<ViewTreeNode>,
+            val backgroundColor: Color,
+            val verticalAlignment: VAlign
+        ) : Container()
 
         @Serializable
-        data class Vertical(override val children: List<ViewTreeNode>, val backgroundColor: Color) : Container()
+        data class Vertical(
+            override val children: List<ViewTreeNode>,
+            val backgroundColor: Color,
+            val horizontalAlignment: HAlign
+        ) : Container()
     }
 }
 

@@ -12,12 +12,22 @@ fun verticalContainer(backgroundColor:Color = Color(0x00_00_00_00u), lambda: Nod
 private fun serverDrivenViewDsl(lambda: NodeDsl.() -> Unit): List<ViewTreeNode> {
     return buildList<ViewTreeNode> {
         object : NodeDsl {
-            override fun verticalContainer(backgroundColor:Color, lambda: NodeDsl.() -> Unit) {
-                add(ViewTreeNode.Container.Vertical(serverDrivenViewDsl(lambda), backgroundColor = backgroundColor))
+            override fun verticalContainer(backgroundColor:Color, contentAlignment:HAlign, lambda: NodeDsl.() -> Unit) {
+                add(ViewTreeNode.Container.Vertical(
+                    serverDrivenViewDsl(lambda),
+                    backgroundColor = backgroundColor,
+                    horizontalAlignment = contentAlignment
+                ))
             }
 
-            override fun horizontalContainer(backgroundColor:Color, lambda: NodeDsl.() -> Unit) {
-                add(ViewTreeNode.Container.Horizontal(serverDrivenViewDsl(lambda), backgroundColor = backgroundColor))
+            override fun horizontalContainer(backgroundColor:Color, contentAlignment:VAlign, lambda: NodeDsl.() -> Unit) {
+                add(
+                    ViewTreeNode.Container.Horizontal(
+                        serverDrivenViewDsl(lambda),
+                        backgroundColor = backgroundColor,
+                        verticalAlignment = contentAlignment
+                    )
+                )
             }
 
             override fun button(id: Id, text: String, fontSize:Int) {
@@ -48,8 +58,16 @@ private fun serverDrivenViewDsl(lambda: NodeDsl.() -> Unit): List<ViewTreeNode> 
 }
 
 interface NodeDsl {
-    fun verticalContainer(backgroundColor:Color = Color(0x00_00_00_00u), lambda: NodeDsl.() -> Unit)
-    fun horizontalContainer(backgroundColor:Color = Color(0x00_00_00_00u), lambda: NodeDsl.() -> Unit)
+    fun verticalContainer(
+        backgroundColor: Color = Color(0x00_00_00_00u),
+        contentAlignment:HAlign = HAlign.Center,
+        lambda: NodeDsl.() -> Unit
+    )
+    fun horizontalContainer(
+        backgroundColor: Color = Color(0x00_00_00_00u),
+        contentAlignment: VAlign = VAlign.Center,
+        lambda: NodeDsl.() -> Unit
+    )
     fun button(id: Id, text: String, fontSize:Int = 20)
     fun input(hint: String, storageKey: String)
     fun text(text: String, fontSize:Int = 20)

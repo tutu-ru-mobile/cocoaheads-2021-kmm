@@ -25,6 +25,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$COROUTINE_VERSION")
                 implementation("io.ktor:ktor-client-core:$KTOR_VERSION")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$SERIALIZATION_VERSION")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:$SERIALIZATION_VERSION")
             }
         }
         val androidMain by getting {

@@ -34,7 +34,7 @@ private fun configureServer() =
 fun Application.configureRouting() {
     routing {
         get("/") {
-            call.respondText("Hello World 5!")
+            call.respondText("Welcome to server")
         }
         post("/important_reducer") {
             val clientData = call.receiveText().parseToNetworkReducerRequestBody()

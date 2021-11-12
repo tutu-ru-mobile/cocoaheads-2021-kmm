@@ -11,6 +11,7 @@ public struct LeafText: View {
     public var body: some View {
         Text(text.text)
                 .font(.system(size: CGFloat(text.fontSize)))
+                .multilineTextAlignment(.center)
     }
 
 }

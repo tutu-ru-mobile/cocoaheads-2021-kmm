@@ -1,9 +1,8 @@
 package ru.tutu.serialization
 
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
+import kotlinx.serialization.*
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.protobuf.ProtoBuf
 import ru.tutu.ReducerResult
 
 fun ViewTreeNode.toJson(): String =
@@ -31,8 +30,16 @@ typealias NetworkReducerResult = ReducerResult<ViewTreeNode, ClientSideEffect>
 fun NetworkReducerResult.toJson(): String =
     Json.encodeToString(SerializableReducerResult(state, sideEffects))
 
+fun NetworkReducerResult.toProtoBuff(): ByteArray =
+    ProtoBuf.encodeToByteArray(SerializableReducerResult(state, sideEffects))
+
 fun String.parseToNetworkReducerResult(): NetworkReducerResult =
     Json.decodeFromString<SerializableReducerResult>(this).run {
+        NetworkReducerResult(state, sideEffects)
+    }
+
+fun ByteArray.parseToNetworkReducerResult(): NetworkReducerResult =
+    ProtoBuf.decodeFromByteArray<SerializableReducerResult>(this).run {
         NetworkReducerResult(state, sideEffects)
     }
 
@@ -46,8 +53,14 @@ data class NetworkReducerRequestBody(
 fun NetworkReducerRequestBody.toJson(): String =
     Json.encodeToString(this)
 
+fun NetworkReducerRequestBody.toProtoBuff(): ByteArray =
+    ProtoBuf.encodeToByteArray(this)
+
 fun String.parseToNetworkReducerRequestBody(): NetworkReducerRequestBody =
     Json.decodeFromString(this)
+
+fun ByteArray.parseToNetworkReducerRequestBody(): NetworkReducerRequestBody =
+    ProtoBuf.decodeFromByteArray(this)
 
 @Serializable
 data class ClientValue(val stringValue: String)

@@ -14,6 +14,13 @@ suspend fun networkReducer(
     val successResult = ktorClient.post<String>(networkReducerUrl) {
         body =
             TextContent(NetworkReducerRequestBody(userId, clientStorage, intent).toJson(), ContentType.Application.Json)
+
+    /*
+        ProtoBuf:
+        val successResult = ktorClient.post<ByteArray>(networkReducerUrl) {
+        body =
+            ByteArrayContent(NetworkReducerRequestBody(userId, clientStorage, intent).toProtoBuff(), ContentType.Application.ProtoBuf)
+     */
     }.parseToNetworkReducerResult()
     Result.success(successResult)
 } catch (t: Throwable) {
