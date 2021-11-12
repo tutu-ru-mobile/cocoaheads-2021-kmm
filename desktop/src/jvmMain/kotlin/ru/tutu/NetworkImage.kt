@@ -28,7 +28,7 @@ import javax.imageio.ImageIO
 
 @Composable
 fun NetworkImage(imageUrl: String, width: Int, height: Int) {
-    var mutableImage by remember { mutableStateOf<ImageBitmap?>(null) }
+    var mutableImage by remember(imageUrl) { mutableStateOf<ImageBitmap?>(null) }
     remember {
         APP_SCOPE.launch {
             mutableImage = downloadImageBitmap(imageUrl)
