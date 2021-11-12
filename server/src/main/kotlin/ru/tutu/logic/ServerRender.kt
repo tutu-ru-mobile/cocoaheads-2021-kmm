@@ -3,7 +3,7 @@ package ru.tutu.logic
 import ru.tutu.serialization.*
 import ru.tutu.verticalContainer
 
-fun serverRender(state: ServerState, clientStorage: ClientStorage) =
+fun serverResponse(state: ServerState, clientStorage: ClientStorage) =
     verticalContainer {
         image(
             "http://localhost:8081/static/hay_stack.png",
@@ -33,7 +33,7 @@ val resultJson = """{
   }
 }"""
 
-fun serverRenderWithButtons(state: ServerState, clientStorage: ClientStorage): ViewTreeNode {
+fun serverResponseComplete(state: ServerState, clientStorage: ClientStorage): ViewTreeNode {
     return verticalContainer {
         text("Новые требования для путешествий!")
         text("Необходима прививка, или ПЦР тест.")
