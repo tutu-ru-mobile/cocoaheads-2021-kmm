@@ -23,3 +23,9 @@
  - Запустить эмулятор, или соединить Android телефон по USB.
  - Запустить `./gradlew client-android:installDebug`
  - Приложение установится, и его можно запустить
+
+## Полезный материал:
+ - Доклад Яндекса про Backend Driven UI (Еркебулан Абилдин) 
+https://www.youtube.com/watch?v=Pmx6Hs1nyvg
+ - Однонаправленная архитектура (Михаил Левченко) 
+https://www.youtube.com/watch?v=y0CHhHBzEkw
