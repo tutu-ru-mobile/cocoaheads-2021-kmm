@@ -1,40 +1,10 @@
 package ru.tutu.logic
 
 import ru.tutu.serialization.*
-import ru.tutu.verticalContainer
+import ru.tutu.rootContainer
 
-fun serverResponse(state: ServerState, clientStorage: ClientStorage) =
-    verticalContainer {
-        image(
-            "http://localhost:8081/static/hay_stack.png",
-            350, 300
-        )
-        text("Это ServerDrivenView")
-    }
-
-//language=Json
-val resultJson = """{
-  "type": "ru.tutu.serialization.ViewTreeNode.Container.Vertical",
-  "children": [
-    {
-      "type": "ru.tutu.serialization.ViewTreeNode.Leaf.Image",
-      "imgUrl": "http://localhost:8081/static/hay_stack.png",
-      "width": 350,
-      "height": 300
-    },
-    {
-      "type": "ru.tutu.serialization.ViewTreeNode.Leaf.Text",
-      "text": "Это ServerDrivenView",
-      "fontSize": 20
-    }
-  ],
-  "backgroundColor": {
-    "hexValue": 0
-  }
-}"""
-
-fun serverResponseComplete(state: ServerState, clientStorage: ClientStorage): ViewTreeNode {
-    return verticalContainer {
+fun serverResponse(state: ServerState, clientStorage: ClientStorage): ViewTreeNode {
+    return rootContainer {
         text("Новые требования для путешествий!")
         text("Необходима прививка, или ПЦР тест.")
         image(

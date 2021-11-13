@@ -2,7 +2,7 @@ package ru.tutu
 
 import ru.tutu.serialization.*
 
-fun verticalContainer(backgroundColor:Color = Color(0x00_00_00_00u), lambda: NodeDsl.() -> Unit): ViewTreeNode = serverDrivenViewDsl {
+fun rootContainer(backgroundColor:Color = Color(0x00_00_00_00u), lambda: NodeDsl.() -> Unit): ViewTreeNode = serverDrivenViewDsl {
     verticalContainer(backgroundColor = backgroundColor) {
         lambda()
     }

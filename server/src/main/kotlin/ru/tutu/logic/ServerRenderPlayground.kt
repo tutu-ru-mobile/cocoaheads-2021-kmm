@@ -1,25 +1,25 @@
 package ru.tutu.logic
 
-import ru.tutu.serialization.*
-import ru.tutu.verticalContainer
 import ru.tutu.NodeDsl
 import ru.tutu.serialization.*
-import ru.tutu.verticalContainer
-import kotlin.random.Random
+import ru.tutu.rootContainer
 
-data class CovidDay(
-    val infected:Int,
-    val day:String
+data class Day(
+    val dayOfWeek:String,
+    val infected:Int
 )
-
 data class City(
     val name:String,
     val img:String,
-    val statistics:List<CovidDay> = List(7) {
-        CovidDay(Random.nextInt(100, 1000), it.toDayOfWeek())
+    val stat:List<Day> = List(7) {
+        Day(
+            it.toDayOfWeek(),
+            (100..1000).random()
+        )
     },
-    val description:String = createRandomDescription()
+    val desc:String = createRandomDescription()
 )
+
 
 val cities = listOf(
     City("Москва", moscowUrl),
@@ -28,37 +28,36 @@ val cities = listOf(
 )
 
 fun serverResponsePlayground(clientStorage: ClientStorage): ViewTreeNode {
-    return verticalContainer() {
-//        rectangle(100, 100, lightGreen)
+    return rootContainer() {
+        cities.forEach {
+            cityCard(it)
+        }
     }
-//    return verticalContainer() {
-//        cities.forEach {
-//            petCard(it)
-//        }
-//    }
 }
 
-fun NodeDsl.petCard(city:City) {
-    horizontalContainer(backgroundColor = lightBlue) {
+fun NodeDsl.cityCard(city: City) {
+    horizontalContainer(lightBlue) {
         verticalContainer {
             text(city.name)
-            image(city.img, 120, 120)
+            image(city.img, 100, 100)
         }
         verticalContainer {
-            text("Количество заражений", fontSize = 18)
+            text("Статистика коронвируса", 15)
             horizontalContainer(contentAlignment = VAlign.Bottom) {
-                city.statistics.forEach() {
-                    val redComponent = (255 * it.infected/1000.0).toInt()
-                    val greenComponent = 255 - redComponent
-                    val height = it.infected/15
+                city.stat.forEach {
                     verticalContainer {
-                        text(it.infected.toString(), fontSize = 10)
-                        rectangle(20, height, Color(redComponent, greenComponent, 0))
-                        text(it.day, fontSize = 14)
+                        text(it.infected.toString(), 14)
+                        val normalized = it.infected / 1000.0
+                        val red = (255 * normalized).toInt()
+                        val green = 255 - red
+                        val height = (60 * normalized).toInt()
+                        rectangle(20, height, Color(red, green, 0))
+                        text(it.dayOfWeek, 16)
                     }
                 }
             }
-            text(city.description, fontSize = 14)
+            text(city.desc, 16)
         }
+
     }
 }
