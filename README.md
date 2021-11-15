@@ -5,7 +5,7 @@
 
 ### Для запуска iOS приложения:
  - Установить JetBrains Toolbox. (https://www.jetbrains.com/toolbox-app/)
- - Через него установить AppCode 2021.3
+ - Через него установить AppCode 2021.3 (Есть пробный период 30 дней)
  - Запустить AppCode и установить плагин Kotlin Multiplatform Mobile. (https://plugins.jetbrains.com/plugin/17098-kotlin-multiplatform-mobile-for-appcode)
  - Открыть директорию проекта через AppCode. (File -> Open)
  - Первый раз проект будет синхронизироваться и качать Gradle зависимости.
