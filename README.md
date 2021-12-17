@@ -1,5 +1,8 @@
 ## Server driven view на SwiftUI и Kotlin Multiplatform (CocoaHeads-2021)
 
+Запись доклада https://www.youtube.com/watch?v=QMEjn55TLGc
+Есть ещё видео, где более детально разбираю код https://www.youtube.com/watch?v=t8eMAbXhTfE
+
 #### Вопросы и обратная связь в GitHub discussions:
 #### https://github.com/tutu-ru-mobile/cocoaheads-2021-kmm/discussions/1
 
